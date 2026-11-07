@@ -29,9 +29,32 @@
    - Set their `app_metadata.role` via the service-role client (not
      `user_metadata`, which is user-editable).
    - Insert `profiles` rows for both users.
-   - Optionally run `python scripts/seed.py --load` to load suppliers and
-     shipments into Supabase. Seed PDFs and cached JSON are already committed
-     under `data/seeds/`; Python is only needed to regenerate them.
+   - Optionally run `python scripts/seed.py --load` to load suppliers,
+     shipments, documents, fields, line items and cross-checks into Supabase,
+     and upload the seed PDFs to the private `documents` bucket.
+     Seed PDFs and cached JSON are already committed under `data/seeds/`;
+     Python is only needed to (re)load or regenerate them.
+
+   **Windows PowerShell setup for `scripts/seed.py --load`:**
+
+   ```powershell
+   # 1. Install the Python dependencies (supabase client + dotenv).
+   pip install -r requirements.txt
+
+   # 2. Create .env.local at the project root with the required values
+   #    (never commit real secrets; .env.local is gitignored).
+   #    Copy from .env.example and fill in:
+   #      SUPABASE_URL or NEXT_PUBLIC_SUPABASE_URL
+   #      SUPABASE_SERVICE_ROLE_KEY
+   #      DEMO_PASSWORD   (optional; random if unset)
+   #    seed.py reads .env.local first, then .env.
+
+   # 3. Run the load (idempotent: safe to repeat).
+   python scripts/seed.py --load
+
+   # To force regeneration of the committed PDFs/cached JSON:
+   #   python scripts/seed.py --regenerate --load
+   ```
 
 ## 2. Environment variables
 Create `.env` (gitignored) with values for the names listed in
