@@ -56,6 +56,13 @@
    #   python scripts/seed.py --regenerate --load
    ```
 
+   **Skewed-scan test asset:** `data/seeds/SHP-24815/invoice_scan.png` is a skewed,
+   blurred scan used for manual testing. `scripts/seed.py --load` does NOT upload
+   it or create a document row for it (`documents_type_check` allows only
+   `invoice`, `packing_list`, `bill_of_lading`). To test the skewed-scan flow,
+   upload `invoice_scan.png` to the private `documents` bucket manually and add it
+   as an extra test case in `scripts/live-extract-eval.ts`.
+
 ## 2. Environment variables
 Create `.env` (gitignored) with values for the names listed in
 `.env.example`. Never commit real secrets.

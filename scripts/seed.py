@@ -1063,6 +1063,29 @@ def load_into_supabase(manifest):
                 print(f"ERROR: {num}: referenced file missing: {ROOT / rel}")
                 sys.exit(1)
 
+    # Dry validation: every document type that would be inserted must be one of
+    # the three allowed by documents_type_check. Do this before touching
+    # Supabase, listing offenders explicitly.
+    ALLOWED_DOC_TYPES = {"invoice", "packing_list", "bill_of_lading"}
+    offenders = []
+    for m in manifest:
+        num = m["shipment_number"]
+        # scan_png is intentionally skipped as a document row (it is a skewed
+        # scan test asset); do not validate its type.
+        for key, doc_type in (
+            ("invoice_pdf", "invoice"),
+            ("packing_list_pdf", "packing_list"),
+            ("bill_of_lading_pdf", "bill_of_lading"),
+        ):
+            if m.get(key) and doc_type not in ALLOWED_DOC_TYPES:
+                offenders.append(f"{num}: {key} -> {doc_type!r}")
+    if offenders:
+        print("ERROR: manifest contains document types not allowed by documents_type_check:")
+        for o in offenders:
+            print(f"  {o}")
+        print(f"Allowed types: {', '.join(sorted(ALLOWED_DOC_TYPES))}")
+        sys.exit(1)
+
     # Demo users (email/password). Passwords are derived from the
     # DEMO_PASSWORD env var (or a strong random value if unset). No passwords
     # or keys are ever printed.
@@ -1252,8 +1275,12 @@ def load_into_supabase(manifest):
             ("packing_list", m.get("packing_list_pdf")),
             ("bill_of_lading", m.get("bill_of_lading_pdf")),
         ]
+        # scan_png is a test asset for skewed-scan manual testing only; it is
+        # NOT a document row (documents_type_check allows exactly three types
+        # and the app assumes invoice / packing_list / bill_of_lading). Skip
+        # it silently during --load and keep the file at data/seeds/.
         if m.get("scan_png"):
-            docs.append(("invoice_scan", m["scan_png"]))
+            print(f"info: scan_png for {num} kept as test asset, not loaded")
         for doc_type, rel_path in docs:
             if not rel_path:
                 continue
@@ -1273,7 +1300,7 @@ def load_into_supabase(manifest):
                 skipped_documents += 1
                 continue
             file_bytes = file_path.read_bytes()
-            storage_path = f"{num}/{doc_type}.png" if doc_type == "invoice_scan" else f"{num}/{doc_type}.pdf"
+            storage_path = f"{num}/{doc_type}.pdf"
             _exec(
                 lambda: sb.storage.from_("documents").upload(
                     storage_path,
