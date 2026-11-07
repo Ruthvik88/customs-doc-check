@@ -18,9 +18,68 @@ import secrets
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+
+# ---------------------------------------------------------------------------
+# Environment loading for --load
+# Reads .env.local then .env from the project root (later file wins).
+# Does not override variables already set in the actual environment.
+# ---------------------------------------------------------------------------
+ENV_FILES = [".env.local", ".env"]
+
+
+def load_env_files():
+    """Load .env.local then .env from the project root. Return list of files read."""
+    root = Path(__file__).resolve().parent.parent
+    read_files = []
+    for name in ENV_FILES:
+        path = root / name
+        if not path.is_file():
+            continue
+        load_dotenv(path, override=False)
+        read_files.append(str(path))
+    return read_files
+
+
+def resolve_supabase_url():
+    """SUPABASE_URL takes precedence; fall back to NEXT_PUBLIC_SUPABASE_URL.
+
+    Supabase client SDKs expect the project base URL, so strip a trailing
+    /rest/v1 path if someone pasted the REST endpoint.
+    """
+    url = os.environ.get("SUPABASE_URL") or os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
+    if not url:
+        return None
+    url = url.strip()
+    for suffix in ("/rest/v1/", "/rest/v1"):
+        if url.endswith(suffix):
+            url = url[: -len(suffix)]
+            break
+    return url
+
+
+def require_load_env(read_files):
+    """Exit with a non-zero code if --load cannot run due to missing config.
+
+    Names exactly which variable is missing and which files were checked.
+    Never prints passwords or keys.
+    """
+    missing = []
+    if not resolve_supabase_url():
+        missing.append("SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL)")
+    if not os.environ.get("SUPABASE_SERVICE_ROLE_KEY"):
+        missing.append("SUPABASE_SERVICE_ROLE_KEY")
+    if missing:
+        files = ", ".join(read_files) if read_files else "(none found)"
+        print("ERROR: --load cannot run; required variable(s) missing:", ", ".join(missing))
+        print(f"Checked env files: {files}")
+        print("Create .env (or .env.local) at the project root with these values.")
+        print("See deployment.md for the Windows PowerShell setup steps.")
+        sys.exit(1)
+
 
 ROOT = Path(__file__).resolve().parent.parent
 SEED_DIR = ROOT / "data" / "seeds"
@@ -582,24 +641,29 @@ def generate():
 
 def load_into_supabase(manifest):
     """Load seed data into Supabase using the service-role key (server-side only)."""
-    url = os.environ.get("SUPABASE_URL")
+    read_files = load_env_files()
+    require_load_env(read_files)
+
+    url = resolve_supabase_url()
     key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-    if not url or not key:
-        print("SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set; skipping Supabase load.")
-        return
+
     try:
         from supabase import create_client
     except ImportError:
-        print("supabase-py not installed; skipping Supabase load.")
-        return
+        print("ERROR: --load requires the supabase Python package.")
+        print("Run: pip install -r requirements.txt")
+        sys.exit(1)
 
     sb = create_client(url, key)
 
     # Demo users (email/password). Passwords are derived from the
     # DEMO_PASSWORD env var (or a strong random value if unset). No passwords
-    # are stored in committed files.
+    # or keys are ever printed.
     demo_password = os.environ.get("DEMO_PASSWORD") or secrets.token_urlsafe(16)
-    print(f"Demo password (exec@demo.local / manager@demo.local): {demo_password}")
+    if os.environ.get("DEMO_PASSWORD"):
+        print("Demo password: loaded from DEMO_PASSWORD")
+    else:
+        print("Demo password: generated randomly (DEMO_PASSWORD not set)")
     demo_users = [
         ("exec@demo.local", demo_password, "documentation_executive", "Demo Executive"),
         ("manager@demo.local", demo_password, "documentation_manager", "Demo Manager"),
