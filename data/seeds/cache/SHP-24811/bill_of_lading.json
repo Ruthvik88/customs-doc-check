@@ -1,0 +1,90 @@
+{
+  "document_type": "bill_of_lading",
+  "bl_number": "BL-2025-0981",
+  "vessel": "MV Ocean Star",
+  "port_of_loading": "Shanghai, China",
+  "port_of_discharge": "Nhava Sheva, India",
+  "supplier": "Company B",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 40,
+  "gross_weight_kg": 3120,
+  "containers": [
+    "MSKU1234565",
+    "TCNU9876540"
+  ],
+  "fields": [
+    {
+      "key": "bl_number",
+      "value": "BL-2025-0981",
+      "ai_value": "BL-2025-0981",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "vessel",
+      "value": "MV Ocean Star",
+      "ai_value": "MV Ocean Star",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "port_of_loading",
+      "value": "Shanghai, China",
+      "ai_value": "Shanghai, China",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "port_of_discharge",
+      "value": "Nhava Sheva, India",
+      "ai_value": "Nhava Sheva, India",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "supplier",
+      "value": "Company B",
+      "ai_value": "Company B",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "40",
+      "ai_value": "40",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "3120",
+      "ai_value": "3120",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "MSKU1234565, TCNU9876540",
+      "ai_value": "MSKU1234565, TCNU9876540",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "BILL OF LADING BL-2025-0981 MV Ocean Star"
+}

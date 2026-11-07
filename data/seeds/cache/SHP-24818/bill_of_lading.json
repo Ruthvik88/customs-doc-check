@@ -1,0 +1,90 @@
+{
+  "document_type": "bill_of_lading",
+  "bl_number": "BL-JP-0045",
+  "vessel": "MV Sakura Express",
+  "port_of_loading": "Yokohama, Japan",
+  "port_of_discharge": "Nhava Sheva, India",
+  "supplier": "Company I",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 14,
+  "gross_weight_kg": 430,
+  "containers": [
+    "CMAU7777770",
+    "MSKU8888887"
+  ],
+  "fields": [
+    {
+      "key": "bl_number",
+      "value": "BL-JP-0045",
+      "ai_value": "BL-JP-0045",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "vessel",
+      "value": "MV Sakura Express",
+      "ai_value": "MV Sakura Express",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "port_of_loading",
+      "value": "Yokohama, Japan",
+      "ai_value": "Yokohama, Japan",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "port_of_discharge",
+      "value": "Nhava Sheva, India",
+      "ai_value": "Nhava Sheva, India",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "supplier",
+      "value": "Company I",
+      "ai_value": "Company I",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "14",
+      "ai_value": "14",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "430",
+      "ai_value": "430",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "CMAU7777770, MSKU8888887",
+      "ai_value": "CMAU7777770, MSKU8888887",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "BILL OF LADING BL-JP-0045 MV Sakura Express"
+}

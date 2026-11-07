@@ -1,0 +1,74 @@
+{
+  "document_type": "packing_list",
+  "supplier": "Company H",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 8,
+  "gross_weight_kg": 1890,
+  "net_weight_kg": 1840,
+  "containers": [
+    "TCNU6666664"
+  ],
+  "line_items": [
+    {
+      "description": "Automotive spare parts",
+      "hsn": "870899",
+      "qty": 450,
+      "unit_price": 12.0,
+      "line_total": 5400.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company H",
+      "ai_value": "Company H",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "8",
+      "ai_value": "8",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "1890",
+      "ai_value": "1890",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "1840",
+      "ai_value": "1840",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "TCNU6666664",
+      "ai_value": "TCNU6666664",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "PACKING LIST ref INV-AE-4109"
+}

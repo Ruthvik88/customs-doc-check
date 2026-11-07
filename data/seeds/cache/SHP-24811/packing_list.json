@@ -1,0 +1,85 @@
+{
+  "document_type": "packing_list",
+  "supplier": "Company B",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 40,
+  "gross_weight_kg": 3165,
+  "net_weight_kg": 3000,
+  "containers": [
+    "MSKU1234565",
+    "TCNU9876540"
+  ],
+  "line_items": [
+    {
+      "description": "LED panel light 40W",
+      "hsn": "940540",
+      "qty": 2400,
+      "unit_price": 6.8,
+      "line_total": 16320.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "description": "Mounting bracket",
+      "hsn": "830249",
+      "qty": 2400,
+      "unit_price": 1.2,
+      "line_total": 2880.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company B",
+      "ai_value": "Company B",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "40",
+      "ai_value": "40",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "3165",
+      "ai_value": "3165",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "3000",
+      "ai_value": "3000",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "MSKU1234565, TCNU9876540",
+      "ai_value": "MSKU1234565, TCNU9876540",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "PACKING LIST ref INV-2025-1142"
+}

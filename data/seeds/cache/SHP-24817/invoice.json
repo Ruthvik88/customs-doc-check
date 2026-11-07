@@ -1,0 +1,108 @@
+{
+  "document_type": "invoice",
+  "supplier": "Company H",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "invoice_number": "INV-AE-4109",
+  "invoice_date": "2025-10-28",
+  "currency": "USD",
+  "incoterm": "FCA",
+  "invoice_total": "USD 5400.00",
+  "packages": 8,
+  "gross_weight_kg": 1890,
+  "net_weight_kg": 1840,
+  "line_items": [
+    {
+      "description": "Automotive spare parts",
+      "hsn": "870899",
+      "qty": 450,
+      "unit_price": 12.0,
+      "line_total": 5400.0,
+      "confidence": 0.96,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company H",
+      "ai_value": "Company H",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "invoice_number",
+      "value": "INV-AE-4109",
+      "ai_value": "INV-AE-4109",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "invoice_date",
+      "value": "2025-10-28",
+      "ai_value": "2025-10-28",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "currency",
+      "value": "USD",
+      "ai_value": "USD",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "incoterm",
+      "value": "FCA",
+      "ai_value": "FCA",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "8",
+      "ai_value": "8",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "1890",
+      "ai_value": "1890",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "1840",
+      "ai_value": "1840",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "invoice_total",
+      "value": "USD 5400.00",
+      "ai_value": "USD 5400.00",
+      "confidence": 0.92,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "INVOICE INV-AE-4109 Company H"
+}

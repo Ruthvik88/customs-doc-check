@@ -1,0 +1,89 @@
+{
+  "document_type": "bill_of_lading",
+  "bl_number": "BL-SG-6083",
+  "vessel": "MV Lion City",
+  "port_of_loading": "Singapore",
+  "port_of_discharge": "Nhava Sheva, India",
+  "supplier": "Company K",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 28,
+  "gross_weight_kg": 1560,
+  "containers": [
+    "MSKU0000006"
+  ],
+  "fields": [
+    {
+      "key": "bl_number",
+      "value": "BL-SG-6083",
+      "ai_value": "BL-SG-6083",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "vessel",
+      "value": "MV Lion City",
+      "ai_value": "MV Lion City",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "port_of_loading",
+      "value": "Singapore",
+      "ai_value": "Singapore",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "port_of_discharge",
+      "value": "Nhava Sheva, India",
+      "ai_value": "Nhava Sheva, India",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "supplier",
+      "value": "Company K",
+      "ai_value": "Company K",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "28",
+      "ai_value": "28",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "1560",
+      "ai_value": "1560",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "MSKU0000006",
+      "ai_value": "MSKU0000006",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "BILL OF LADING BL-SG-6083 MV Lion City"
+}

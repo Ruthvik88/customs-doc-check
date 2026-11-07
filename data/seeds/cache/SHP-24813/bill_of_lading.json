@@ -1,0 +1,89 @@
+{
+  "document_type": "bill_of_lading",
+  "bl_number": "BL-US-1129",
+  "vessel": "MV Pacific Link",
+  "port_of_loading": "Houston, USA",
+  "port_of_discharge": "Nhava Sheva, India",
+  "supplier": "Company D",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 22,
+  "gross_weight_kg": 980,
+  "containers": [
+    "CMAU5555557"
+  ],
+  "fields": [
+    {
+      "key": "bl_number",
+      "value": "BL-US-1129",
+      "ai_value": "BL-US-1129",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "vessel",
+      "value": "MV Pacific Link",
+      "ai_value": "MV Pacific Link",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "port_of_loading",
+      "value": "Houston, USA",
+      "ai_value": "Houston, USA",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "port_of_discharge",
+      "value": "Nhava Sheva, India",
+      "ai_value": "Nhava Sheva, India",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "supplier",
+      "value": "Company D",
+      "ai_value": "Company D",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "22",
+      "ai_value": "22",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "980",
+      "ai_value": "980",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "CMAU5555557",
+      "ai_value": "CMAU5555557",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "BILL OF LADING BL-US-1129 MV Pacific Link"
+}

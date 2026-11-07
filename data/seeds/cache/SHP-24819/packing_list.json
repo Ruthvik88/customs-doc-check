@@ -1,0 +1,74 @@
+{
+  "document_type": "packing_list",
+  "supplier": "Company J",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 24,
+  "gross_weight_kg": 1250,
+  "net_weight_kg": 1200,
+  "containers": [
+    "TCNU9999993"
+  ],
+  "line_items": [
+    {
+      "description": "Office task chair",
+      "hsn": "940130",
+      "qty": 180,
+      "unit_price": 89.0,
+      "line_total": 16020.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company J",
+      "ai_value": "Company J",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "24",
+      "ai_value": "24",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "1250",
+      "ai_value": "1250",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "1200",
+      "ai_value": "1200",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "TCNU9999993",
+      "ai_value": "TCNU9999993",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "PACKING LIST ref INV-UK-3001"
+}

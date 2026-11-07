@@ -1,0 +1,74 @@
+{
+  "document_type": "packing_list",
+  "supplier": "Company F",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 12,
+  "gross_weight_kg": 640,
+  "net_weight_kg": 610,
+  "containers": [
+    "CMAU4444440"
+  ],
+  "line_items": [
+    {
+      "description": "Cotton fabric rolls",
+      "hsn": "520812",
+      "qty": 150,
+      "unit_price": 22.0,
+      "line_total": 3300.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company F",
+      "ai_value": "Company F",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "12",
+      "ai_value": "12",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "640",
+      "ai_value": "640",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "610",
+      "ai_value": "610",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "CMAU4444440",
+      "ai_value": "CMAU4444440",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "PACKING LIST ref INV-IN-9011"
+}

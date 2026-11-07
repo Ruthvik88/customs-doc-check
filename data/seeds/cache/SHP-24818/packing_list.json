@@ -1,0 +1,75 @@
+{
+  "document_type": "packing_list",
+  "supplier": "Company I",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 14,
+  "gross_weight_kg": 430,
+  "net_weight_kg": 400,
+  "containers": [
+    "CMAU7777770",
+    "MSKU8888887"
+  ],
+  "line_items": [
+    {
+      "description": "Precision ball bearings 6204",
+      "hsn": "848210",
+      "qty": 2200,
+      "unit_price": 850,
+      "line_total": 1870000.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company I",
+      "ai_value": "Company I",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "14",
+      "ai_value": "14",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "430",
+      "ai_value": "430",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "400",
+      "ai_value": "400",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "CMAU7777770, MSKU8888887",
+      "ai_value": "CMAU7777770, MSKU8888887",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "PACKING LIST ref INV-JP-7782"
+}

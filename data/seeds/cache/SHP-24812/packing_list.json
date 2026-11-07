@@ -1,0 +1,74 @@
+{
+  "document_type": "packing_list",
+  "supplier": "Company C",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 6,
+  "gross_weight_kg": 1460,
+  "net_weight_kg": 1420,
+  "containers": [
+    "MSKU1111112"
+  ],
+  "line_items": [
+    {
+      "description": "Steel ball valve DN50",
+      "hsn": "848180",
+      "qty": 180,
+      "unit_price": 42.5,
+      "line_total": 7650.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company C",
+      "ai_value": "Company C",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "6",
+      "ai_value": "6",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "1460",
+      "ai_value": "1460",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "1420",
+      "ai_value": "1420",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "MSKU1111112",
+      "ai_value": "MSKU1111112",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "PACKING LIST ref INV-SE-3310"
+}

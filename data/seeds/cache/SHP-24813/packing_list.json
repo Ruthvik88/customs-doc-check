@@ -1,0 +1,84 @@
+{
+  "document_type": "packing_list",
+  "supplier": "Company D",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "packages": 22,
+  "gross_weight_kg": 980,
+  "net_weight_kg": 940,
+  "containers": [
+    "CMAU5555557"
+  ],
+  "line_items": [
+    {
+      "description": "Stainless steel fasteners",
+      "hsn": "731815",
+      "qty": 5000,
+      "unit_price": 0.9,
+      "line_total": 4500.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "description": "Zinc washers M10",
+      "hsn": "731816",
+      "qty": 5000,
+      "unit_price": 0.15,
+      "line_total": 750.0,
+      "confidence": 0.95,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company D",
+      "ai_value": "Company D",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "22",
+      "ai_value": "22",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "980",
+      "ai_value": "980",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "940",
+      "ai_value": "940",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "containers",
+      "value": "CMAU5555557",
+      "ai_value": "CMAU5555557",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "PACKING LIST ref INV-US-5502"
+}

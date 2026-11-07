@@ -1,0 +1,118 @@
+{
+  "document_type": "invoice",
+  "supplier": "Company B",
+  "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "invoice_number": "INV-2025-1142",
+  "invoice_date": "2025-10-20",
+  "currency": "USD",
+  "incoterm": "FOB",
+  "invoice_total": "USD 19200.00",
+  "packages": 40,
+  "gross_weight_kg": 3120,
+  "net_weight_kg": 3000,
+  "line_items": [
+    {
+      "description": "LED panel light 40W",
+      "hsn": "940540",
+      "qty": 2400,
+      "unit_price": 6.8,
+      "line_total": 16320.0,
+      "confidence": 0.96,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "description": "Mounting bracket",
+      "hsn": "830249",
+      "qty": 2400,
+      "unit_price": 1.2,
+      "line_total": 2880.0,
+      "confidence": 0.96,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "fields": [
+    {
+      "key": "supplier",
+      "value": "Company B",
+      "ai_value": "Company B",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "consignee",
+      "value": "Nhava Sheva Imports Pvt. Ltd.",
+      "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "invoice_number",
+      "value": "INV-2025-1142",
+      "ai_value": "INV-2025-1142",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "invoice_date",
+      "value": "2025-10-20",
+      "ai_value": "2025-10-20",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "currency",
+      "value": "USD",
+      "ai_value": "USD",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "incoterm",
+      "value": "FOB",
+      "ai_value": "FOB",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "packages",
+      "value": "40",
+      "ai_value": "40",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "gross_weight_kg",
+      "value": "3120",
+      "ai_value": "3120",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "net_weight_kg",
+      "value": "3000",
+      "ai_value": "3000",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "invoice_total",
+      "value": "USD 19200.00",
+      "ai_value": "USD 19200.00",
+      "confidence": 0.92,
+      "status": "extracted",
+      "source_page": 1
+    }
+  ],
+  "source_text": "INVOICE INV-2025-1142 Company B"
+}
