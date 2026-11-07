@@ -586,6 +586,15 @@ def _write_if_changed(path, text):
     path.write_bytes(new_bytes)
 
 
+def _rel_path(path):
+    """Return a forward-slash path relative to the project root.
+
+    Committed manifest entries must never contain absolute Windows paths or
+    usernames.
+    """
+    return str(Path(path).relative_to(ROOT)).replace("\\", "/")
+
+
 def generate(regenerate=False):
     """Generate seed PDFs and cached JSON.
 
@@ -661,13 +670,13 @@ def generate(regenerate=False):
             "status": s["status"],
             "currency": data["currency"],
             "special": s["special"],
-            "invoice_pdf": str(inv_pdf),
-            "packing_list_pdf": str(pl_pdf),
-            "bill_of_lading_pdf": bl_path,
-            "scan_png": str(sdir / "invoice_scan.png") if s["special"] == "skewed_scan" else None,
-            "cached_invoice": str(cdir / "invoice.json"),
-            "cached_packing_list": str(cdir / "packing_list.json"),
-            "cached_bill_of_lading": str(cdir / "bill_of_lading.json") if bl_json else None,
+            "invoice_pdf": _rel_path(inv_pdf),
+            "packing_list_pdf": _rel_path(pl_pdf),
+            "bill_of_lading_pdf": _rel_path(bl_pdf) if bl_path else None,
+            "scan_png": _rel_path(sdir / "invoice_scan.png") if s["special"] == "skewed_scan" else None,
+            "cached_invoice": _rel_path(cdir / "invoice.json"),
+            "cached_packing_list": _rel_path(cdir / "packing_list.json"),
+            "cached_bill_of_lading": _rel_path(cdir / "bill_of_lading.json") if bl_json else None,
         })
 
     _write_if_changed(SEED_DIR / "manifest.json", json.dumps(manifest, indent=2))
