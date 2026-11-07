@@ -67,5 +67,5 @@ npm test               # Vitest unit tests
 ## Demo logins
 | Role | Email | Password |
 |---|---|---|
-| Documentation executive | exec@demo.local | exec@demo.local |
-| Documentation manager | manager@demo.local | manager@demo.local |
+| Documentation executive | exec@demo.local | Set via DEMO_PASSWORD env var when running `scripts/seed.py --load` |
+| Documentation manager | manager@demo.local | Same as executive |

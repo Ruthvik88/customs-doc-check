@@ -24,8 +24,8 @@ Target: entry time 45 → under 15 min per shipment.
 ## Demo logins (seeded)
 | Role | Email | Password |
 |---|---|---|
-| Executive | exec@demo.local | exec@demo.local |
-| Manager | manager@demo.local | manager@demo.local |
+| Executive | exec@demo.local | Set via DEMO_PASSWORD env var when running `scripts/seed.py --load` |
+| Manager | manager@demo.local | Same as executive |
 
 Seed shipments include SHP-24811 (weight mismatch 3120 vs 3165 kg), SHP-24814
 (invoice total mismatch), SHP-24815 (skewed scan), SHP-24816 (bilingual),

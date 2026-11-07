@@ -14,6 +14,7 @@ All companies, people and data are fictional; no real personal data is seeded.
 import argparse
 import json
 import os
+import secrets
 import sys
 from pathlib import Path
 
@@ -585,10 +586,14 @@ def load_into_supabase(manifest):
 
     sb = create_client(url, key)
 
-    # Demo users (email/password). These must exist in Auth; create via admin API.
+    # Demo users (email/password). Passwords are derived from the
+    # DEMO_PASSWORD env var (or a strong random value if unset). No passwords
+    # are stored in committed files.
+    demo_password = os.environ.get("DEMO_PASSWORD") or secrets.token_urlsafe(16)
+    print(f"Demo password (exec@demo.local / manager@demo.local): {demo_password}")
     demo_users = [
-        ("exec@demo.local", "exec@demo.local", "documentation_executive", "Demo Executive"),
-        ("manager@demo.local", "manager@demo.local", "documentation_manager", "Demo Manager"),
+        ("exec@demo.local", demo_password, "documentation_executive", "Demo Executive"),
+        ("manager@demo.local", demo_password, "documentation_manager", "Demo Manager"),
     ]
     for email, pwd, role, full in demo_users:
         try:
