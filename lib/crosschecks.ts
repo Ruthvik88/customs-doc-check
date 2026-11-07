@@ -115,7 +115,14 @@ export function invoiceTotalCheck(input: CrossCheckInput): CheckResult {
   if (total == null || lines.length === 0) {
     return result("invoice_total", "cannot_check", {
       value_a: inv.total != null ? String(inv.total) : null,
-      value_b: lines.length ? String(lines.map((l) => l.lineTotal).filter(Boolean).reduce((a, b) => a + (b ?? 0), 0)) : null,
+      value_b: lines.length
+        ? String(
+            lines
+              .map((l) => l.lineTotal)
+              .filter((v): v is number => v != null)
+              .reduce((a: number, b: number) => a + b, 0)
+          )
+        : null,
       fields_involved: ["invoice_total", "line_items[].line_total"],
       details: { reason: "missing invoice total or no line items" },
     });
@@ -160,8 +167,8 @@ export function lineItemMathCheck(input: CrossCheckInput): CheckResult {
         details: { reason: "incomplete line data", tolerance: tol },
       });
     }
-    const expected = qty * unit;
-    const delta = Math.abs(total - expected);
+    const expected = qty! * unit!;
+    const delta = Math.abs(total! - expected);
     if (delta > tol) {
       failing += 1;
       if (!firstFail) firstFail = { value_a: fmtNum(total), value_b: fmtNum(expected), delta: delta.toFixed(2) };

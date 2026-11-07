@@ -147,8 +147,12 @@ describe("packagesCheck", () => {
 describe("grossWeightCheck", () => {
   it("flags the seeded weight mismatch: invoice 3120 vs packing list 3165 (1.44%)", () => {
     const r = grossWeightCheck(
-      input({ invoice: doc({ grossWeight: 3120 }), packingList: doc({ grossWeight: 3165 }), billOfLading: doc({ grossWeight: null }) }),
-      { weightTolerance: 0.005 },
+      input({
+        invoice: doc({ grossWeight: 3120 }),
+        packingList: doc({ grossWeight: 3165 }),
+        billOfLading: doc({ grossWeight: null }),
+        weightTolerance: 0.005,
+      }),
     );
     expect(r.status).toBe("fail");
     expect(parseFloat(r.delta!)).toBeGreaterThan(0.5);
@@ -171,8 +175,8 @@ describe("grossWeightCheck", () => {
         invoice: doc({ grossWeight: 1000 }),
         packingList: doc({ grossWeight: 1005 }),
         billOfLading: doc({ grossWeight: 1000 }),
+        weightTolerance: 0.005,
       }),
-      { weightTolerance: 0.005 },
     );
     expect(atEdge.status).toBe("pass"); // 1000 vs 1005 = 0.5%, within tolerance
 
@@ -181,8 +185,8 @@ describe("grossWeightCheck", () => {
         invoice: doc({ grossWeight: 1000 }),
         packingList: doc({ grossWeight: 1006 }),
         billOfLading: doc({ grossWeight: 1000 }),
+        weightTolerance: 0.005,
       }),
-      { weightTolerance: 0.005 },
     );
     expect(overEdge.status).toBe("fail"); // 0.6% > 0.5%
   });
@@ -218,7 +222,7 @@ describe("containerCheck", () => {
       input({ packingList: doc({ containers: ["MSKU1234561"] }), billOfLading: doc({ containers: ["MSKU1234561"] }) }),
     );
     expect(r.status).toBe("fail");
-    expect(r.details.invalid_containers.length).toBeGreaterThan(0);
+    expect((r.details as { invalid_containers: unknown[] }).invalid_containers.length).toBeGreaterThan(0);
   });
 
   it("cannot_check when neither document has containers", () => {
