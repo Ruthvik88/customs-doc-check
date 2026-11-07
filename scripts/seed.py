@@ -1062,7 +1062,8 @@ def load_into_supabase(manifest):
             }),
             f"create auth user {email}",
         )
-        _first_id(res, f"create auth user {email}")
+        # create_user returns a UserResponse object (not a .data row list).
+        # If _exec did not raise, the user was created.
         print(f"created: auth user {email}")
         created_users += 1
 
@@ -1071,18 +1072,20 @@ def load_into_supabase(manifest):
     time.sleep(1)
 
     # Set app_metadata role via service role (not user-editable). Idempotent.
+    # skip when the user's app_metadata role already matches.
     for email, pwd, role, full in demo_users:
         uid = _get_user_id(sb, email)
         if uid is None:
             print(f"error: cannot set app_metadata for {email}: user not found")
             sys.exit(1)
-        res = _exec(
+        user = _get_user(sb, email)
+        if user is not None and (user.app_metadata or {}).get("role") == role:
+            print(f"skipped: app_metadata role={role} for {email} already matches")
+            continue
+        _exec(
             lambda: sb.auth.admin.update_user_by_id(uid, {"app_metadata": {"role": role}}),
             f"set app_metadata for {email}",
         )
-        if not getattr(res, "data", None):
-            print(f"ERROR: set app_metadata for {email}: Supabase returned no data")
-            sys.exit(1)
         print(f"updated: app_metadata role={role} for {email}")
 
     # Profiles (idempotent upsert)
@@ -1450,6 +1453,15 @@ def _get_user_id(sb, email):
     for u in res or []:
         if u.email == email:
             return u.id
+    return None
+
+
+def _get_user(sb, email):
+    """Return the auth User object for email, or None. list_users() -> list[User]."""
+    res = _exec(lambda: sb.auth.admin.list_users(), "list auth users")
+    for u in res or []:
+        if u.email == email:
+            return u
     return None
 
 
