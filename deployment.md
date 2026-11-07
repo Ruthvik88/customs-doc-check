@@ -12,6 +12,13 @@
    psql -f database/schema.sql
    ```
    or paste `database/schema.sql` into the Supabase SQL Editor.
+
+   **Fresh vs existing databases:** on a fresh database run `database/schema.sql`
+   only. On an existing database that already has the older schema applied, do
+   not re-run `schema.sql` (it will fail on already-existing objects); instead
+   run the idempotent migration `database/migrations/002_exec_status_policy_and_supplier_unique.sql`,
+   which applies only the two fixes (executive status restriction on the
+   update policy, and the unique constraint on `suppliers.name`).
 3. Create a private Storage bucket named `documents` (files served via
    short-lived signed URLs).
 4. Seed demo users and data:

@@ -445,10 +445,11 @@ create policy shipments_update_exec on public.shipments
   for update to authenticated
   using (current_app_role() = 'documentation_executive')
   with check (current_app_role() = 'documentation_executive'
-    and new.status not in ('Approved', 'Exported'));
+    and status not in ('Approved', 'Exported'));
 -- Executives may advance a shipment through the extraction/review flow, but
 -- Approved / Exported can only be set by the security-definer functions
 -- (shipment_approve / shipment_export), which re-validate gating server-side.
+-- (RLS policy expressions use plain column names, not new./old. qualifiers.)
 
 -- documents
 create policy documents_read on public.documents
