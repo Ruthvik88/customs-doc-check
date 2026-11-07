@@ -2,15 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { requireSupabaseClient, requireServiceRoleClient } from "@/lib/supabase/server";
-
-function csvEscape(v: string | null | undefined): string {
-  if (v == null) return "";
-  const s = String(v);
-  if (/[",\r\n]/.test(s) || /^\s|\s$/.test(s)) {
-    return `"${String(s).replace(/"/g, '""')}"`;
-  }
-  return s;
-}
+import { buildExportRow, buildCsv, EXPORT_COLUMNS } from "@/lib/export";
 
 export async function POST(req: Request) {
   const supabase = await requireSupabaseClient();
@@ -89,34 +81,8 @@ export async function POST(req: Request) {
     if (f.value) fieldByKey[f.key] = f.value;
   }
 
-  const containers = Array.isArray(shipment.containers) ? shipment.containers.join(", ") : "";
-
-  const columns = [
-    "shipment_number", "supplier", "consignee", "invoice_number", "invoice_date",
-    "currency", "incoterm", "invoice_total", "packages", "gross_weight_kg",
-    "net_weight_kg", "containers", "bl_number", "vessel",
-    "port_of_loading", "port_of_discharge",
-  ];
-  const row = [
-    shipment.shipment_number,
-    shipment.suppliers?.name ?? "",
-    fieldByKey["consignee"] ?? "",
-    shipment.invoice_number ?? "",
-    shipment.invoice_date ?? "",
-    shipment.currency ?? "",
-    shipment.incoterm ?? "",
-    fieldByKey["invoice_total"] ?? "",
-    shipment.total_packages ?? "",
-    shipment.gross_weight_kg ?? "",
-    shipment.net_weight_kg ?? "",
-    containers,
-    shipment.bl_number ?? "",
-    shipment.vessel ?? "",
-    shipment.port_of_loading ?? "",
-    shipment.port_of_discharge ?? "",
-  ];
-
-  const csv = [columns.join(","), row.map(csvEscape).join(",")].join("\r\n") + "\r\n";
+  const row = buildExportRow(shipment, fieldByKey);
+  const csv = buildCsv(EXPORT_COLUMNS, [row]);
   const fileName = `export_${shipment.shipment_number}.csv`;
 
   // Record the export.
