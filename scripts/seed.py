@@ -728,23 +728,46 @@ def load_into_supabase(manifest):
     exec_id = profile_ids["documentation_executive"]
     manager_id = profile_ids["documentation_manager"]
 
-    # Suppliers + shipments
+    # Suppliers (idempotent by name)
     supplier_ids = {}
+    created_suppliers = 0
+    skipped_suppliers = 0
     for s in SHIPMENTS:
-        res = sb.table("suppliers").insert({
-            "name": s["supplier"]["name"], "country": s["supplier"]["city_country"].split(", ")[-1],
-        }).execute()
-        supplier_ids[s["key"]] = res.data[0]["id"]
+        name = s["supplier"]["name"]
+        country = s["supplier"]["city_country"].split(", ")[-1]
+        existing = sb.table("suppliers").select("id").eq("name", name).execute().data
+        if existing:
+            supplier_ids[s["key"]] = existing[0]["id"]
+            print(f"skipped: supplier {name} already exists")
+            skipped_suppliers += 1
+        else:
+            res = sb.table("suppliers").insert({
+                "name": name, "country": country,
+            }).execute()
+            supplier_ids[s["key"]] = res.data[0]["id"]
+            print(f"created: supplier {name}")
+            created_suppliers += 1
+    print(f"suppliers: {created_suppliers} created, {skipped_suppliers} skipped")
 
+    # Shipments (idempotent by shipment_number)
+    created_shipments = 0
+    skipped_shipments = 0
     for s in SHIPMENTS:
+        num = s["shipment_number"]
+        existing = sb.table("shipments").select("id").eq("shipment_number", num).execute().data
+        if existing:
+            print(f"skipped: shipment {num} already exists")
+            skipped_shipments += 1
+            continue
         sb.table("shipments").insert({
-            "shipment_number": s["shipment_number"],
+            "shipment_number": num,
             "supplier_id": supplier_ids[s["key"]],
             "status": s["status"],
             "created_by": exec_id,
         }).execute()
-
-    print("Supabase seed load complete.")
+        print(f"created: shipment {num} status={s['status']}")
+        created_shipments += 1
+    print(f"shipments: {created_shipments} created, {skipped_shipments} skipped")
 
 
 def _get_user_id(sb, email):
