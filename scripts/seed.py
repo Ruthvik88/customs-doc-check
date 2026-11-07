@@ -991,6 +991,32 @@ def _load_json(path):
     return json.loads(p.read_text(encoding="utf-8"))
 
 
+def _check(res, context):
+    """Raise SystemExit if a Supabase response carries an error, else return data.
+
+    supabase-py v2 returns a response object with .error / .data instead of
+    raising on API failures. Callers must check .error explicitly, otherwise
+    failed inserts/updates are silently swallowed and res.data is empty.
+    Never prints secrets: error messages from Supabase are schema/RLS errors,
+    never credentials.
+    """
+    err = getattr(res, "error", None)
+    if err is not None:
+        print(f"ERROR: {context}: {err}")
+        sys.exit(1)
+    return res
+
+
+def _first_id(res, context):
+    """Return res.data[0]['id'], exiting if the response has no data."""
+    _check(res, context)
+    data = getattr(res, "data", None) or []
+    if not data:
+        print(f"ERROR: {context}: Supabase returned no data")
+        sys.exit(1)
+    return data[0]["id"]
+
+
 def load_into_supabase(manifest):
     """Load seed data into Supabase using the service-role key (server-side only)."""
     read_files = load_env_files()
@@ -1030,14 +1056,16 @@ def load_into_supabase(manifest):
             skipped_users += 1
             continue
         try:
-            sb.auth.admin.create_user({
+            res = sb.auth.admin.create_user({
                 "email": email, "password": pwd, "email_confirm": True,
                 "user_metadata": {"role": role, "full_name": full},
             })
+            _check(res, f"create auth user {email}")
             print(f"created: auth user {email}")
             created_users += 1
         except Exception as e:
             print(f"error creating auth user {email}: {e}")
+            sys.exit(1)
 
     # Let auth propagate before reading users / writing profiles.
     import time
@@ -1050,10 +1078,12 @@ def load_into_supabase(manifest):
             print(f"error: cannot set app_metadata for {email}: user not found")
             continue
         try:
-            sb.auth.admin.update_user_by_id(uid, {"app_metadata": {"role": role}})
+            res = sb.auth.admin.update_user_by_id(uid, {"app_metadata": {"role": role}})
+            _check(res, f"set app_metadata for {email}")
             print(f"updated: app_metadata role={role} for {email}")
         except Exception as e:
             print(f"error setting app_metadata for {email}: {e}")
+            sys.exit(1)
 
     # Profiles (idempotent upsert)
     profile_ids = {}
@@ -1063,9 +1093,14 @@ def load_into_supabase(manifest):
         uid = _get_user_id(sb, email)
         if uid is None:
             print(f"error: cannot write profile for {email}: user not found")
-            continue
-        before = sb.table("profiles").select("id").eq("id", uid).execute().data
-        sb.table("profiles").upsert({"id": uid, "role": role, "full_name": full, "email": email}).execute()
+            sys.exit(1)
+        before_res = sb.table("profiles").select("id").eq("id", uid).execute()
+        _check(before_res, f"select profile {email}")
+        before = before_res.data or []
+        res = sb.table("profiles").upsert({
+            "id": uid, "role": role, "full_name": full, "email": email,
+        }).execute()
+        _check(res, f"upsert profile {email}")
         profile_ids[role] = uid
         if before:
             print(f"skipped: profile {email} already exists (refreshed)")
@@ -1087,7 +1122,9 @@ def load_into_supabase(manifest):
     for s in SHIPMENTS:
         name = s["supplier"]["name"]
         country = s["supplier"]["city_country"].split(", ")[-1]
-        existing = sb.table("suppliers").select("id").eq("name", name).execute().data
+        existing_res = sb.table("suppliers").select("id").eq("name", name).execute()
+        _check(existing_res, f"select supplier {name}")
+        existing = existing_res.data or []
         if existing:
             supplier_ids[s["key"]] = existing[0]["id"]
             print(f"skipped: supplier {name} already exists")
@@ -1096,7 +1133,7 @@ def load_into_supabase(manifest):
             res = sb.table("suppliers").insert({
                 "name": name, "country": country,
             }).execute()
-            supplier_ids[s["key"]] = res.data[0]["id"]
+            supplier_ids[s["key"]] = _first_id(res, f"insert supplier {name}")
             print(f"created: supplier {name}")
             created_suppliers += 1
     print(f"suppliers: {created_suppliers} created, {skipped_suppliers} skipped")
@@ -1107,7 +1144,9 @@ def load_into_supabase(manifest):
     skipped_shipments = 0
     for s in SHIPMENTS:
         num = s["shipment_number"]
-        existing = sb.table("shipments").select("id").eq("shipment_number", num).execute().data
+        existing_res = sb.table("shipments").select("id").eq("shipment_number", num).execute()
+        _check(existing_res, f"select shipment {num}")
+        existing = existing_res.data or []
         if existing:
             shipment_ids[num] = existing[0]["id"]
             print(f"skipped: shipment {num} already exists")
@@ -1119,13 +1158,12 @@ def load_into_supabase(manifest):
             "status": s["status"],
             "created_by": exec_id,
         }).execute()
-        shipment_ids[num] = res.data[0]["id"]
+        shipment_ids[num] = _first_id(res, f"insert shipment {num}")
         print(f"created: shipment {num} status={s['status']}")
         created_shipments += 1
     print(f"shipments: {created_shipments} created, {skipped_shipments} skipped")
 
     # Documents: upload seed PDFs to the private 'documents' bucket and create rows.
-    # The 'documents' bucket must already exist as a private bucket (see deployment.md).
     created_documents = 0
     skipped_documents = 0
     document_ids = {}  # (shipment_number, type) -> document id
@@ -1133,6 +1171,33 @@ def load_into_supabase(manifest):
     def mime_type_for(file_name):
         ext = file_name.rsplit(".", 1)[-1].lower() if "." in file_name else ""
         return {"pdf": "application/pdf", "png": "image/png"}.get(ext, "application/octet-stream")
+
+    # ------------------------------------------------------------------
+    # Ensure the private 'documents' storage bucket exists.
+    # ------------------------------------------------------------------
+    def _ensure_documents_bucket():
+        try:
+            buckets_res = sb.storage.list_buckets()
+            _check(buckets_res, "list storage buckets")
+            buckets = buckets_res.data or []
+            names = set()
+            for b in buckets:
+                name = getattr(b, "name", None) or (b.get("name") if isinstance(b, dict) else None)
+                if name:
+                    names.add(name)
+            if "documents" in names:
+                return
+            # Not present: create it as private.
+            create_res = sb.storage.create_bucket("documents", options={"public": False})
+            _check(create_res, "create storage bucket 'documents'")
+            print("created: storage bucket 'documents' (private)")
+        except SystemExit:
+            raise
+        except Exception as e:
+            print(f"ERROR: cannot ensure storage bucket 'documents': {e}")
+            sys.exit(1)
+
+    _ensure_documents_bucket()
 
     for s in SHIPMENTS:
         num = s["shipment_number"]
@@ -1148,7 +1213,9 @@ def load_into_supabase(manifest):
             if not file_path or not Path(file_path).is_file():
                 continue
             key = (num, doc_type)
-            existing = sb.table("documents").select("id").eq("shipment_id", shipment_id).eq("type", doc_type).execute().data
+            existing_res = sb.table("documents").select("id").eq("shipment_id", shipment_id).eq("type", doc_type).execute()
+            _check(existing_res, f"select document {num}/{doc_type}")
+            existing = existing_res.data or []
             if existing:
                 document_ids[key] = existing[0]["id"]
                 print(f"skipped: document {num}/{doc_type} already exists")
@@ -1157,14 +1224,15 @@ def load_into_supabase(manifest):
             file_bytes = Path(file_path).read_bytes()
             storage_path = f"{num}/{doc_type}.png" if doc_type == "invoice_scan" else f"{num}/{doc_type}.pdf"
             try:
-                sb.storage.from_("documents").upload(
+                upload_res = sb.storage.from_("documents").upload(
                     storage_path,
                     file_bytes,
                     file_options={"content-type": mime_type_for(file_path), "upsert": True},
                 )
+                _check(upload_res, f"upload {storage_path}")
             except Exception as e:
-                print(f"error uploading {storage_path}: {e}")
-                continue
+                print(f"ERROR: uploading {storage_path}: {e}")
+                sys.exit(1)
             res = sb.table("documents").insert({
                 "shipment_id": shipment_id,
                 "type": doc_type,
@@ -1174,7 +1242,7 @@ def load_into_supabase(manifest):
                 "mime_type": mime_type_for(file_path),
                 "status": "extracted",
             }).execute()
-            document_ids[key] = res.data[0]["id"]
+            document_ids[key] = _first_id(res, f"insert document {num}/{doc_type}")
             print(f"created: document {num}/{doc_type}")
             created_documents += 1
     print(f"documents: {created_documents} created, {skipped_documents} skipped")
@@ -1185,21 +1253,24 @@ def load_into_supabase(manifest):
     for s in SHIPMENTS:
         num = s["shipment_number"]
         shipment_id = shipment_ids[num]
-        already = sb.table("fields").select("id").eq("shipment_id", shipment_id).limit(1).execute().data
+        already_res = sb.table("fields").select("id").eq("shipment_id", shipment_id).limit(1).execute()
+        _check(already_res, f"select fields for {num}")
+        already = already_res.data or []
         if already:
             print(f"skipped: fields/line_items for {num} already exist")
             continue
+        inserted_any = False
         for doc_type in ("invoice", "packing_list", "bill_of_lading"):
             cache_path = s.get(f"cached_{doc_type}")
             if not cache_path or not Path(cache_path).is_file():
                 continue
             doc_id = document_ids.get((num, doc_type))
             if doc_id is None:
-                print(f"error: no document id for {num}/{doc_type}; skipping fields")
-                continue
+                print(f"ERROR: no document id for {num}/{doc_type}; cannot insert fields")
+                sys.exit(1)
             data = json.loads(Path(cache_path).read_text(encoding="utf-8"))
             for f in data.get("fields", []):
-                sb.table("fields").insert({
+                res = sb.table("fields").insert({
                     "shipment_id": shipment_id,
                     "document_id": doc_id,
                     "key": f["key"],
@@ -1209,9 +1280,11 @@ def load_into_supabase(manifest):
                     "status": f.get("status", "extracted"),
                     "source_page": f.get("source_page", 1),
                 }).execute()
+                _check(res, f"insert field {num}/{f.get('key')}")
                 created_fields += 1
+                inserted_any = True
             for li in data.get("line_items", []):
-                sb.table("line_items").insert({
+                res = sb.table("line_items").insert({
                     "shipment_id": shipment_id,
                     "document_id": doc_id,
                     "description": li.get("description"),
@@ -1223,7 +1296,12 @@ def load_into_supabase(manifest):
                     "status": li.get("status", "extracted"),
                     "source_page": li.get("source_page", 1),
                 }).execute()
+                _check(res, f"insert line_item for {num}")
                 created_line_items += 1
+                inserted_any = True
+        if not inserted_any:
+            print(f"ERROR: no fields/line_items inserted for {num}")
+            sys.exit(1)
         print(f"created: fields+line_items for {num}")
     print(f"fields: {created_fields} created")
     print(f"line_items: {created_line_items} created")
@@ -1234,7 +1312,9 @@ def load_into_supabase(manifest):
     for s in SHIPMENTS:
         num = s["shipment_number"]
         shipment_id = shipment_ids[num]
-        existing = sb.table("crosscheck_results").select("id").eq("shipment_id", shipment_id).limit(1).execute().data
+        existing_res = sb.table("crosscheck_results").select("id").eq("shipment_id", shipment_id).limit(1).execute()
+        _check(existing_res, f"select crosschecks for {num}")
+        existing = existing_res.data or []
         if existing:
             print(f"skipped: crosschecks for {num} already exist")
             skipped_crosschecks += 1
@@ -1243,8 +1323,9 @@ def load_into_supabase(manifest):
         packing_json = _load_json(s.get("cached_packing_list"))
         bl_json = _load_json(s.get("cached_bill_of_lading"))
         results = compute_crosschecks(invoice_json, packing_json, bl_json)
+        inserted_any = False
         for r in results:
-            sb.table("crosscheck_results").insert({
+            res = sb.table("crosscheck_results").insert({
                 "shipment_id": shipment_id,
                 "check_type": r["check_type"],
                 "status": r["status"],
@@ -1254,16 +1335,64 @@ def load_into_supabase(manifest):
                 "fields_involved": r["fields_involved"],
                 "details": r["details"],
             }).execute()
+            _check(res, f"insert crosscheck {r['check_type']} for {num}")
             created_crosschecks += 1
+            inserted_any = True
+        if not inserted_any:
+            print(f"ERROR: no crosschecks inserted for {num}")
+            sys.exit(1)
         print(f"created: crosschecks for {num} ({len(results)} checks)")
     print(f"crosschecks: {created_crosschecks} created, {skipped_crosschecks} skipped")
 
-    print("Seed load complete.")
+    # ------------------------------------------------------------------
+    # Post-load validation: every seeded shipment must have documents,
+    # fields, line_items and crosschecks rows.
+    # ------------------------------------------------------------------
+    expected_docs = {
+        "SHP-24817": 2,   # no bill of lading
+    }
+    for s in SHIPMENTS:
+        num = s["shipment_number"]
+        shipment_id = shipment_ids[num]
+        expected = expected_docs.get(num, 3)
+        doc_res = sb.table("documents").select("id", count="exact").eq("shipment_id", shipment_id).execute()
+        _check(doc_res, f"count documents for {num}")
+        doc_count = doc_res.count if doc_res.count is not None else len(doc_res.data or [])
+        if doc_count < expected:
+            print(f"ERROR: {num} has {doc_count} document(s), expected at least {expected}")
+            sys.exit(1)
+
+        field_res = sb.table("fields").select("id", count="exact").eq("shipment_id", shipment_id).execute()
+        _check(field_res, f"count fields for {num}")
+        field_count = field_res.count if field_res.count is not None else len(field_res.data or [])
+        if field_count == 0:
+            print(f"ERROR: {num} has 0 fields")
+            sys.exit(1)
+
+        li_res = sb.table("line_items").select("id", count="exact").eq("shipment_id", shipment_id).execute()
+        _check(li_res, f"count line_items for {num}")
+        li_count = li_res.count if li_res.count is not None else len(li_res.data or [])
+        if li_count == 0:
+            print(f"ERROR: {num} has 0 line_items")
+            sys.exit(1)
+
+        cc_res = sb.table("crosscheck_results").select("id", count="exact").eq("shipment_id", shipment_id).execute()
+        _check(cc_res, f"count crosschecks for {num}")
+        cc_count = cc_res.count if cc_res.count is not None else len(cc_res.data or [])
+        if cc_count == 0:
+            print(f"ERROR: {num} has 0 crosschecks")
+            sys.exit(1)
+
+    print(f"validation: all {len(SHIPMENTS)} shipments have documents, fields, line_items and crosschecks")
+
     print(f"summary: users {created_users} created/{skipped_users} skipped, "
           f"suppliers {created_suppliers} created/{skipped_suppliers} skipped, "
           f"shipments {created_shipments} created/{skipped_shipments} skipped, "
           f"documents {created_documents} created/{skipped_documents} skipped, "
+          f"fields {created_fields} created, line_items {created_line_items} created, "
           f"crosschecks {created_crosschecks} created/{skipped_crosschecks} skipped")
+
+    print("Seed load complete.")
 
 
 def _get_user_id(sb, email):
