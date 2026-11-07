@@ -16,7 +16,7 @@
       "hsn": "848180",
       "qty": 180,
       "unit_price": 42.5,
-      "line_total": 7650.0,
+      "line_total": 7650,
       "confidence": 0.96,
       "status": "extracted",
       "source_page": 1
@@ -67,7 +67,7 @@
       "key": "incoterm",
       "value": "CIF",
       "ai_value": "CIF",
-      "confidence": 0.94,
+      "confidence": 0.75,
       "status": "extracted",
       "source_page": 1
     },

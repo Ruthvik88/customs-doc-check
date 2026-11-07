@@ -16,7 +16,7 @@
       "hsn": "940540",
       "qty": 2400,
       "unit_price": 6.8,
-      "line_total": 16320.0,
+      "line_total": 16320,
       "confidence": 0.96,
       "status": "extracted",
       "source_page": 1
@@ -26,7 +26,7 @@
       "hsn": "830249",
       "qty": 2400,
       "unit_price": 1.2,
-      "line_total": 2880.0,
+      "line_total": 2880,
       "confidence": 0.96,
       "status": "extracted",
       "source_page": 1
@@ -93,7 +93,7 @@
       "key": "gross_weight_kg",
       "value": "3120",
       "ai_value": "3120",
-      "confidence": 0.94,
+      "confidence": 0.65,
       "status": "extracted",
       "source_page": 1
     },

@@ -405,21 +405,28 @@ def field(key, value, confidence=0.94, status="extracted", page=1, ai_value=None
 
 def invoice_extraction(data):
     grand = sum(i["line_total"] for i in data["line_items"])
+    # Demo: inject low-confidence and wrong values so the needs_review flow
+    # is exercised without live API calls.
+    gw_conf = 0.65 if data["key"] == "A" else 0.94   # SHP-24811 low confidence
+    inc_conf = 0.75 if data["key"] == "B" else 0.94  # SHP-24812 low confidence
+    if data["special"] == "invoice_total_mismatch":
+        it_value = f"{data['currency']} {grand + 200:.2f}"  # wrong total
+        it_conf = 0.35                                       # low confidence
+    else:
+        it_value = f"{data['currency']} {grand:.2f}"
+        it_conf = 0.92
     fields = [
         field("supplier", data["supplier"]["name"]),
         field("consignee", CONSIGNEE["name"]),
         field("invoice_number", data["invoice_number"]),
         field("invoice_date", data["invoice_date"]),
         field("currency", data["currency"]),
-        field("incoterm", data["incoterm"]),
+        field("incoterm", data["incoterm"], confidence=inc_conf),
         field("packages", str(data["packages"])),
-        field("gross_weight_kg", str(data["invoice_gross"])),
+        field("gross_weight_kg", str(data["invoice_gross"]), confidence=gw_conf),
         field("net_weight_kg", str(data["net_weight"])),
     ]
-    if data["special"] == "invoice_total_mismatch":
-        fields.append(field("invoice_total", f"{data['currency']} {grand + 200:.2f}", confidence=0.92))
-    else:
-        fields.append(field("invoice_total", f"{data['currency']} {grand:.2f}", confidence=0.92))
+    fields.append(field("invoice_total", it_value, confidence=it_conf))
     return {
         "document_type": "invoice",
         "supplier": data["supplier"]["name"],
@@ -446,11 +453,13 @@ def invoice_extraction(data):
 
 
 def packing_list_extraction(data):
+    # Demo: inject low-confidence values so the needs_review flow is exercised.
+    gw_conf = 0.70 if data["key"] == "A" else 0.94  # SHP-24811 low confidence
     fields = [
         field("supplier", data["supplier"]["name"]),
         field("consignee", CONSIGNEE["name"]),
         field("packages", str(data["packages"])),
-        field("gross_weight_kg", str(data["pl_gross"])),
+        field("gross_weight_kg", str(data["pl_gross"]), confidence=gw_conf),
         field("net_weight_kg", str(data["net_weight"])),
         field("containers", ", ".join(data["containers"])),
     ]
