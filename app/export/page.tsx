@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function ExportPage() {
   const { role, loading } = useSession();
   const supabase = useSupabaseClient();
-  const db = supabase;
+  const db = supabase!;
 
   const [shipments, setShipments] = useState<any[]>([]);
   const [error, setError] = useState("");

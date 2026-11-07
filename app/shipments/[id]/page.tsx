@@ -28,7 +28,7 @@ export default function ShipmentDetailPage() {
   const params = useParams<{ id: string }>();
   const shipmentId = params.id;
   const supabase = useSupabaseClient();
-  const db = supabase;
+  const db = supabase!;
 
   const [shipment, setShipment] = useState<any>(null);
   const [documents, setDocuments] = useState<any[]>([]);

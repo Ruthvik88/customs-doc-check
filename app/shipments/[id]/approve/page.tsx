@@ -14,7 +14,7 @@ export default function ApprovePage() {
   const shipmentId = params.id;
   const { role, loading } = useSession();
   const supabase = useSupabaseClient();
-  const db = supabase;
+  const db = supabase!;
 
   const [shipment, setShipment] = useState<any>(null);
   const [fields, setFields] = useState<any[]>([]);
