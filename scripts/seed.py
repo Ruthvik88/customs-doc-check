@@ -572,6 +572,20 @@ def bl_extraction(data):
     }
 
 
+def _write_if_changed(path, text):
+    """Write text to path only if the LF-normalized content differs.
+
+    Re-running generate() therefore never touches committed seed files whose
+    content is already correct. New writes use LF line endings.
+    """
+    new_bytes = text.encode("utf-8")
+    if path.is_file():
+        existing = path.read_bytes()
+        if existing.replace(b"\r\n", b"\n") == new_bytes.replace(b"\r\n", b"\n"):
+            return
+    path.write_bytes(new_bytes)
+
+
 def generate(regenerate=False):
     """Generate seed PDFs and cached JSON.
 
@@ -600,23 +614,27 @@ def generate(regenerate=False):
             if regenerate or not path.exists():
                 produce(path)
 
-        # Invoice PDF
+        # Invoice PDF + cached JSON (inv_json always defined below)
         inv_pdf = sdir / "invoice.pdf"
         maybe_write(inv_pdf, lambda p: render_invoice(p, data))
         inv_json_path = cdir / "invoice.json"
         if regenerate or not inv_json_path.exists():
             inv_json = invoice_extraction(data)
             inv_json_path.write_text(json.dumps(inv_json, indent=2))
+        else:
+            inv_json = json.loads(inv_json_path.read_text(encoding="utf-8"))
 
-        # Packing list PDF
+        # Packing list PDF + cached JSON (pl_json always defined below)
         pl_pdf = sdir / "packing_list.pdf"
         maybe_write(pl_pdf, lambda p: render_packing_list(p, data))
         pl_json_path = cdir / "packing_list.json"
         if regenerate or not pl_json_path.exists():
             pl_json = packing_list_extraction(data)
             pl_json_path.write_text(json.dumps(pl_json, indent=2))
+        else:
+            pl_json = json.loads(pl_json_path.read_text(encoding="utf-8"))
 
-        # Bill of lading (PDF unless missing_bl)
+        # Bill of lading (PDF unless missing_bl). bl_json always defined.
         if s["special"] == "missing_bl":
             bl_path = None
             bl_json = None
@@ -627,6 +645,8 @@ def generate(regenerate=False):
             if regenerate or not bl_json_path.exists():
                 bl_json = bl_extraction(data)
                 bl_json_path.write_text(json.dumps(bl_json, indent=2))
+            else:
+                bl_json = json.loads(bl_json_path.read_text(encoding="utf-8"))
             bl_path = str(bl_pdf)
 
         # Skewed scan: SHP-24815 invoice is also an image (scanned)
@@ -650,7 +670,7 @@ def generate(regenerate=False):
             "cached_bill_of_lading": str(cdir / "bill_of_lading.json") if bl_json else None,
         })
 
-    (SEED_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    _write_if_changed(SEED_DIR / "manifest.json", json.dumps(manifest, indent=2))
     print(f"Generated {len(SHIPMENTS)} shipments into {SEED_DIR}")
     print("Cached extraction JSON in", CACHE_DIR)
     return manifest
@@ -1254,12 +1274,59 @@ def _get_user_id(sb, email):
     return None
 
 
+def _snapshot_seed_files():
+    """Return dict mapping relative path -> bytes for every file under data/seeds."""
+    snap = {}
+    for base in (SEED_DIR, CACHE_DIR):
+        if not base.is_dir():
+            continue
+        for path in base.rglob("*"):
+            if path.is_file():
+                snap[str(path.relative_to(ROOT))] = path.read_bytes()
+    return snap
+
+
+def _restore_seed_files(snap):
+    for rel, data in snap.items():
+        (ROOT / rel).write_bytes(data)
+
+
+def _dry_run():
+    """Run generate() with files present and with --regenerate; compare manifests.
+
+    Restores every seed byte afterwards so data/seeds is left untouched.
+    Does not touch Supabase.
+    """
+    snap = _snapshot_seed_files()
+    try:
+        manifest_normal = generate(regenerate=False)
+        manifest_regen = generate(regenerate=True)
+    finally:
+        _restore_seed_files(snap)
+
+    same = manifest_normal == manifest_regen
+    print(
+        f"dry-run: normal vs --regenerate manifest {'MATCH' if same else 'DIFFER'}"
+    )
+    if not same:
+        print("dry-run: manifests differ; inspect generate()")
+        sys.exit(1)
+    print("dry-run: both generate() paths produce the same manifest structure")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--load", action="store_true", help="load into Supabase (service role)")
     parser.add_argument("--regenerate", action="store_true",
                         help="force regeneration of PDFs/cached JSON even if files exist")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="compare generate() normal vs --regenerate manifests; no writes, no Supabase")
     args = parser.parse_args()
+
+    if args.dry_run:
+        _dry_run()
+        sys.exit(0)
+
     manifest = generate(regenerate=args.regenerate)
     if args.load:
         load_into_supabase(manifest)
