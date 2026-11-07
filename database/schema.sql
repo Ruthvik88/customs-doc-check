@@ -52,7 +52,7 @@ $$;
 ------------------------------------------------------------
 create table public.suppliers (
   id uuid primary key default gen_random_uuid(),
-  name text not null,
+  name text not null unique,
   country text,
   created_at timestamptz default now()
 );
@@ -444,7 +444,11 @@ create policy shipments_insert_exec on public.shipments
 create policy shipments_update_exec on public.shipments
   for update to authenticated
   using (current_app_role() = 'documentation_executive')
-  with check (current_app_role() = 'documentation_executive');
+  with check (current_app_role() = 'documentation_executive'
+    and new.status not in ('Approved', 'Exported'));
+-- Executives may advance a shipment through the extraction/review flow, but
+-- Approved / Exported can only be set by the security-definer functions
+-- (shipment_approve / shipment_export), which re-validate gating server-side.
 
 -- documents
 create policy documents_read on public.documents
