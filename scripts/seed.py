@@ -1278,7 +1278,7 @@ def load_into_supabase(manifest):
                 lambda: sb.storage.from_("documents").upload(
                     storage_path,
                     file_bytes,
-                    file_options={"content-type": mime_type_for(str(file_path)), "upsert": True},
+                    file_options={"content-type": mime_type_for(str(file_path)), "upsert": "true"},
                 ),
                 f"upload {storage_path}",
             )
