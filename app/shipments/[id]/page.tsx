@@ -28,18 +28,6 @@ export default function ShipmentDetailPage() {
   const params = useParams<{ id: string }>();
   const shipmentId = params.id;
   const supabase = useSupabaseClient();
-
-  if (!supabase) {
-    return (
-      <div className="card p-12 text-center">
-        <h2 className="text-lg font-semibold text-[var(--foreground)]">Configuration error</h2>
-        <p className="text-[var(--muted-foreground)] mt-2">
-          Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and
-          NEXT_PUBLIC_SUPABASE_ANON_KEY in .env, then restart the dev server.
-        </p>
-      </div>
-    );
-  }
   const db = supabase;
 
   const [shipment, setShipment] = useState<any>(null);
@@ -53,6 +41,18 @@ export default function ShipmentDetailPage() {
   useEffect(() => {
     load();
   }, [shipmentId, db]);
+
+  if (!supabase) {
+    return (
+      <div className="card p-12 text-center">
+        <h2 className="text-lg font-semibold text-[var(--foreground)]">Configuration error</h2>
+        <p className="text-[var(--muted-foreground)] mt-2">
+          Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and
+          NEXT_PUBLIC_SUPABASE_ANON_KEY in .env, then restart the dev server.
+        </p>
+      </div>
+    );
+  }
 
   async function load() {
     try {
