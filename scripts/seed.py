@@ -750,24 +750,137 @@ def load_into_supabase(manifest):
     print(f"suppliers: {created_suppliers} created, {skipped_suppliers} skipped")
 
     # Shipments (idempotent by shipment_number)
+    shipment_ids = {}
     created_shipments = 0
     skipped_shipments = 0
     for s in SHIPMENTS:
         num = s["shipment_number"]
         existing = sb.table("shipments").select("id").eq("shipment_number", num).execute().data
         if existing:
+            shipment_ids[num] = existing[0]["id"]
             print(f"skipped: shipment {num} already exists")
             skipped_shipments += 1
             continue
-        sb.table("shipments").insert({
+        res = sb.table("shipments").insert({
             "shipment_number": num,
             "supplier_id": supplier_ids[s["key"]],
             "status": s["status"],
             "created_by": exec_id,
         }).execute()
+        shipment_ids[num] = res.data[0]["id"]
         print(f"created: shipment {num} status={s['status']}")
         created_shipments += 1
     print(f"shipments: {created_shipments} created, {skipped_shipments} skipped")
+
+    # Documents: upload seed PDFs to the private 'documents' bucket and create rows.
+    # The 'documents' bucket must already exist as a private bucket (see deployment.md).
+    created_documents = 0
+    skipped_documents = 0
+    document_ids = {}  # (shipment_number, type) -> document id
+
+    def mime_type_for(file_name):
+        ext = file_name.rsplit(".", 1)[-1].lower() if "." in file_name else ""
+        return {"pdf": "application/pdf", "png": "image/png"}.get(ext, "application/octet-stream")
+
+    for s in SHIPMENTS:
+        num = s["shipment_number"]
+        shipment_id = shipment_ids[num]
+        docs = [
+            ("invoice", s.get("invoice_pdf")),
+            ("packing_list", s.get("packing_list_pdf")),
+            ("bill_of_lading", s.get("bill_of_lading_pdf")),
+        ]
+        if s.get("scan_png"):
+            docs.append(("invoice_scan", s["scan_png"]))
+        for doc_type, file_path in docs:
+            if not file_path or not Path(file_path).is_file():
+                continue
+            key = (num, doc_type)
+            existing = sb.table("documents").select("id").eq("shipment_id", shipment_id).eq("type", doc_type).execute().data
+            if existing:
+                document_ids[key] = existing[0]["id"]
+                print(f"skipped: document {num}/{doc_type} already exists")
+                skipped_documents += 1
+                continue
+            file_bytes = Path(file_path).read_bytes()
+            storage_path = f"{num}/{doc_type}.png" if doc_type == "invoice_scan" else f"{num}/{doc_type}.pdf"
+            try:
+                sb.storage.from_("documents").upload(
+                    storage_path,
+                    file_bytes,
+                    file_options={"content-type": mime_type_for(file_path), "upsert": True},
+                )
+            except Exception as e:
+                print(f"error uploading {storage_path}: {e}")
+                continue
+            res = sb.table("documents").insert({
+                "shipment_id": shipment_id,
+                "type": doc_type,
+                "storage_path": storage_path,
+                "file_name": Path(file_path).name,
+                "file_size": len(file_bytes),
+                "mime_type": mime_type_for(file_path),
+                "status": "extracted",
+            }).execute()
+            document_ids[key] = res.data[0]["id"]
+            print(f"created: document {num}/{doc_type}")
+            created_documents += 1
+    print(f"documents: {created_documents} created, {skipped_documents} skipped")
+
+    # Fields + line items from cached extraction JSON (idempotent by shipment).
+    created_fields = 0
+    created_line_items = 0
+    for s in SHIPMENTS:
+        num = s["shipment_number"]
+        shipment_id = shipment_ids[num]
+        already = sb.table("fields").select("id").eq("shipment_id", shipment_id).limit(1).execute().data
+        if already:
+            print(f"skipped: fields/line_items for {num} already exist")
+            continue
+        for doc_type in ("invoice", "packing_list", "bill_of_lading"):
+            cache_path = s.get(f"cached_{doc_type}")
+            if not cache_path or not Path(cache_path).is_file():
+                continue
+            doc_id = document_ids.get((num, doc_type))
+            if doc_id is None:
+                print(f"error: no document id for {num}/{doc_type}; skipping fields")
+                continue
+            data = json.loads(Path(cache_path).read_text(encoding="utf-8"))
+            for f in data.get("fields", []):
+                sb.table("fields").insert({
+                    "shipment_id": shipment_id,
+                    "document_id": doc_id,
+                    "key": f["key"],
+                    "value": f.get("value"),
+                    "ai_value": f.get("ai_value"),
+                    "confidence": f.get("confidence"),
+                    "status": f.get("status", "extracted"),
+                    "source_page": f.get("source_page", 1),
+                }).execute()
+                created_fields += 1
+            for li in data.get("line_items", []):
+                sb.table("line_items").insert({
+                    "shipment_id": shipment_id,
+                    "document_id": doc_id,
+                    "description": li.get("description"),
+                    "hsn": li.get("hsn"),
+                    "qty": li.get("qty"),
+                    "unit_price": li.get("unit_price"),
+                    "line_total": li.get("line_total"),
+                    "confidence": li.get("confidence"),
+                    "status": li.get("status", "extracted"),
+                    "source_page": li.get("source_page", 1),
+                }).execute()
+                created_line_items += 1
+        print(f"created: fields+line_items for {num}")
+    print(f"fields: {created_fields} created")
+    print(f"line_items: {created_line_items} created")
+
+    print("Seed load complete.")
+    print(f"summary: users {created_users} created/{skipped_users} skipped, "
+          f"suppliers {created_suppliers} created/{skipped_suppliers} skipped, "
+          f"shipments {created_shipments} created/{skipped_shipments} skipped, "
+          f"documents {created_documents} created/{skipped_documents} skipped")
 
 
 def _get_user_id(sb, email):
