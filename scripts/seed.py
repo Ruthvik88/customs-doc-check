@@ -572,7 +572,13 @@ def bl_extraction(data):
     }
 
 
-def generate():
+def generate(regenerate=False):
+    """Generate seed PDFs and cached JSON.
+
+    Skips rendering when the output files already exist so repeated runs do not
+    rewrite committed binary files (reportlab embeds a creation timestamp, so
+    regeneration changes bytes on every run). Pass regenerate=True to force.
+    """
     SEED_DIR.mkdir(parents=True, exist_ok=True)
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -590,17 +596,25 @@ def generate():
         data["doc_sub"] = f"{num}  |  {data['supplier']['name']} -> {CONSIGNEE['name']}"
         data["containers"] = CONTAINERS[key]
 
+        def maybe_write(path, produce):
+            if regenerate or not path.exists():
+                produce(path)
+
         # Invoice PDF
         inv_pdf = sdir / "invoice.pdf"
-        render_invoice(inv_pdf, data)
-        inv_json = invoice_extraction(data)
-        (cdir / "invoice.json").write_text(json.dumps(inv_json, indent=2))
+        maybe_write(inv_pdf, lambda p: render_invoice(p, data))
+        inv_json_path = cdir / "invoice.json"
+        if regenerate or not inv_json_path.exists():
+            inv_json = invoice_extraction(data)
+            inv_json_path.write_text(json.dumps(inv_json, indent=2))
 
         # Packing list PDF
         pl_pdf = sdir / "packing_list.pdf"
-        render_packing_list(pl_pdf, data)
-        pl_json = packing_list_extraction(data)
-        (cdir / "packing_list.json").write_text(json.dumps(pl_json, indent=2))
+        maybe_write(pl_pdf, lambda p: render_packing_list(p, data))
+        pl_json_path = cdir / "packing_list.json"
+        if regenerate or not pl_json_path.exists():
+            pl_json = packing_list_extraction(data)
+            pl_json_path.write_text(json.dumps(pl_json, indent=2))
 
         # Bill of lading (PDF unless missing_bl)
         if s["special"] == "missing_bl":
@@ -608,15 +622,17 @@ def generate():
             bl_json = None
         else:
             bl_pdf = sdir / "bill_of_lading.pdf"
-            render_bl(bl_pdf, data)
-            bl_json = bl_extraction(data)
-            (cdir / "bill_of_lading.json").write_text(json.dumps(bl_json, indent=2))
+            maybe_write(bl_pdf, lambda p: render_bl(p, data))
+            bl_json_path = cdir / "bill_of_lading.json"
+            if regenerate or not bl_json_path.exists():
+                bl_json = bl_extraction(data)
+                bl_json_path.write_text(json.dumps(bl_json, indent=2))
             bl_path = str(bl_pdf)
 
         # Skewed scan: SHP-24815 invoice is also an image (scanned)
         if s["special"] == "skewed_scan":
             scan_png = sdir / "invoice_scan.png"
-            render_scan_png(scan_png, data)
+            maybe_write(scan_png, lambda p: render_scan_png(p, data))
 
         manifest.append({
             "shipment_number": num,
@@ -1241,7 +1257,9 @@ def _get_user_id(sb, email):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--load", action="store_true", help="load into Supabase (service role)")
+    parser.add_argument("--regenerate", action="store_true",
+                        help="force regeneration of PDFs/cached JSON even if files exist")
     args = parser.parse_args()
-    manifest = generate()
+    manifest = generate(regenerate=args.regenerate)
     if args.load:
         load_into_supabase(manifest)
