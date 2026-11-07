@@ -220,9 +220,9 @@ export default function ReviewPage() {
   const activeDocObj = documents.find((d) => d.type === activeDoc);
 
   return (
-    <div className="flex gap-6 h-[calc(100vh-4rem)]">
+    <div className="flex-col gap-4 lg:flex-row lg:gap-6 lg:h-[calc(100vh-4rem)]">
       {/* Left: document viewer */}
-      <div className="flex-1 min-w-0 border border-[var(--border)] rounded-sm bg-[var(--card)] p-4 flex flex-col">
+      <div className="w-full lg:flex-1 min-w-0 border border-[var(--border)] rounded-sm bg-[var(--card)] p-4 flex flex-col">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wider">Document</span>
           <div className="ml-auto flex gap-1">
@@ -279,7 +279,7 @@ export default function ReviewPage() {
       </div>
 
       {/* Right: fields + cross-checks */}
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="w-full lg:flex-1 min-w-0 flex flex-col">
         <div className="flex items-center justify-between mb-3">
           <div>
             <h1 className="text-lg font-semibold text-[var(--foreground)]">Review {shipment.shipment_number}</h1>
