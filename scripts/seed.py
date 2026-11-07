@@ -668,35 +668,62 @@ def load_into_supabase(manifest):
         ("exec@demo.local", demo_password, "documentation_executive", "Demo Executive"),
         ("manager@demo.local", demo_password, "documentation_manager", "Demo Manager"),
     ]
+
+    created_users = 0
+    skipped_users = 0
     for email, pwd, role, full in demo_users:
+        existing = _get_user_id(sb, email)
+        if existing:
+            print(f"skipped: auth user {email} already exists")
+            skipped_users += 1
+            continue
         try:
             sb.auth.admin.create_user({
                 "email": email, "password": pwd, "email_confirm": True,
                 "user_metadata": {"role": role, "full_name": full},
             })
-            print("Created auth user", email)
+            print(f"created: auth user {email}")
+            created_users += 1
         except Exception as e:
-            print("auth user", email, "may already exist:", e)
+            print(f"error creating auth user {email}: {e}")
 
+    # Let auth propagate before reading users / writing profiles.
     import time
     time.sleep(1)
 
-    # Set app_metadata role via service role (not user-editable)
-    for email, pwd, role, full in demo_users:
-        try:
-            sb.auth.admin.update_user_by_id(
-                _get_user_id(sb, email),
-                {"app_metadata": {"role": role}},
-            )
-        except Exception as e:
-            print("app_metadata", email, e)
-
-    # Profiles
-    profile_ids = {}
+    # Set app_metadata role via service role (not user-editable). Idempotent.
     for email, pwd, role, full in demo_users:
         uid = _get_user_id(sb, email)
+        if uid is None:
+            print(f"error: cannot set app_metadata for {email}: user not found")
+            continue
+        try:
+            sb.auth.admin.update_user_by_id(uid, {"app_metadata": {"role": role}})
+            print(f"updated: app_metadata role={role} for {email}")
+        except Exception as e:
+            print(f"error setting app_metadata for {email}: {e}")
+
+    # Profiles (idempotent upsert)
+    profile_ids = {}
+    created_profiles = 0
+    skipped_profiles = 0
+    for email, pwd, role, full in demo_users:
+        uid = _get_user_id(sb, email)
+        if uid is None:
+            print(f"error: cannot write profile for {email}: user not found")
+            continue
+        before = sb.table("profiles").select("id").eq("id", uid).execute().data
         sb.table("profiles").upsert({"id": uid, "role": role, "full_name": full, "email": email}).execute()
         profile_ids[role] = uid
+        if before:
+            print(f"skipped: profile {email} already exists (refreshed)")
+            skipped_profiles += 1
+        else:
+            print(f"created: profile {email} role={role}")
+            created_profiles += 1
+
+    print(f"users: {created_users} created, {skipped_users} skipped")
+    print(f"profiles: {created_profiles} created, {skipped_profiles} skipped")
 
     exec_id = profile_ids["documentation_executive"]
     manager_id = profile_ids["documentation_manager"]
