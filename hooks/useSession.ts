@@ -13,6 +13,11 @@ export function useSession() {
 
   useEffect(() => {
     const supabase = createClient();
+    if (!supabase) {
+      // Supabase not configured (e.g. missing env at build time).
+      setLoading(false);
+      return;
+    }
     let mounted = true;
 
     supabase.auth.getSession().then(({ data }) => {

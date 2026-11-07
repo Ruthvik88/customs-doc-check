@@ -46,3 +46,7 @@ Thumbs.db
 Thumbs.db
 ehthumbs.db
 desktop.ini
+
+# Next.js build artifacts
+next-env.d.ts
+tsconfig.tsbuildinfo

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 
+export const dynamic = "force-dynamic";
+
 const STATUS_COLOR: Record<string, string> = {
   Draft: "badge-outline",
   Extracting: "badge-primary",
@@ -15,6 +17,9 @@ const STATUS_COLOR: Record<string, string> = {
 
 export default async function DashboardPage() {
   const supabase = await createClient();
+  if (!supabase) {
+    return <div className="p-6">Supabase not configured.</div>;
+  }
 
   const { data: shipmentsData } = await supabase
     .from("shipments")

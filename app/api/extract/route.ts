@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 import { NextResponse } from "next/server";
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import { requireSupabaseClient, requireServiceRoleClient } from "@/lib/supabase/server";
 import { extractDocument } from "@/lib/extraction";
 import { z } from "zod";
 
@@ -32,8 +32,8 @@ const BodySchema = z.object({
 });
 
 export async function POST(req: Request) {
-  const supabase = await createClient();
-  const service = createServiceRoleClient();
+  const supabase = await requireSupabaseClient();
+  const service = requireServiceRoleClient();
 
   // Authenticate + role check (executive only).
   const {

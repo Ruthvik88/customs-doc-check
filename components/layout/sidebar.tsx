@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "@/hooks/useSession";
 import { createClient } from "@/lib/supabase/browser";
@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button";
 
 export function Sidebar() {
   const { role } = useSession();
-  const supabase = createClient();
-  const [signingOut, setSigningOut] = useState(false);
+  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null);
   const manager = role === "documentation_manager";
 
+  useEffect(() => {
+    setSupabase(createClient());
+  }, []);
+
   const handleSignOut = async () => {
-    setSigningOut(true);
+    if (!supabase) return;
     await supabase.auth.signOut();
     window.location.href = "/login";
   };
@@ -36,10 +39,10 @@ export function Sidebar() {
           variant="outline"
           size="sm"
           onClick={handleSignOut}
-          disabled={signingOut}
+          disabled={!supabase}
           className="w-full text-sm"
         >
-          {signingOut ? "Signing out…" : "Sign out"}
+          Sign out
         </Button>
       </div>
     </aside>

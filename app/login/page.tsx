@@ -3,24 +3,27 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/hooks/useSession";
-import { createClient } from "@/lib/supabase/browser";
+import { useSupabaseClient } from "@/hooks/useSupabaseClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function LoginPage() {
   const router = useRouter();
   const { session, role } = useSession();
-  const supabase = createClient();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const supabase = useSupabaseClient();
 
   if (session) {
     if (role === "documentation_manager") router.replace("/export");
     else router.replace("/dashboard");
     return null;
   }
+  if (!supabase) return <Skeleton height="340" width="320" className="mx-auto" />;
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
