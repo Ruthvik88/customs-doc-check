@@ -15,7 +15,18 @@ export default function ApprovePage() {
   const { role, loading } = useSession();
   const supabase = useSupabaseClient();
 
-  if (!supabase) return <Skeleton height="300" width="100%" />;
+  if (!supabase) {
+    return (
+      <div className="card p-12 text-center">
+        <h2 className="text-lg font-semibold text-[var(--foreground)]">Configuration error</h2>
+        <p className="text-[var(--muted-foreground)] mt-2">
+          Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and
+          NEXT_PUBLIC_SUPABASE_ANON_KEY in .env, then restart the dev server.
+        </p>
+      </div>
+    );
+  }
+  const db = supabase;
 
   const [shipment, setShipment] = useState<any>(null);
   const [fields, setFields] = useState<any[]>([]);
@@ -32,14 +43,14 @@ export default function ApprovePage() {
       return;
     }
     load();
-  }, [shipmentId, isManager]);
+  }, [shipmentId, isManager, db]);
 
   async function load() {
     try {
       const [s, f, c] = await Promise.all([
-        supabase!.from("shipments").select("*, suppliers(name)").eq("id", shipmentId).single(),
-        supabase!.from("fields").select("*").eq("shipment_id", shipmentId).order("key"),
-        supabase!.from("crosscheck_results").select("*").eq("shipment_id", shipmentId),
+        db.from("shipments").select("*, suppliers(name)").eq("id", shipmentId).single(),
+        db.from("fields").select("*").eq("shipment_id", shipmentId).order("key"),
+        db.from("crosscheck_results").select("*").eq("shipment_id", shipmentId),
       ]);
       if (s.error) throw s.error;
       setShipment(s.data);
@@ -163,7 +174,7 @@ export default function ApprovePage() {
   async function decide(decision: "approved" | "rejected", reasonText = "") {
     setSubmitting(true);
     try {
-      const { error: err } = await supabase!.rpc("shipment_approve", {
+      const { error: err } = await db.rpc("shipment_approve", {
         p_shipment_id: shipmentId,
         p_decision: decision,
         p_reason: reasonText,

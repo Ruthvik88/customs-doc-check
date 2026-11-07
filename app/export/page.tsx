@@ -11,7 +11,18 @@ export default function ExportPage() {
   const { role, loading } = useSession();
   const supabase = useSupabaseClient();
 
-  if (!supabase) return <Skeleton height="300" width="100%" />;
+  if (!supabase) {
+    return (
+      <div className="card p-12 text-center">
+        <h2 className="text-lg font-semibold text-[var(--foreground)]">Configuration error</h2>
+        <p className="text-[var(--muted-foreground)] mt-2">
+          Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and
+          NEXT_PUBLIC_SUPABASE_ANON_KEY in .env, then restart the dev server.
+        </p>
+      </div>
+    );
+  }
+  const db = supabase;
 
   const [shipments, setShipments] = useState<any[]>([]);
   const [error, setError] = useState("");
@@ -22,11 +33,11 @@ export default function ExportPage() {
   useEffect(() => {
     if (!isManager) return;
     load();
-  }, [isManager, supabase]);
+  }, [isManager, db]);
 
   async function load() {
     try {
-      const { data } = await supabase!
+      const { data } = await db
         .from("shipments")
         .select("*, suppliers(name)")
         .eq("status", "Approved")

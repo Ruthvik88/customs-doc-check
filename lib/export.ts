@@ -60,9 +60,9 @@ export function buildExportRow(shipment: {
     shipment.currency ?? "",
     shipment.incoterm ?? "",
     fieldByKey["invoice_total"] ?? "",
-    shipment.total_packages ?? "",
-    shipment.gross_weight_kg ?? "",
-    shipment.net_weight_kg ?? "",
+    shipment.total_packages != null ? String(shipment.total_packages) : "",
+    shipment.gross_weight_kg != null ? String(shipment.gross_weight_kg) : "",
+    shipment.net_weight_kg != null ? String(shipment.net_weight_kg) : "",
     containers,
     shipment.bl_number ?? "",
     shipment.vessel ?? "",
@@ -71,6 +71,6 @@ export function buildExportRow(shipment: {
   ];
 }
 
-export function buildCsv(columns: string[], rows: string[][]): string {
+export function buildCsv(columns: readonly string[], rows: readonly string[][]): string {
   return [columns.join(","), ...rows.map((r) => r.map(csvEscape).join(","))].join("\r\n") + "\r\n";
 }

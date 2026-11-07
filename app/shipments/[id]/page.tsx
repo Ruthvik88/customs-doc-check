@@ -29,7 +29,18 @@ export default function ShipmentDetailPage() {
   const shipmentId = params.id;
   const supabase = useSupabaseClient();
 
-  if (!supabase) return <Skeleton height="200" width="100%" />;
+  if (!supabase) {
+    return (
+      <div className="card p-12 text-center">
+        <h2 className="text-lg font-semibold text-[var(--foreground)]">Configuration error</h2>
+        <p className="text-[var(--muted-foreground)] mt-2">
+          Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and
+          NEXT_PUBLIC_SUPABASE_ANON_KEY in .env, then restart the dev server.
+        </p>
+      </div>
+    );
+  }
+  const db = supabase;
 
   const [shipment, setShipment] = useState<any>(null);
   const [documents, setDocuments] = useState<any[]>([]);
@@ -41,15 +52,15 @@ export default function ShipmentDetailPage() {
 
   useEffect(() => {
     load();
-  }, [shipmentId, supabase]);
+  }, [shipmentId, db]);
 
   async function load() {
     try {
       const [s, d, f, e] = await Promise.all([
-        supabase!.from("shipments").select("*, suppliers(name)").eq("id", shipmentId).single(),
-        supabase!.from("documents").select("*").eq("shipment_id", shipmentId).order("type"),
-        supabase!.from("fields").select("*").eq("shipment_id", shipmentId).order("key"),
-        supabase!.from("field_edits").select("*, profiles(full_name)").order("created_at", { ascending: false }).limit(50),
+        db.from("shipments").select("*, suppliers(name)").eq("id", shipmentId).single(),
+        db.from("documents").select("*").eq("shipment_id", shipmentId).order("type"),
+        db.from("fields").select("*").eq("shipment_id", shipmentId).order("key"),
+        db.from("field_edits").select("*, profiles(full_name)").order("created_at", { ascending: false }).limit(50),
       ]);
       if (s.error) throw s.error;
       setShipment(s.data);
@@ -109,7 +120,7 @@ export default function ShipmentDetailPage() {
     const docIds = results.map((r) => r.documentId).filter(Boolean);
     for (let i = 0; i < 60; i++) {
       await new Promise((r) => setTimeout(r, 2000));
-      const { data } = await supabase!.from("documents").select("id,status").in("id", docIds);
+      const { data } = await db.from("documents").select("id,status").in("id", docIds);
       const statuses = new Set((data ?? []).map((d: any) => d.status));
       if (!["pending", "extracting"].some((s) => statuses.has(s))) {
         load();

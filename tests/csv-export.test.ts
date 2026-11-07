@@ -54,9 +54,9 @@ describe("buildExportRow", () => {
     expect(row[5]).toBe("EUR");
     expect(row[6]).toBe("CIF");
     expect(row[7]).toBe("7650.00");
-    expect(row[8]).toBe(6);
-    expect(row[9]).toBe(1460);
-    expect(row[10]).toBe(1420);
+    expect(row[8]).toBe("6");
+    expect(row[9]).toBe("1460");
+    expect(row[10]).toBe("1420");
     expect(row[11]).toBe("CMAU5555552");
     expect(row[12]).toBe("BL-SE-7741");
     expect(row[13]).toBe("MV Baltic Trader");

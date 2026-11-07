@@ -121,8 +121,9 @@ describe("extractDocument - live mode with mocked Gemini", () => {
     });
     expect(res.status).toBe("extracted");
     const totalField = res.fields.find((f) => f.key === "invoice_total");
-    expect(totalField.status).toBe("needs_review");
-    expect(totalField.confidence).toBeLessThan(0.8);
+    expect(totalField).toBeDefined();
+    expect(totalField!.status).toBe("needs_review");
+    expect(totalField!.confidence).toBeLessThan(0.8);
   });
 
   it("returns extracted when output is valid and high confidence", async () => {

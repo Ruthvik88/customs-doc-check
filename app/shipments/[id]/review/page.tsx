@@ -48,7 +48,18 @@ export default function ReviewPage() {
   const shipmentId = params.id;
   const supabase = useSupabaseClient();
 
-  if (!supabase) return <Skeleton height="600" width="100%" />;
+  if (!supabase) {
+    return (
+      <div className="card p-12 text-center">
+        <h2 className="text-lg font-semibold text-[var(--foreground)]">Configuration error</h2>
+        <p className="text-[var(--muted-foreground)] mt-2">
+          Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and
+          NEXT_PUBLIC_SUPABASE_ANON_KEY in .env, then restart the dev server.
+        </p>
+      </div>
+    );
+  }
+  const db = supabase;
 
   const [shipment, setShipment] = useState<any>(null);
   const [documents, setDocuments] = useState<any[]>([]);
@@ -67,17 +78,17 @@ export default function ReviewPage() {
 
   useEffect(() => {
     load();
-  }, [shipmentId]);
+  }, [shipmentId, db]);
 
   async function load() {
     try {
       setLoading(true);
       const [s, d, f, l, c] = await Promise.all([
-        supabase!.from("shipments").select("*, suppliers(name)").eq("id", shipmentId).single(),
-        supabase!.from("documents").select("*").eq("shipment_id", shipmentId).order("type"),
-        supabase!.from("fields").select("*").eq("shipment_id", shipmentId).order("key"),
-        supabase!.from("line_items").select("*").eq("shipment_id", shipmentId),
-        supabase!.from("crosscheck_results").select("*").eq("shipment_id", shipmentId),
+        db.from("shipments").select("*, suppliers(name)").eq("id", shipmentId).single(),
+        db.from("documents").select("*").eq("shipment_id", shipmentId).order("type"),
+        db.from("fields").select("*").eq("shipment_id", shipmentId).order("key"),
+        db.from("line_items").select("*").eq("shipment_id", shipmentId),
+        db.from("crosscheck_results").select("*").eq("shipment_id", shipmentId),
       ]);
       if (s.error) throw s.error;
       setShipment(s.data);
@@ -89,7 +100,7 @@ export default function ReviewPage() {
       // Fetch signed URLs for viewer.
       const urls: Record<string, string> = {};
       for (const doc of d.data ?? []) {
-        const { data } = await supabase!
+        const { data } = await db
           .from("documents")
           .select("id")
           .eq("id", doc.id)
