@@ -995,6 +995,8 @@ def _load_json(path):
     if not path:
         return None
     p = Path(path)
+    if not p.is_absolute():
+        p = ROOT / p
     if not p.is_file():
         return None
     return json.loads(p.read_text(encoding="utf-8"))
@@ -1042,6 +1044,24 @@ def load_into_supabase(manifest):
         sys.exit(1)
 
     sb = create_client(url, key)
+
+    if not manifest:
+        print("ERROR: manifest is empty; nothing to load")
+        sys.exit(1)
+    manifest_by_number = {m["shipment_number"]: m for m in manifest}
+    # Validate that every referenced seed file exists before touching Supabase.
+    for m in manifest:
+        num = m["shipment_number"]
+        for key in ("invoice_pdf", "packing_list_pdf", "cached_invoice", "cached_packing_list"):
+            rel = m.get(key)
+            if rel and not (ROOT / rel).is_file():
+                print(f"ERROR: {num}: referenced file missing: {ROOT / rel}")
+                sys.exit(1)
+        for key in ("bill_of_lading_pdf", "scan_png"):
+            rel = m.get(key)
+            if rel and not (ROOT / rel).is_file():
+                print(f"ERROR: {num}: referenced file missing: {ROOT / rel}")
+                sys.exit(1)
 
     # Demo users (email/password). Passwords are derived from the
     # DEMO_PASSWORD env var (or a strong random value if unset). No passwords
@@ -1226,16 +1246,21 @@ def load_into_supabase(manifest):
     for s in SHIPMENTS:
         num = s["shipment_number"]
         shipment_id = shipment_ids[num]
+        m = manifest_by_number[num]
         docs = [
-            ("invoice", s.get("invoice_pdf")),
-            ("packing_list", s.get("packing_list_pdf")),
-            ("bill_of_lading", s.get("bill_of_lading_pdf")),
+            ("invoice", m.get("invoice_pdf")),
+            ("packing_list", m.get("packing_list_pdf")),
+            ("bill_of_lading", m.get("bill_of_lading_pdf")),
         ]
-        if s.get("scan_png"):
-            docs.append(("invoice_scan", s["scan_png"]))
-        for doc_type, file_path in docs:
-            if not file_path or not Path(file_path).is_file():
+        if m.get("scan_png"):
+            docs.append(("invoice_scan", m["scan_png"]))
+        for doc_type, rel_path in docs:
+            if not rel_path:
                 continue
+            file_path = ROOT / rel_path
+            if not file_path.is_file():
+                print(f"ERROR: {num}: referenced file missing: {file_path}")
+                sys.exit(1)
             key = (num, doc_type)
             existing_res = _exec(
                 lambda: sb.table("documents").select("id").eq("shipment_id", shipment_id).eq("type", doc_type).execute(),
@@ -1247,13 +1272,13 @@ def load_into_supabase(manifest):
                 print(f"skipped: document {num}/{doc_type} already exists")
                 skipped_documents += 1
                 continue
-            file_bytes = Path(file_path).read_bytes()
+            file_bytes = file_path.read_bytes()
             storage_path = f"{num}/{doc_type}.png" if doc_type == "invoice_scan" else f"{num}/{doc_type}.pdf"
             _exec(
                 lambda: sb.storage.from_("documents").upload(
                     storage_path,
                     file_bytes,
-                    file_options={"content-type": mime_type_for(file_path), "upsert": True},
+                    file_options={"content-type": mime_type_for(str(file_path)), "upsert": True},
                 ),
                 f"upload {storage_path}",
             )
@@ -1270,9 +1295,9 @@ def load_into_supabase(manifest):
                     "shipment_id": shipment_id,
                     "type": doc_type,
                     "storage_path": storage_path,
-                    "file_name": Path(file_path).name,
+                    "file_name": file_path.name,
                     "file_size": len(file_bytes),
-                    "mime_type": mime_type_for(file_path),
+                    "mime_type": mime_type_for(str(file_path)),
                     "status": "extracted",
                 }).execute(),
                 f"insert document {num}/{doc_type}",
@@ -1288,6 +1313,7 @@ def load_into_supabase(manifest):
     for s in SHIPMENTS:
         num = s["shipment_number"]
         shipment_id = shipment_ids[num]
+        m = manifest_by_number[num]
         already_res = _exec(
             lambda: sb.table("fields").select("id").eq("shipment_id", shipment_id).limit(1).execute(),
             f"select fields for {num}",
@@ -1298,14 +1324,18 @@ def load_into_supabase(manifest):
             continue
         inserted_any = False
         for doc_type in ("invoice", "packing_list", "bill_of_lading"):
-            cache_path = s.get(f"cached_{doc_type}")
-            if not cache_path or not Path(cache_path).is_file():
+            rel_path = m.get(f"cached_{doc_type}")
+            if not rel_path:
                 continue
+            cache_path = ROOT / rel_path
+            if not cache_path.is_file():
+                print(f"ERROR: {num}: referenced file missing: {cache_path}")
+                sys.exit(1)
             doc_id = document_ids.get((num, doc_type))
             if doc_id is None:
                 print(f"ERROR: no document id for {num}/{doc_type}; cannot insert fields")
                 sys.exit(1)
-            data = json.loads(Path(cache_path).read_text(encoding="utf-8"))
+            data = json.loads(cache_path.read_text(encoding="utf-8"))
             for f in data.get("fields", []):
                 res = _exec(
                     lambda: sb.table("fields").insert({
@@ -1359,6 +1389,7 @@ def load_into_supabase(manifest):
     for s in SHIPMENTS:
         num = s["shipment_number"]
         shipment_id = shipment_ids[num]
+        m = manifest_by_number[num]
         existing_res = _exec(
             lambda: sb.table("crosscheck_results").select("id").eq("shipment_id", shipment_id).limit(1).execute(),
             f"select crosschecks for {num}",
@@ -1368,9 +1399,9 @@ def load_into_supabase(manifest):
             print(f"skipped: crosschecks for {num} already exist")
             skipped_crosschecks += 1
             continue
-        invoice_json = _load_json(s.get("cached_invoice"))
-        packing_json = _load_json(s.get("cached_packing_list"))
-        bl_json = _load_json(s.get("cached_bill_of_lading"))
+        invoice_json = _load_json(m.get("cached_invoice"))
+        packing_json = _load_json(m.get("cached_packing_list"))
+        bl_json = _load_json(m.get("cached_bill_of_lading"))
         results = compute_crosschecks(invoice_json, packing_json, bl_json)
         inserted_any = False
         for r in results:
