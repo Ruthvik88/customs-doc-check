@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 97%;
+    --foreground: 210 30% 12%;
+    --muted: 210 20% 88%;
+    --muted-foreground: 210 15% 48%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 30% 12%;
+    --border: 210 20% 86%;
+    --input: 210 20% 86%;
+    --ring: 30 90 55%;
+
+    --primary: 210 85% 48%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 210 85% 40%;
+
+    --secondary: 210 18% 92%;
+    --secondary-foreground: 210 30% 12%;
+
+    --destructive: 355 65% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --warning: 38 85% 52%;      /* amber - needs review */
+    --warning-foreground: 0 0% 100%;
+    --warning-bg: 38 85% 94%;
+
+    --success: 140 65% 42%;     /* green - confirmed */
+    --success-foreground: 0 0% 100%;
+
+    --accent: 210 85% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --radius: 6px;
+
+    --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      monospace;
+  }
+
+  .dark {
+    --background: 210 30% 8%;
+    --foreground: 210 20% 95%;
+    --muted: 210 25% 18%;
+    --muted-foreground: 210 15% 60%;
+    --card: 210 25% 12%;
+    --card-foreground: 210 20% 95%;
+    --border: 210 25% 20%;
+    --input: 210 25% 18%;
+    --ring: 30 90 60%;
+    --primary: 210 85% 58%;
+    --primary-foreground: 210 30% 12%;
+    --destructive: 355 70% 55%;
+    --warning: 38 85% 58%;
+    --success: 140 70% 50%;
+  }
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    font-size: 14px;
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    margin: 0;
+  }
+  a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+  }
+  ::selection {
+    background-color: hsl(var(--primary) / 0.3);
+    color: hsl(var(--primary-foreground));
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    padding: 0.55rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
+    outline: none;
+  }
+  .btn:focus-visible {
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.6);
+  }
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: hsl(var(--primary));
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: hsl(var(--primary-hover));
+  }
+  .btn-outline {
+    background-color: transparent;
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+  }
+  .btn-outline:hover:not(:disabled) {
+    background-color: hsl(var(--muted));
+  }
+  .btn-danger {
+    background-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+    border-color: hsl(var(--destructive));
+  }
+  .btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  .btn-icon {
+    padding: 0.5rem;
+    line-height: 1;
+  }
+
+  .input {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    color: hsl(var(--foreground));
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    outline: none;
+  }
+  .input:focus {
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: calc(var(--radius) / 2);
+    padding: 0.15rem 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .badge-outline {
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+    background-color: transparent;
+  }
+  .badge-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  .badge-success {
+    background-color: hsl(var(--success));
+    color: hsl(var(--success-foreground));
+  }
+  .badge-warning {
+    background-color: hsl(var(--warning-bg));
+    color: hsl(var(--warning));
+  }
+  .badge-destructive {
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+
+  .card {
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 1rem;
+  }
+
+  .skeleton {
+    background: hsl(var(--muted));
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, hsl(var(--muted) / 0.6), transparent);
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+
+  .field-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: hsl(var(--muted-foreground));
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.25rem;
+  }
+
+  .amber-border {
+    border-left: 3px solid hsl(var(--warning));
+  }
+  .red-border {
+    border-left: 3px solid hsl(var(--destructive));
+  }
+  .green-border {
+    border-left: 3px solid hsl(var(--success));
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
