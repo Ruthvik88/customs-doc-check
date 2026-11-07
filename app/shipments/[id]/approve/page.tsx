@@ -159,7 +159,7 @@ export default function ApprovePage() {
         </div>
         {!canApprove && needsReview.length === 0 && failed.length === 0 ? null : null}
         <div className="mt-3 text-xs text-[var(--muted-foreground)]">
-          Approval is recorded server-side; any later edit resets the shipment to "Needs review".
+          Approval is recorded server-side; any later edit resets the shipment to &quot;Needs review&quot;.
         </div>
       </div>
 
