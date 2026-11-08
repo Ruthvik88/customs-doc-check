@@ -1,6 +1,6 @@
 "use strict";
 
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createServerClient, type SetAllCookies } from "@supabase/ssr";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
@@ -13,14 +13,17 @@ export async function createClient() {
   const cookieStore = await cookies();
   return createServerClient(url, key, {
     cookies: {
-      get(name: string) {
-        return cookieStore.get(name)?.value;
+      getAll() {
+        return cookieStore.getAll();
       },
-      set(name: string, value: string, options: CookieOptions) {
-        cookieStore.set({ name, value, ...options });
-      },
-      remove(name: string, options: CookieOptions) {
-        cookieStore.set({ name, value: "", ...options });
+      setAll(cookiesToSet: Parameters<SetAllCookies>[0]) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
+        } catch {
+          // Server Components are read-only; middleware persists refreshed sessions.
+        }
       },
     },
   });
