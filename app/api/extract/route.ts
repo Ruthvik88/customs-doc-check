@@ -3,6 +3,7 @@ export const maxDuration = 300;
 
 import { NextResponse } from "next/server";
 import { requireSupabaseClient, requireServiceRoleClient } from "@/lib/supabase/server";
+import { getProfileRole } from "@/lib/supabase/authorization";
 import { extractDocument } from "@/lib/extraction";
 import { z } from "zod";
 
@@ -33,7 +34,6 @@ const BodySchema = z.object({
 
 export async function POST(req: Request) {
   const supabase = await requireSupabaseClient();
-  const service = requireServiceRoleClient();
 
   // Authenticate + role check (executive only).
   const {
@@ -48,12 +48,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Rate limited" }, { status: 429 });
   }
 
-  const { data: profileData, error: profileError } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (profileError || !profileData || profileData.role !== "documentation_executive") {
+  const role = await getProfileRole(supabase, user.id);
+  if (role !== "documentation_executive") {
     return NextResponse.json({ error: "Forbidden: executive only" }, { status: 403 });
   }
 
@@ -69,15 +65,20 @@ export async function POST(req: Request) {
   }
   const { shipmentId } = parsed.data;
 
-  // Fetch shipment + its documents.
+  // Executives may process only shipments they created, as in the upload flow.
   const { data: shipment, error: shipmentError } = await supabase
     .from("shipments")
-    .select("*, suppliers(name)")
+    .select("id, created_by, shipment_number")
     .eq("id", shipmentId)
     .single();
   if (shipmentError || !shipment) {
     return NextResponse.json({ error: "Shipment not found" }, { status: 404 });
   }
+  if (shipment.created_by !== user.id) {
+    return NextResponse.json({ error: "Forbidden: not your shipment" }, { status: 403 });
+  }
+
+  const service = requireServiceRoleClient();
 
   const { data: documents, error: documentsError } = await supabase
     .from("documents")

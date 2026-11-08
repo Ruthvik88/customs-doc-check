@@ -8,7 +8,7 @@
 --   FAIL: <test name> [<detail>]
 --
 -- Prerequisites (apply before running this file):
---   * database/schema.sql applied to the database.
+--   * database/schema.sql and migrations/003_crosscheck_integrity.sql applied to the test database.
 --   * Demo Auth users exist (created by scripts/seed.py --load or manually):
 --       exec@demo.local    -> public.profiles.role = documentation_executive
 --       manager@demo.local -> public.profiles.role = documentation_manager
@@ -80,6 +80,8 @@ create temp table fx (
   ship_ok uuid,
   ship_needs uuid,
   ship_fail uuid,
+  ship_cannot_approve uuid,
+  ship_cannot_export uuid,
   doc_exec uuid,
   doc_ok uuid,
   doc_needs uuid,
@@ -113,12 +115,25 @@ select 'SHP-FAIL-001', s.id, 'Ready for approval', d.id
 from public.suppliers s, demo_users d
 where s.name = 'Demo Supplier' and d.app_role = 'documentation_executive';
 
+insert into public.shipments (shipment_number, supplier_id, status, created_by)
+select 'SHP-CANNOT-APPROVE-001', s.id, 'Ready for approval', d.id
+from public.suppliers s, demo_users d
+where s.name = 'Demo Supplier' and d.app_role = 'documentation_executive';
+
+insert into public.shipments (shipment_number, supplier_id, status, created_by)
+select 'SHP-CANNOT-EXPORT-001', s.id, 'Approved', d.id
+from public.suppliers s, demo_users d
+where s.name = 'Demo Supplier' and d.app_role = 'documentation_executive';
+
 update fx set
   supplier_id = (select id from public.suppliers where name = 'Demo Supplier'),
   ship_exec   = (select id from public.shipments where shipment_number = 'SHP-EXEC-001'),
   ship_ok     = (select id from public.shipments where shipment_number = 'SHP-OK-001'),
   ship_needs  = (select id from public.shipments where shipment_number = 'SHP-NEEDS-001'),
   ship_fail   = (select id from public.shipments where shipment_number = 'SHP-FAIL-001');
+update fx set
+  ship_cannot_approve = (select id from public.shipments where shipment_number = 'SHP-CANNOT-APPROVE-001'),
+  ship_cannot_export = (select id from public.shipments where shipment_number = 'SHP-CANNOT-EXPORT-001');
 
 insert into public.documents (shipment_id, type, storage_path, file_name)
 select ship_exec, 'invoice', 'tests/SHP-EXEC-001/invoice.pdf', 'invoice.pdf' from fx;
@@ -146,6 +161,12 @@ insert into public.fields (shipment_id, document_id, key, value, status)
 select ship_fail, doc_fail, 'gross_weight_kg', '1000', 'confirmed' from fx;
 insert into public.crosscheck_results (shipment_id, check_type, status, value_a, value_b, fields_involved)
 select ship_fail, 'gross_weight', 'fail', '1000', '1001', array['gross_weight_kg'] from fx;
+insert into public.crosscheck_results (shipment_id, check_type, status, fields_involved)
+select ship_cannot_approve, 'gross_weight', 'cannot_check', array['gross_weight_kg'] from fx;
+insert into public.crosscheck_results
+  (shipment_id, check_type, status, fields_involved, resolved_by, resolved_at, resolution_note)
+select ship_cannot_export, 'gross_weight', 'cannot_check', array['gross_weight_kg'], d.id, now(), 'recorded but cannot override missing evidence'
+from fx, demo_users d where d.app_role = 'documentation_manager';
 
 -- Existing field_edit row for the update/delete tests (insert-only audit log).
 insert into public.field_edits (shipment_id, field_key, document_id, old_value, new_value, action, user_id, supplier_id)
@@ -157,6 +178,97 @@ update fx set edit_id = (
   where shipment_id = (select ship_exec from fx)
   order by created_at desc limit 1
 );
+
+-- ---------------------------------------------------------------------------
+-- Cross-check RPC transaction regression checks (requires migration 003).
+-- These run as the database owner against an executive-owned fixture.
+-- ---------------------------------------------------------------------------
+do $$
+declare
+  v_ship uuid;
+  v_actor uuid;
+  v_snapshot jsonb;
+  v_results jsonb;
+  v_reordered jsonb;
+  v_wrong_snapshot jsonb;
+  v_changed jsonb;
+  v_invalid jsonb;
+  v_count int;
+  v_failed boolean := false;
+  v_row public.crosscheck_results%rowtype;
+begin
+  select ship_exec into v_ship from fx;
+  select id into v_actor from demo_users where app_role = 'documentation_executive';
+  select jsonb_build_object(
+    'documents', coalesce((select jsonb_agg(to_jsonb(d) order by d.id) from public.documents d where d.shipment_id = v_ship), '[]'::jsonb),
+    'fields', coalesce((select jsonb_agg(to_jsonb(f) order by f.id) from public.fields f where f.shipment_id = v_ship), '[]'::jsonb),
+    'line_items', coalesce((select jsonb_agg(to_jsonb(li) order by li.id) from public.line_items li where li.shipment_id = v_ship), '[]'::jsonb)
+  ) into v_snapshot;
+  v_results := jsonb_build_array(
+    jsonb_build_object('check_type','invoice_total','status','pass','fields_involved','[]'::jsonb,'details','{}'::jsonb),
+    jsonb_build_object('check_type','line_item_math','status','pass','fields_involved','[]'::jsonb,'details','{}'::jsonb),
+    jsonb_build_object('check_type','line_item_qty','status','pass','fields_involved','[]'::jsonb,'details','{}'::jsonb),
+    jsonb_build_object('check_type','total_packages','status','pass','fields_involved','[]'::jsonb,'details','{}'::jsonb),
+    jsonb_build_object('check_type','gross_weight','status','pass','value_a','1000','fields_involved','[]'::jsonb,'details','{"before":{"a":1,"b":2}}'::jsonb),
+    jsonb_build_object('check_type','container_numbers','status','pass','fields_involved','[]'::jsonb,'details','{}'::jsonb),
+    jsonb_build_object('check_type','currency_incoterm','status','pass','fields_involved','[]'::jsonb,'details','{}'::jsonb),
+    jsonb_build_object('check_type','supplier_consistency','status','pass','fields_involved','[]'::jsonb,'details','{}'::jsonb)
+  );
+
+  v_wrong_snapshot := v_snapshot || jsonb_build_object('documents', '[]'::jsonb);
+  begin
+    perform public.persist_crosscheck_results(v_ship, v_actor, v_wrong_snapshot, v_results);
+  exception when others then
+    if sqlerrm = 'Shipment source data changed during recomputation' then v_failed := true; end if;
+  end;
+  select count(*) into v_count from public.crosscheck_results where shipment_id = v_ship;
+  if v_failed and v_count = 0 then raise notice 'PASS: changed source snapshot is rejected before persistence';
+  else raise notice 'FAIL: stale source snapshot was accepted or wrote % results', v_count; end if;
+  v_failed := false;
+
+  begin
+    perform public.persist_crosscheck_results(v_ship, v_actor, v_snapshot,
+      jsonb_set(v_results, '{7,status}', '"invalid"'::jsonb));
+  exception when check_violation then v_failed := true;
+  end;
+  select count(*) into v_count from public.crosscheck_results where shipment_id = v_ship;
+  if v_failed and v_count = 0 then raise notice 'PASS: cross-check persistence failure rolls back every result';
+  else raise notice 'FAIL: cross-check persistence failure left % result(s)', v_count; end if;
+
+  perform public.persist_crosscheck_results(v_ship, v_actor, v_snapshot, v_results);
+  perform public.persist_crosscheck_results(v_ship, v_actor, v_snapshot, v_results);
+  select count(*) into v_count from public.crosscheck_results where shipment_id = v_ship;
+  if v_count = 8 then raise notice 'PASS: repeated recomputation is idempotent';
+  else raise notice 'FAIL: repeated recomputation produced % result rows', v_count; end if;
+
+  update public.crosscheck_results set resolved_by = (select id from demo_users where app_role = 'documentation_manager'),
+    resolved_at = now(), resolution_note = 'preserve this audit note'
+    where shipment_id = v_ship and check_type = 'gross_weight';
+  v_reordered := jsonb_set(v_results, '{4,details}', '{"before":{"b":2,"a":1}}'::jsonb);
+  perform public.persist_crosscheck_results(v_ship, v_actor, v_snapshot, v_reordered);
+  select * into v_row from public.crosscheck_results where shipment_id = v_ship and check_type = 'gross_weight';
+  if v_row.resolved_by is not null and v_row.resolution_note = 'preserve this audit note' then
+    raise notice 'PASS: reordered JSON object keys retain the resolution';
+  else raise notice 'FAIL: reordered JSON object keys invalidated the resolution'; end if;
+
+  v_changed := jsonb_set(v_results, '{4,value_a}', '"1001"'::jsonb);
+  perform public.persist_crosscheck_results(v_ship, v_actor, v_snapshot, v_changed);
+  select * into v_row from public.crosscheck_results where shipment_id = v_ship and check_type = 'gross_weight';
+  if v_row.resolved_by is null and v_row.details->'resolution_history'->0->>'resolution_note' = 'preserve this audit note' then
+    raise notice 'PASS: changed source result archives resolution metadata';
+  else raise notice 'FAIL: changed result did not archive and clear its resolution'; end if;
+
+  v_invalid := jsonb_set(jsonb_set(v_changed, '{4,value_a}', '"1002"'::jsonb), '{7,status}', '"invalid"'::jsonb);
+  v_failed := false;
+  begin
+    perform public.persist_crosscheck_results(v_ship, v_actor, v_snapshot, v_invalid);
+  exception when check_violation then v_failed := true;
+  end;
+  select * into v_row from public.crosscheck_results where shipment_id = v_ship and check_type = 'gross_weight';
+  if v_failed and v_row.value_a = '1001' and v_row.details->'resolution_history'->0->>'resolution_note' = 'preserve this audit note' then
+    raise notice 'PASS: failed recomputation preserves prior result and resolution history';
+  else raise notice 'FAIL: failed recomputation altered existing result or resolution history'; end if;
+end $$;
 
 do $$
 declare
@@ -387,6 +499,73 @@ begin
     else
       raise notice 'FAIL: (5b) manager approval refused while a failed cross-check is unresolved (errored but status changed: %)', sqlerrm;
     end if;
+  end;
+end $$;
+
+reset role;
+select set_config('request.jwt.claims', '{}', true);
+
+-- ---------------------------------------------------------------------------
+-- 5b2. A failed check with a complete manager resolution remains overridable.
+-- ---------------------------------------------------------------------------
+update public.crosscheck_results c set
+  resolved_by = (select id from demo_users where app_role = 'documentation_manager'),
+  resolved_at = now(), resolution_note = 'Audited override per existing policy'
+where c.shipment_id = (select ship_fail from fx) and c.check_type = 'gross_weight';
+
+set local role authenticated;
+select set_config('request.jwt.claims', json_build_object('sub',
+  (select id from demo_users where app_role = 'documentation_manager'),
+  'role', 'authenticated')::text, true);
+
+do $$
+declare v_ship uuid; v_status text;
+begin
+  select ship_fail into v_ship from fx;
+  begin
+    execute format('select public.shipment_approve(%L, %L, %L)', v_ship, 'approved', 'Approved with audited override');
+    execute format('select public.shipment_export(%L)', v_ship);
+    select status into v_status from public.shipments where id = v_ship;
+    if v_status = 'Exported' then raise notice 'PASS: complete audited fail resolution permits approval and export';
+    else raise notice 'FAIL: resolved fail ended in status %', v_status; end if;
+  exception when others then raise notice 'FAIL: complete audited fail resolution was rejected: %', sqlerrm;
+  end;
+end $$;
+
+reset role;
+select set_config('request.jwt.claims', '{}', true);
+
+-- ---------------------------------------------------------------------------
+-- 5c. cannot_check is unresolved and blocks approval.
+-- ---------------------------------------------------------------------------
+set local role authenticated;
+select set_config('request.jwt.claims', json_build_object('sub',
+  (select id from demo_users where app_role = 'documentation_manager'),
+  'role', 'authenticated')::text, true);
+
+do $$
+declare v_ship uuid; v_before text; v_after text;
+begin
+  select ship_cannot_approve into v_ship from fx;
+  select status into v_before from public.shipments where id = v_ship;
+  begin
+    execute format('select public.shipment_approve(%L, %L, %L)', v_ship, 'approved', 'should be refused');
+    raise notice 'FAIL: (5c) cannot_check cross-check blocked approval';
+  exception when others then
+    select status into v_after from public.shipments where id = v_ship;
+    if v_after = v_before then raise notice 'PASS: (5c) cannot_check cross-check blocked approval';
+    else raise notice 'FAIL: (5c) approval changed shipment status after cannot_check'; end if;
+  end;
+end $$;
+
+do $$
+declare v_ship uuid;
+begin
+  select ship_cannot_export into v_ship from fx;
+  begin
+    execute format('select public.shipment_export(%L)', v_ship);
+    raise notice 'FAIL: (5d) cannot_check cross-check blocked export';
+  exception when others then raise notice 'PASS: (5d) cannot_check cross-check blocked export';
   end;
 end $$;
 

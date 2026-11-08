@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { requireSupabaseClient, requireServiceRoleClient } from "@/lib/supabase/server";
+import { getProfileRole } from "@/lib/supabase/authorization";
 import { runAllCrossChecks } from "@/lib/crosschecks";
 
 const BUCKET = "documents";
@@ -43,11 +44,10 @@ function docViewFrom(docFields: any[], docLines: any[]) {
 }
 
 export async function POST(
-  req: Request,
+  _req: Request,
   { params }: { params: { shipmentId: string } },
 ) {
   const supabase = await requireSupabaseClient();
-  const service = requireServiceRoleClient();
 
   const {
     data: { user },
@@ -56,35 +56,62 @@ export async function POST(
     return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
   }
 
-  const { data: shipment } = await supabase
+  const role = await getProfileRole(supabase, user.id);
+  if (role !== "documentation_executive") {
+    return NextResponse.json({ error: "Forbidden: executive only" }, { status: 403 });
+  }
+
+  const { data: shipment, error: shipmentError } = await supabase
     .from("shipments")
-    .select("id")
+    .select("id, created_by")
     .eq("id", params.shipmentId)
     .single();
+  if (shipmentError || !shipment) {
+    if (shipmentError && shipmentError.code !== "PGRST116") {
+      return NextResponse.json({ error: "Failed to authorize shipment" }, { status: 500 });
+    }
+  }
   if (!shipment) {
     return NextResponse.json({ error: "Shipment not found" }, { status: 404 });
   }
+  if (shipment.created_by !== user.id) {
+    return NextResponse.json({ error: "Forbidden: not your shipment" }, { status: 403 });
+  }
 
-  const { data: documents } = await supabase
+  const service = requireServiceRoleClient();
+
+  const { data: documents, error: documentsError } = await supabase
     .from("documents")
-    .select("id, type")
-    .eq("shipment_id", params.shipmentId);
+    .select("*")
+    .eq("shipment_id", params.shipmentId)
+    .order("id", { ascending: true });
+  if (documentsError || !documents) {
+    return NextResponse.json({ error: "Failed to load shipment documents" }, { status: 500 });
+  }
   const docMap: Record<string, any> = {};
   for (const d of documents ?? []) docMap[d.type] = d;
 
-  const { data: fields } = await supabase
+  const { data: fields, error: fieldsError } = await supabase
     .from("fields")
     .select("*")
-    .eq("shipment_id", params.shipmentId);
-  const { data: lineItems } = await supabase
+    .eq("shipment_id", params.shipmentId)
+    .order("id", { ascending: true });
+  if (fieldsError || !fields) {
+    return NextResponse.json({ error: "Failed to load extracted fields" }, { status: 500 });
+  }
+  const { data: lineItems, error: lineItemsError } = await supabase
     .from("line_items")
     .select("*")
-    .eq("shipment_id", params.shipmentId);
+    .eq("shipment_id", params.shipmentId)
+    .order("id", { ascending: true });
+  if (lineItemsError || !lineItems) {
+    return NextResponse.json({ error: "Failed to load shipment line items" }, { status: 500 });
+  }
 
   const byDoc = (docId: string | null) =>
-    (fields ?? []).filter((f) => f.document_id === docId);
+    fields.filter((f) => f.document_id === docId);
   const linesByDoc = (docId: string | null) =>
-    (lineItems ?? []).filter((l) => l.document_id === docId);
+    lineItems.filter((l) => l.document_id === docId);
 
   const input: any = {
     invoice: docViewFrom(byDoc(docMap.invoice?.id ?? null), linesByDoc(docMap.invoice?.id ?? null)),
@@ -94,19 +121,19 @@ export async function POST(
 
   const results = runAllCrossChecks(input);
 
-  // Upsert results (delete + insert for simplicity).
-  await service.from("crosscheck_results").delete().eq("shipment_id", params.shipmentId);
-  const rows = results.map((r) => ({
-    shipment_id: params.shipmentId,
-    check_type: r.check_type,
-    status: r.status,
-    value_a: r.value_a,
-    value_b: r.value_b,
-    delta: r.delta,
-    fields_involved: r.fields_involved,
-    details: r.details,
-  }));
-  if (rows.length) await service.from("crosscheck_results").insert(rows);
+  const { error: persistError } = await service.rpc("persist_crosscheck_results", {
+    p_shipment_id: params.shipmentId,
+    p_actor_id: user.id,
+    p_source_snapshot: { documents, fields, line_items: lineItems },
+    p_results: results,
+  });
+  if (persistError) {
+    const stale = persistError.message?.includes("source data changed");
+    return NextResponse.json(
+      { error: stale ? "Shipment data changed during recomputation; please retry" : "Failed to save cross-check results" },
+      { status: stale ? 409 : 500 },
+    );
+  }
 
   return NextResponse.json({ results });
 }

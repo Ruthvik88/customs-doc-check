@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { requireSupabaseClient, requireServiceRoleClient } from "@/lib/supabase/server";
+import { getProfileRole } from "@/lib/supabase/authorization";
 import { z } from "zod";
 
 const MAX_UPLOAD_SIZE = Number(process.env.MAX_UPLOAD_SIZE ?? 10 * 1024 * 1024); // 10 MB
@@ -23,7 +24,6 @@ function sanitizeFileName(name: string): string {
 
 export async function POST(req: Request) {
   const supabase = await requireSupabaseClient();
-  const service = requireServiceRoleClient();
 
   const {
     data: { user },
@@ -33,12 +33,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (!profile || profile.role !== "documentation_executive") {
+  const role = await getProfileRole(supabase, user.id);
+  if (role !== "documentation_executive") {
     return NextResponse.json({ error: "Forbidden: executive only" }, { status: 403 });
   }
 
@@ -72,6 +68,8 @@ export async function POST(req: Request) {
   if (shipment.created_by !== user.id) {
     return NextResponse.json({ error: "Forbidden: not your shipment" }, { status: 403 });
   }
+
+  const service = requireServiceRoleClient();
 
   // Don't allow duplicate type; delete existing document of this type first (re-upload).
   const { data: existing } = await supabase

@@ -58,6 +58,8 @@ cp .env.example .env
 # 3. Set up Supabase (see deployment.md)
 #    - Create project in region ap-south-1
 #    - Apply database/schema.sql
+#    - Run the read-only duplicate preflight at the top of database/migrations/003_crosscheck_integrity.sql,
+#      reconcile any reported records manually, then apply that migration
 #    - Create private Storage bucket "documents"
 #    - Seed demo users (see deployment.md)
 

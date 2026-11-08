@@ -6,8 +6,8 @@
 --   * The caller's role is resolved by public.current_app_role(), a SECURITY DEFINER
 --     function that reads public.profiles.role (NOT user_metadata, which a user can edit).
 --   * API routes use the user-session (authenticated) Supabase client -> RLS applies.
---   * The service-role key is used only by the seed script and the extraction worker,
---     with explicit role checks in code; service role bypasses RLS.
+--   * The service-role key is server-only and used after route authorization;
+--     privileged RPCs repeat the relevant role and ownership checks because it bypasses RLS.
 --
 -- Status transitions (Approved / Exported) happen through security-definer functions
 -- that re-validate gating server-side. Any edit after approval resets status to

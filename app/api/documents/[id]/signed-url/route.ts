@@ -10,7 +10,6 @@ export async function GET(
   { params }: { params: { id: string } },
 ) {
   const supabase = await requireSupabaseClient();
-  const service = requireServiceRoleClient();
 
   const {
     data: { user },
@@ -29,6 +28,7 @@ export async function GET(
   }
 
   // Any authenticated user can view documents (RLS allows select for all).
+  const service = requireServiceRoleClient();
   const { data: signed, error } = await service.storage
     .from(BUCKET)
     .createSignedUrl(doc.storage_path, 60 * 5); // 5 minutes

@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { requireSupabaseClient, requireServiceRoleClient } from "@/lib/supabase/server";
+import { getProfileRole } from "@/lib/supabase/authorization";
 import { z } from "zod";
 
 export async function PATCH(
@@ -9,13 +10,17 @@ export async function PATCH(
   { params }: { params: { id: string } },
 ) {
   const supabase = await requireSupabaseClient();
-  const service = requireServiceRoleClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
+  }
+
+  const role = await getProfileRole(supabase, user.id);
+  if (role !== "documentation_executive") {
+    return NextResponse.json({ error: "Forbidden: executive only" }, { status: 403 });
   }
 
   const body = await req.json();
@@ -42,6 +47,8 @@ export async function PATCH(
   if (field.shipments.created_by !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
+
+  const service = requireServiceRoleClient();
 
   const updates: Record<string, any> = {};
   if (parsed.data.value !== undefined) updates.value = parsed.data.value;

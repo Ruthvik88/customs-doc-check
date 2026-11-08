@@ -26,8 +26,8 @@ export async function createClient() {
   });
 }
 
-// Service-role Supabase client. Bypasses RLS. ONLY for the seed script and
-// the extraction worker. Returns null if env is absent.
+// Server-only service-role client. Bypasses RLS; callers must authorize first
+// and use database RPCs for privileged multi-row writes. Returns null if env is absent.
 export function createServiceRoleClient() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
