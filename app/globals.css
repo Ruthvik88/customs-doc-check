@@ -364,4 +364,26 @@
   .text-balance {
     text-wrap: balance;
   }
+  .animate-in {
+    animation: fadeIn 0.4s ease-out both;
+  }
+  .slide-in-from-top-2 {
+    animation: slideInFromTop 0.4s ease-out both;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideInFromTop {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pillPulse {
+    0% { box-shadow: 0 0 0 0 hsl(var(--primary-glow)); }
+    70% { box-shadow: 0 0 0 8px hsl(var(--primary-glow) / 0); }
+    100% { box-shadow: 0 0 0 0 hsl(var(--primary-glow)); }
+  }
+  .pill-active-pulse {
+    animation: pillPulse 0.6s ease-out;
+  }
 }
