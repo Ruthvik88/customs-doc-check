@@ -1,0 +1,24 @@
+/* Design tokens — Customs Doc Check (brand: navy / cobalt) */
+@layer base {
+  :root {
+    /* Brand */
+    --brand-navy: 223 56% 10%;
+    --brand-navy-dark: 223 52% 6%;
+    --brand-cobalt: 226 99% 54%;
+    --brand-cobalt-hover: 224 96% 48%;
+    --brand-surface: 0 0% 100%;
+    --brand-page: 220 18% 96%;
+    --brand-hairline: 220 13% 89%;
+    --brand-text-primary: 220 33% 13%;
+    --brand-text-secondary: 220 18% 47%;
+
+    /* Brand surfaces (HSL for theme layering) */
+    --brand-navy-rgb: 11, 21, 40;
+    --brand-cobalt-rgb: 31, 94, 255;
+
+    /* Shadows */
+    --shadow-card: 0 24px 48px -12px rgba(11, 21, 40, 0.12), 0 1px 3px rgba(11, 21, 40, 0.05);
+    --shadow-cta: 0 10px 25px -4px rgba(31, 94, 255, 0.38);
+    --shadow-cta-hover: 0 14px 28px -2px rgba(31, 94, 255, 0.48);
+  }
+}

@@ -46,6 +46,17 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        brand: {
+          navy: "hsl(var(--brand-navy))",
+          "navy-dark": "hsl(var(--brand-navy-dark))",
+          cobalt: "hsl(var(--brand-cobalt))",
+          "cobalt-hover": "hsl(var(--brand-cobalt-hover))",
+          surface: "hsl(var(--brand-surface))",
+          page: "hsl(var(--brand-page))",
+          hairline: "hsl(var(--brand-hairline))",
+          "text-primary": "hsl(var(--brand-text-primary))",
+          "text-secondary": "hsl(var(--brand-text-secondary))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
