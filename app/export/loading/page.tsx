@@ -2,19 +2,15 @@
 
 import React from "react";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  Database,
-  Lock,
-  Moon,
-  RefreshCw,
-  ShieldCheck,
-  Sun,
-  User,
-} from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import {
+  RefreshCw,
+  ShieldCheck,
+} from "lucide-react";
 
 export default function ExportLoadingPage() {
   return (
@@ -25,7 +21,7 @@ export default function ExportLoadingPage() {
           <div className="flex items-center gap-space-xl">
             <div className="flex items-center gap-space-sm">
               <div className="w-9 h-9 rounded-lg bg-customs-primary flex items-center justify-center text-customs-on-primary shadow-sm">
-                <ShieldCheck className="text-[20px]" />
+                <Icon as={ShieldCheck} size={20} aria-hidden="true" />
               </div>
               <span className="font-headline text-headline-sm text-customs-ink-primary tracking-tight whitespace-nowrap">
                 Customs Doc Check
@@ -44,10 +40,6 @@ export default function ExportLoadingPage() {
             </nav>
           </div>
           <div className="flex items-center gap-space-md">
-            <div className="hidden xl:flex items-center gap-space-xs px-2 py-1 rounded-full bg-customs-status-confirmed-bg text-customs-status-confirmed-text font-label-code text-label-code-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-customs-status-confirmed-text animate-pulse" />
-              <span>SYSTEM ONLINE</span>
-            </div>
             <div className="flex items-center gap-space-sm pl-space-sm border-l border-customs-border-hairline">
               <div className="hidden sm:flex flex-col text-right">
                 <span className="font-label-code text-label-code-sm text-customs-ink-primary">
@@ -58,16 +50,6 @@ export default function ExportLoadingPage() {
                     DOCUMENTATION MANAGER
                   </span>
                 </div>
-              </div>
-              <button aria-label="Toggle dark mode" className="w-8 h-8 rounded-lg flex items-center justify-center text-customs-ink-secondary hover:text-customs-ink-primary hover:bg-customs-surface-base transition-colors" type="button">
-                {typeof document !== "undefined" && document.documentElement.classList.contains("dark") ? (
-                  <Sun className="text-[20px]" aria-hidden="true" />
-                ) : (
-                  <Moon className="text-[20px]" aria-hidden="true" />
-                )}
-              </button>
-              <div className="w-8 h-8 rounded-full bg-customs-primary flex items-center justify-center">
-                <User className="text-customs-on-primary text-[18px]" />
               </div>
             </div>
           </div>
@@ -96,22 +78,6 @@ export default function ExportLoadingPage() {
                   One row per line item, in the filing software&apos;s import layout
                 </p>
               </div>
-              {/* Telemetry Badge Indicator */}
-              <div className="flex items-center gap-space-sm bg-customs-surface-container-high px-space-md py-space-xs rounded-lg shadow-sm">
-                <div className="flex items-center gap-2">
-                  <div className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-customs-primary opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-customs-primary" />
-                  </div>
-                  <span className="font-label-code text-label-code-sm text-customs-ink-primary tracking-tight">
-                    ICEGATE 2.1 PROTOCOL ACTIVE
-                  </span>
-                </div>
-                <div className="h-3 w-px bg-customs-outline-variant" />
-                <span className="font-caption text-caption text-customs-ink-secondary uppercase">
-                  Node: NSA-VAL-09
-                </span>
-              </div>
             </div>
 
             {/* Loading Telemetry Notification Bar */}
@@ -119,27 +85,13 @@ export default function ExportLoadingPage() {
               <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
                 <div className="flex items-center gap-3">
                   <div className="w-7 h-7 rounded-lg bg-customs-surface-raised flex items-center justify-center text-customs-status-progress-text shadow-sm flex-shrink-0">
-                    <RefreshCw className="animate-spin text-[18px]" aria-hidden="true" />
+                    <Icon as={RefreshCw} size={16} className="animate-spin" aria-hidden="true" />
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                    <span className="font-body text-body-md font-semibold text-customs-status-progress-text">
-                      Querying approved clearance manifest registry...
-                    </span>
-                    <span className="hidden sm:inline-block text-customs-status-progress-text opacity-40">
-                      &bull;
-                    </span>
-                    <span className="font-label-code text-label-code-sm text-customs-status-progress-text opacity-85">
-                      Encrypted ICEGATE node handshake
+                    <span className="font-body text-body-md font-semibold text-customs-ink-primary">
+                      Loading approved shipments…
                     </span>
                   </div>
-                </div>
-                <div className="flex items-center gap-space-sm self-start sm:self-auto pl-10 sm:pl-0">
-                  <div className="h-1.5 w-24 bg-customs-surface-raised rounded-full overflow-hidden">
-                    <div className="h-full bg-customs-primary rounded-full animate-pulse w-3/5" />
-                  </div>
-                  <span className="font-label-code text-label-code-sm text-customs-status-progress-text font-semibold">
-                    EST 1.2s
-                  </span>
                 </div>
               </div>
             </div>
@@ -295,19 +247,6 @@ export default function ExportLoadingPage() {
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-
-            {/* Manager Footnote / Compliance Security Notice */}
-            <div className="flex items-center justify-between text-customs-ink-muted px-1">
-              <div className="flex items-center gap-2">
-                <Lock className="text-[16px] text-customs-ink-secondary" aria-hidden="true" />
-                <span className="font-caption text-caption text-customs-ink-secondary">
-                  Filing Engine Integration: Auto-formatted for direct manifest ingestion (Form 8-B).
-                </span>
-              </div>
-              <div className="font-label-code text-label-code-sm text-customs-ink-muted">
-                TLS 1.3 / AES-256 GCM
               </div>
             </div>
           </div>
