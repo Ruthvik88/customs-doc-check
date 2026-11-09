@@ -5,8 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "@/hooks/useSession";
 import { createClient } from "@/lib/supabase/browser";
-import { ShieldCheck, User, LogOut, Menu, X } from "lucide-react";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { ShieldCheck, LogOut, Menu, X, BarChart3, FileText } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 
 export function Header({
   mobileSidebarOpen = false,
@@ -57,8 +57,8 @@ export function Header({
     { href: "/dashboard", label: "Shipments", icon: ShieldCheck },
     ...(isManager
       ? [
-          { href: "/reports", label: "Accuracy report", icon: ShieldCheck },
-          { href: "/export", label: "Export", icon: ShieldCheck },
+          { href: "/reports", label: "Accuracy report", icon: BarChart3 },
+          { href: "/export", label: "Export", icon: FileText },
         ]
       : []),
   ];
@@ -75,7 +75,7 @@ export function Header({
             className="flex items-center gap-2 text-customs-ink-primary no-underline group shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-customs-primary rounded-full"
           >
             <div className="w-7 h-7 rounded-lg bg-customs-primary-container text-customs-on-primary-container flex items-center justify-center shadow-xs transition-transform group-hover:scale-105">
-              <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
+              <Icon as={ShieldCheck} size={20} aria-hidden="true" />
             </div>
             <span className="font-headline-sm text-headline-sm text-customs-ink-primary font-bold tracking-tight whitespace-nowrap">
               Customs Doc Check
@@ -86,11 +86,10 @@ export function Header({
           <nav
             id="primary-navigation"
             aria-label="Primary navigation"
-            className="hidden md:flex items-center gap-1 bg-customs-surface-container-low p-1 rounded-full"
+            className="hidden md:flex items-center gap-6 bg-customs-surface-container-low p-1 rounded-full"
           >
             {navLinks.map((link) => {
               const active = pathname === link.href;
-              const Icon = link.icon;
               return (
                 <Link
                   key={link.href}
@@ -121,11 +120,6 @@ export function Header({
               </div>
             </div>
           )}
-          {/* Theme Toggle */}
-          <ThemeToggle />
-          <div className="w-8 h-8 rounded-full bg-customs-primary text-customs-on-primary flex items-center justify-center shadow-xs">
-            <User className="w-4 h-4" aria-hidden="true" />
-          </div>
           <button
             type="button"
             onClick={handleSignOut}
@@ -133,7 +127,7 @@ export function Header({
             aria-label="Sign out"
             title="Sign out"
           >
-            <LogOut className="w-5 h-5" aria-hidden="true" />
+            <Icon as={LogOut} size={16} aria-hidden="true" />
           </button>
 
           {/* Mobile menu toggle */}
@@ -146,7 +140,11 @@ export function Header({
             aria-controls="mobile-navigation"
             onClick={handleToggle}
           >
-            {isOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
+            {isOpen ? (
+              <Icon as={X} size={16} aria-hidden="true" />
+            ) : (
+              <Icon as={Menu} size={16} aria-hidden="true" />
+            )}
           </button>
         </div>
 
@@ -170,7 +168,7 @@ export function Header({
 
             {navLinks.map((link) => {
               const active = pathname === link.href;
-              const Icon = link.icon;
+              const NavIcon = link.icon;
               return (
                 <Link
                   key={link.href}
@@ -185,7 +183,7 @@ export function Header({
                       : "text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50"
                   }`}
                 >
-                  <Icon className="w-4 h-4" aria-hidden="true" />
+                  <Icon as={NavIcon} size={16} aria-hidden="true" />
                   {link.label}
                 </Link>
               );
@@ -197,7 +195,7 @@ export function Header({
                 onClick={handleSignOut}
                 className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-customs-ink-secondary hover:text-customs-status-error-text hover:bg-customs-surface-container-low transition-colors"
               >
-                <LogOut className="w-4 h-4" aria-hidden="true" />
+                <Icon as={LogOut} size={16} aria-hidden="true" />
                 <span>Sign out</span>
               </button>
             )}
