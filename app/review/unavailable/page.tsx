@@ -179,26 +179,26 @@ export default function ReviewUnavailablePage() {
                         variant="outline"
                         size="sm"
                         disabled
-                        className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary" title="Previous page"
+                        className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary" title="Previous page" aria-label="Previous page"
                       >
                         <ChevronLeft className="text-[18px]" />
                       </Button>
                       <div className="px-2 font-label-code-md text-label-code-md font-semibold text-ink-primary">
                         Page <span className="text-status-error-text">2</span> of 3
                       </div>
-                      <Button variant="outline" size="sm" className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary" title="Next page">
+                      <Button variant="outline" size="sm" className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary" title="Next page" aria-label="Next page">
                         <ChevronRight className="text-[18px]" />
                       </Button>
                     </div>
                     <div className="hidden sm:inline-flex items-center gap-1 bg-surface-raised rounded-lg px-2 py-1 shadow-sm">
-                      <Button variant="outline" size="sm" className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary" title="Zoom Out">
+                      <Button variant="outline" size="sm" className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary" title="Zoom Out" aria-label="Zoom out">
                         <Minus className="text-[16px]" />
                       </Button>
                       <span className="font-label-code-sm text-label-code-sm px-1 text-ink-secondary">100%</span>
-                      <Button variant="outline" size="sm" className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary" title="Zoom In">
+                      <Button variant="outline" size="sm" className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary" title="Zoom In" aria-label="Zoom in">
                         <Plus className="text-[16px]" />
                       </Button>
-                      <Button variant="outline" size="sm" className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary ml-1" title="Rotate">
+                      <Button variant="outline" size="sm" className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container text-ink-secondary ml-1" title="Rotate" aria-label="Rotate counterclockwise">
                         <RotateCcw className="text-[16px]" />
                       </Button>
                     </div>
@@ -373,7 +373,7 @@ export default function ReviewUnavailablePage() {
                           defaultValue="Stainless Steel Fasteners DIN 933 (Pending Spec)"
                           className="w-full h-10 px-3 bg-surface-raised rounded-md font-body-md text-body-md text-ink-primary placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
                         />
-                        <Button type="button" size="sm" className="absolute right-2 top-2 text-primary hover:text-primary-container p-0.5 rounded" title="Confirm field">
+                        <Button type="button" size="sm" className="absolute right-2 top-2 text-primary hover:text-primary-container p-0.5 rounded" title="Confirm field" aria-label="Confirm field">
                           <Check className="w-4 h-4" />
                         </Button>
                       </div>

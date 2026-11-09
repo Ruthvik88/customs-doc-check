@@ -122,7 +122,7 @@ export default function ReviewScreenPage() {
                 <span className="w-2 h-2 rounded-full bg-status-review-text animate-pulse" />
                 <span className="font-semibold">Review Pending Customs Sign-off</span>
               </div>
-              <Button type="button" size="sm" variant="outline" className="p-1 rounded hover:bg-surface-container text-ink-secondary hover:text-ink-primary transition-colors" title="Settings &amp; Tolerance">
+              <Button type="button" size="sm" variant="outline" className="p-1 rounded hover:bg-surface-container text-ink-secondary hover:text-ink-primary transition-colors" title="Settings &amp; Tolerance" aria-label="Settings &amp; tolerance">
                 <Settings className="text-[18px]" />
               </Button>
             </div>
@@ -159,37 +159,37 @@ export default function ReviewScreenPage() {
               {/* Document Navigation & Inspection Toolbar */}
               <div className="h-10 bg-surface-container px-4 flex items-center justify-between text-ink-secondary text-body-sm">
                 <div className="flex items-center gap-2">
-                  <Button type="button" size="sm" variant="outline" disabled className="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-muted hover:text-ink-primary transition-colors">
+                  <Button type="button" size="sm" variant="outline" disabled className="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-muted hover:text-ink-primary transition-colors" aria-label="Previous page">
                     <ChevronLeft className="text-[18px]" />
                   </Button>
                   <span className="font-label-code-sm text-ink-primary font-medium">Page 1 of 3</span>
-                  <Button type="button" size="sm" variant="outline" className="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-muted hover:text-ink-primary transition-colors">
+                  <Button type="button" size="sm" variant="outline" className="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-muted hover:text-ink-primary transition-colors" aria-label="Next page">
                     <ChevronRight className="text-[18px]" />
                   </Button>
                   <span className="w-px h-4 bg-outline-variant/40 mx-1"></span>
                   <span className="text-caption text-ink-muted">INV-2024-8891_ORIGINAL.pdf</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" id="zoom-out-btn" title="Zoom Out (-)">
+                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" id="zoom-out-btn" title="Zoom Out (-)" aria-label="Zoom out">
                     <Minus className="text-[16px]" />
                   </Button>
                   <Button type="button" size="sm" variant="outline" className="px-2 h-7 rounded flex items-center justify-center font-label-code-sm hover:bg-surface-container-high text-ink-primary" id="zoom-level-btn">
                     100%
                   </Button>
-                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" id="zoom-in-btn" title="Zoom In (+)">
+                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" id="zoom-in-btn" title="Zoom In (+)" aria-label="Zoom in">
                     <Plus className="text-[16px]" />
                   </Button>
-                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" title="Fit to Width">
+                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" title="Fit to Width" aria-label="Fit to width">
                     <Maximize2 className="text-[16px]" />
                   </Button>
                   <span className="w-px h-4 bg-outline-variant/40 mx-1"></span>
-                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" title="Rotate Counterclockwise">
+                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" title="Rotate Counterclockwise" aria-label="Rotate counterclockwise">
                     <RotateCcw className="text-[16px]" />
                   </Button>
-                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" title="Print Document">
+                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" title="Print Document" aria-label="Print document">
                     <Download className="text-[16px]" />
                   </Button>
-                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" title="Download Raw PDF">
+                  <Button type="button" size="sm" variant="outline" className="w-7 h-7 rounded flex items-center justify-center hover:bg-surface-container-high text-ink-secondary hover:text-ink-primary" title="Download Raw PDF" aria-label="Download raw PDF">
                     <CloudUpload className="text-[16px]" />
                   </Button>
                 </div>
