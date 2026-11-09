@@ -2,6 +2,8 @@
   "document_type": "packing_list",
   "supplier": "Company F",
   "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "currency": "USD",
+  "incoterm": "FOB",
   "packages": 12,
   "gross_weight_kg": 640,
   "net_weight_kg": 610,
@@ -33,6 +35,22 @@
       "key": "consignee",
       "value": "Nhava Sheva Imports Pvt. Ltd.",
       "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "currency",
+      "value": "USD",
+      "ai_value": "USD",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "incoterm",
+      "value": "FOB",
+      "ai_value": "FOB",
       "confidence": 0.94,
       "status": "extracted",
       "source_page": 1

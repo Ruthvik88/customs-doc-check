@@ -2,6 +2,8 @@
   "document_type": "packing_list",
   "supplier": "Company B",
   "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "currency": "USD",
+  "incoterm": "FOB",
   "packages": 40,
   "gross_weight_kg": 3165,
   "net_weight_kg": 3000,
@@ -15,7 +17,7 @@
       "hsn": "940540",
       "qty": 2400,
       "unit_price": 6.8,
-      "line_total": 16320,
+      "line_total": 16320.0,
       "confidence": 0.95,
       "status": "extracted",
       "source_page": 1
@@ -25,7 +27,7 @@
       "hsn": "830249",
       "qty": 2400,
       "unit_price": 1.2,
-      "line_total": 2880,
+      "line_total": 2880.0,
       "confidence": 0.95,
       "status": "extracted",
       "source_page": 1
@@ -44,6 +46,22 @@
       "key": "consignee",
       "value": "Nhava Sheva Imports Pvt. Ltd.",
       "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "currency",
+      "value": "USD",
+      "ai_value": "USD",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "incoterm",
+      "value": "FOB",
+      "ai_value": "FOB",
       "confidence": 0.94,
       "status": "extracted",
       "source_page": 1

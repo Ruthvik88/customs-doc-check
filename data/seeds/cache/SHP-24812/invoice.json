@@ -16,7 +16,7 @@
       "hsn": "848180",
       "qty": 180,
       "unit_price": 42.5,
-      "line_total": 7650,
+      "line_total": 7650.0,
       "confidence": 0.96,
       "status": "extracted",
       "source_page": 1

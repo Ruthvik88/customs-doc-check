@@ -43,3 +43,5 @@ deployment handling real customs data.
 All seed companies, people, and values are fictional; no real personal data is
 included. Seed PDFs are generated with reportlab/Pillow and committed under
 `data/seeds/`.
+
+Real packing lists often omit currency; production needs a not_applicable check status so such shipments are not blocked.

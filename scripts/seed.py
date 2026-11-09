@@ -200,7 +200,8 @@ def render_packing_list(path, data):
     y = H - 160
     _text(c, f"Reference Invoice: {data['invoice_number']}", 50, y, size=9, bold=True)
     _text(c, f"Date: {data['invoice_date']}", 300, y, size=9)
-    y -= 44
+    _text(c, f"Currency: {data['currency']}   Incoterm: {data['incoterm']}", 50, y - 14, size=9)
+    y -= 58
     _text(c, "Description", 50, y, size=8, bold=True)
     _text(c, "HSN", 260, y, size=8, bold=True)
     _text(c, "Qty", 320, y, size=8, bold=True)
@@ -234,7 +235,8 @@ def render_bl(path, data):
     _text(c, f"Vessel: {data['vessel']}", 300, y, size=9)
     _text(c, f"Port of Loading: {data['port_of_loading']}", 50, y - 16, size=9)
     _text(c, f"Port of Discharge: {data['port_of_discharge']}", 300, y - 16, size=9)
-    y -= 50
+    _text(c, f"Currency: {data['currency']}   Incoterm: {data['incoterm']}", 50, y - 32, size=9)
+    y -= 66
     _text(c, "Description", 50, y, size=8, bold=True)
     _text(c, "Qty", 300, y, size=8, bold=True)
     _text(c, "Packages", 360, y, size=8, bold=True)
@@ -518,6 +520,8 @@ def packing_list_extraction(data):
     fields = [
         field("supplier", data["supplier"]["name"]),
         field("consignee", CONSIGNEE["name"]),
+        field("currency", data["currency"]),
+        field("incoterm", data["incoterm"]),
         field("packages", str(data["packages"])),
         field("gross_weight_kg", str(data["pl_gross"]), confidence=gw_conf),
         field("net_weight_kg", str(data["net_weight"])),
@@ -527,6 +531,8 @@ def packing_list_extraction(data):
         "document_type": "packing_list",
         "supplier": data["supplier"]["name"],
         "consignee": CONSIGNEE["name"],
+        "currency": data["currency"],
+        "incoterm": data["incoterm"],
         "packages": data["packages"],
         "gross_weight_kg": data["pl_gross"],
         "net_weight_kg": data["net_weight"],
@@ -552,6 +558,8 @@ def bl_extraction(data):
         field("port_of_discharge", data["port_of_discharge"]),
         field("supplier", data["supplier"]["name"]),
         field("consignee", CONSIGNEE["name"]),
+        field("currency", data["currency"]),
+        field("incoterm", data["incoterm"]),
         field("packages", str(data["packages"])),
         field("gross_weight_kg", str(data["invoice_gross"])),
         field("containers", ", ".join(data["containers"])),
@@ -564,6 +572,8 @@ def bl_extraction(data):
         "port_of_discharge": data["port_of_discharge"],
         "supplier": data["supplier"]["name"],
         "consignee": CONSIGNEE["name"],
+        "currency": data["currency"],
+        "incoterm": data["incoterm"],
         "packages": data["packages"],
         "gross_weight_kg": data["invoice_gross"],
         "containers": data["containers"],
@@ -579,10 +589,8 @@ def _write_if_changed(path, text):
     content is already correct. New writes use LF line endings.
     """
     new_bytes = text.encode("utf-8")
-    if path.is_file():
-        existing = path.read_bytes()
-        if existing.replace(b"\r\n", b"\n") == new_bytes.replace(b"\r\n", b"\n"):
-            return
+    if path.is_file() and path.read_bytes() == new_bytes:
+        return
     path.write_bytes(new_bytes)
 
 
@@ -629,7 +637,7 @@ def generate(regenerate=False):
         inv_json_path = cdir / "invoice.json"
         if regenerate or not inv_json_path.exists():
             inv_json = invoice_extraction(data)
-            inv_json_path.write_text(json.dumps(inv_json, indent=2))
+            _write_if_changed(inv_json_path, json.dumps(inv_json, indent=2))
         else:
             inv_json = json.loads(inv_json_path.read_text(encoding="utf-8"))
 
@@ -639,7 +647,7 @@ def generate(regenerate=False):
         pl_json_path = cdir / "packing_list.json"
         if regenerate or not pl_json_path.exists():
             pl_json = packing_list_extraction(data)
-            pl_json_path.write_text(json.dumps(pl_json, indent=2))
+            _write_if_changed(pl_json_path, json.dumps(pl_json, indent=2))
         else:
             pl_json = json.loads(pl_json_path.read_text(encoding="utf-8"))
 
@@ -653,7 +661,7 @@ def generate(regenerate=False):
             bl_json_path = cdir / "bill_of_lading.json"
             if regenerate or not bl_json_path.exists():
                 bl_json = bl_extraction(data)
-                bl_json_path.write_text(json.dumps(bl_json, indent=2))
+                _write_if_changed(bl_json_path, json.dumps(bl_json, indent=2))
             else:
                 bl_json = json.loads(bl_json_path.read_text(encoding="utf-8"))
             bl_path = str(bl_pdf)

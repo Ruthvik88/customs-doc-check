@@ -16,7 +16,7 @@
       "hsn": "400912",
       "qty": 320,
       "unit_price": 18.5,
-      "line_total": 5920,
+      "line_total": 5920.0,
       "confidence": 0.96,
       "status": "extracted",
       "source_page": 1
@@ -26,7 +26,7 @@
       "hsn": "732690",
       "qty": 320,
       "unit_price": 2.1,
-      "line_total": 672,
+      "line_total": 672.0,
       "confidence": 0.96,
       "status": "extracted",
       "source_page": 1
@@ -107,7 +107,7 @@
     },
     {
       "key": "invoice_total",
-      "value": "EUR 9999.99",
+      "value": "EUR 6792.00",
       "ai_value": "EUR 6792.00",
       "confidence": 0.35,
       "status": "extracted",

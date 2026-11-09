@@ -16,7 +16,7 @@
       "hsn": "940540",
       "qty": 2400,
       "unit_price": 6.8,
-      "line_total": 16320,
+      "line_total": 16320.0,
       "confidence": 0.96,
       "status": "extracted",
       "source_page": 1
@@ -26,7 +26,7 @@
       "hsn": "830249",
       "qty": 2400,
       "unit_price": 1.2,
-      "line_total": 2880,
+      "line_total": 2880.0,
       "confidence": 0.96,
       "status": "extracted",
       "source_page": 1

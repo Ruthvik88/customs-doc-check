@@ -61,6 +61,8 @@ and people in the seed data are fictional.
   page-level source reference is provided instead).
 
 ## Seed data
+Sample documents carry currency and Incoterm on every document.
+
 11 fictional shipments across statuses (Draft, Extracting, Needs review, Ready
 for approval, Approved, Exported), including: a weight mismatch (SHP-24811),
 an invoice total mismatch (SHP-24814), a skewed/scanned invoice (SHP-24815),

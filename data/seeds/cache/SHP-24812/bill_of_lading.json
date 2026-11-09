@@ -6,6 +6,8 @@
   "port_of_discharge": "Nhava Sheva, India",
   "supplier": "Company C",
   "consignee": "Nhava Sheva Imports Pvt. Ltd.",
+  "currency": "EUR",
+  "incoterm": "CIF",
   "packages": 6,
   "gross_weight_kg": 1460,
   "containers": [
@@ -56,6 +58,22 @@
       "key": "consignee",
       "value": "Nhava Sheva Imports Pvt. Ltd.",
       "ai_value": "Nhava Sheva Imports Pvt. Ltd.",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "currency",
+      "value": "EUR",
+      "ai_value": "EUR",
+      "confidence": 0.94,
+      "status": "extracted",
+      "source_page": 1
+    },
+    {
+      "key": "incoterm",
+      "value": "CIF",
+      "ai_value": "CIF",
       "confidence": 0.94,
       "status": "extracted",
       "source_page": 1
