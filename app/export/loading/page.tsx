@@ -97,7 +97,7 @@ export default function ExportLoadingPage() {
                 </p>
               </div>
               {/* Telemetry Badge Indicator */}
-              <div className="flex items-center gap-space-sm bg-customs-container-high px-space-md py-space-xs rounded-lg shadow-sm">
+              <div className="flex items-center gap-space-sm bg-customs-surface-container-high px-space-md py-space-xs rounded-lg shadow-sm">
                 <div className="flex items-center gap-2">
                   <div className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-customs-primary opacity-75" />
@@ -299,7 +299,7 @@ export default function ExportLoadingPage() {
             </div>
 
             {/* Manager Footnote / Compliance Security Notice */}
-            <div className="flex items-center justify-between text-ink-muted px-1">
+            <div className="flex items-center justify-between text-customs-ink-muted px-1">
               <div className="flex items-center gap-2">
                 <Lock className="text-[16px] text-customs-ink-secondary" aria-hidden="true" />
                 <span className="font-caption text-caption text-customs-ink-secondary">
