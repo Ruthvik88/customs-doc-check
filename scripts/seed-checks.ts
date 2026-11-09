@@ -36,14 +36,24 @@ for (const shipment of shipments.data ?? []) {
   if (lines.error) throw lines.error;
   const results = runAllCrossChecks(crossCheckInput(fields.data ?? [], lines.data ?? [], docs.data ?? []));
   const expected = cases.get(shipment.shipment_number);
+  if (results.length !== 8) throw new Error(`${shipment.shipment_number} returned ${results.length} checks instead of 8`);
   if (clean.has(shipment.shipment_number) && results.some((result) => result.status !== "pass")) failedClean = true;
   if (expected === "bill_of_lading") {
-    if (results.some((result) => result.status === "fail") || results.filter((result) => result.status === "cannot_check").some((result) => result.check_type !== "container_numbers")) {
+    const incomplete = results.filter((result) => result.status === "cannot_check");
+    if (results.some((result) => result.status === "fail") || incomplete.length !== 1 || incomplete[0].check_type !== "container_numbers") {
       throw new Error(`${shipment.shipment_number} has unexpected incomplete checks`);
     }
   } else if (expected && (!results.some((result) => result.check_type === expected && result.status === "fail")
     || results.filter((result) => result.status === "fail").some((result) => result.check_type !== expected))) {
     throw new Error(`${shipment.shipment_number} did not fail only ${expected}`);
+  }
+  if (shipment.shipment_number === "SHP-24811") {
+    const weight = results.find((result) => result.check_type === "gross_weight");
+    if (!weight || new Set([weight.value_a, weight.value_b]).size !== 2
+      || ![weight.value_a, weight.value_b].includes("3120")
+      || ![weight.value_a, weight.value_b].includes("3165")) {
+      throw new Error("SHP-24811 gross weight must compare 3120 kg and 3165 kg");
+    }
   }
   const remove = await db.from("crosscheck_results").delete().eq("shipment_id", shipment.id);
   if (remove.error) throw remove.error;
