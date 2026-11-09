@@ -323,6 +323,12 @@ export function grossWeightCheck(input: CrossCheckInput): CheckResult {
 export function containerCheck(input: CrossCheckInput): CheckResult {
   const pl = (input.packingList.containers ?? []).map(normalizeContainer);
   const bl = (input.billOfLading.containers ?? []).map(normalizeContainer);
+  if (pl.length > 0 && bl.length === 0) {
+    return result("container_numbers", "cannot_check", {
+      value_a: pl.join(", "), fields_involved: ["containers"],
+      details: { reason: "bill of lading has no container numbers" },
+    });
+  }
   if (pl.length === 0 && bl.length === 0) {
     return result("container_numbers", "cannot_check", {
       fields_involved: ["containers"],

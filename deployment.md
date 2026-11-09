@@ -56,6 +56,9 @@
    #   python scripts/seed.py --regenerate --load
    ```
 
+   Recompute seeded cross-checks from the database fields and line items with
+   `npm run seed:checks` after loading. This replaces the existing result rows.
+
    **Skewed-scan test asset:** `data/seeds/SHP-24815/invoice_scan.png` is a skewed,
    blurred scan used for manual testing. `scripts/seed.py --load` does NOT upload
    it or create a document row for it (`documents_type_check` allows only
