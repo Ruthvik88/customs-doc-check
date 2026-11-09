@@ -613,7 +613,7 @@ export default function ExportPage() {
                       </tr>
                     )}
                     {shipments.map((shipment) => {
-                      const state = exporting[shipment.id];
+                      const state = exporting[shipment.id] ?? "idle";
                       const isGenerating = state === "generating";
                       const isDone = state === "done";
                       const isFailed = state === "failed";
