@@ -31,11 +31,10 @@ export default function AppLayout({
   }, [mobileMenuOpen]);
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-[hsl(var(--background))]">
+    <div className="relative flex min-h-screen flex-col bg-customs-surface">
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
-      {/* Shifted side panel navigation directly into Header with glassmorphism (Image 1) */}
       <Header
         mobileSidebarOpen={mobileMenuOpen}
         toggleMobileSidebar={() => setMobileMenuOpen((o) => !o)}
@@ -43,7 +42,7 @@ export default function AppLayout({
       <main
         id="main-content"
         tabIndex={-1}
-        className="w-full flex-1 outline-none px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-12"
+        className="w-full flex-1 outline-none px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-16"
       >
         <div className="max-w-7xl mx-auto">
           {children}
