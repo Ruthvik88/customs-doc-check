@@ -202,6 +202,7 @@ describe("export gating", () => {
       method: "POST", body: JSON.stringify({ shipmentId: VALID_ID }),
     }));
     expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({ error: "Cannot progress: shipment must have exactly the complete set of eight cross-checks" });
     expect(supabaseMock.rpc).toHaveBeenCalledWith("shipment_export_snapshot", { p_shipment_id: VALID_ID });
   });
 

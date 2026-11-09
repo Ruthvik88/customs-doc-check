@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     p_shipment_id: shipmentId,
   });
   if (exportError || !snapshot) {
-    return NextResponse.json({ error: "Shipment cannot be exported" }, { status: 409 });
+    return NextResponse.json({ error: exportError?.message ?? "Shipment cannot be exported" }, { status: 409 });
   }
 
   const { shipment, fields: fieldByKey } = snapshot as {
