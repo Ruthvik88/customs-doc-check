@@ -18,12 +18,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <title>Customs Doc Check</title>
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              'try { if (localStorage.getItem("customs-doc-check-theme") === "dark") document.documentElement.classList.add("dark"); } catch (error) { console.error("Unable to read saved theme preference.", error); }',
-          }}
-        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

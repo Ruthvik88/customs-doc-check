@@ -15,53 +15,6 @@ export default function ReportsLoading() {
 
   return (
     <div className="bg-customs-surface-base font-body text-body-md text-customs-on-surface min-h-screen flex flex-col justify-between">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-customs-surface-raised/90 backdrop-blur-md border-b border-customs-border-hairline shadow-[0_1px_3px_rgba(15,27,45,0.04)]">
-        <div className="h-16 max-w-7xl mx-auto px-p-6 flex items-center justify-between gap-6">
-          <div className="flex items-center gap-p-8">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-customs-primary flex items-center justify-center text-customs-on-primary shadow-sm">
-                <ShieldCheck className="text-[20px]" aria-hidden="true" />
-              </div>
-              <span className="font-headline-sm text-headline-sm text-customs-on-surface tracking-tight whitespace-nowrap">
-                Customs Doc Check
-              </span>
-            </div>
-            <nav className="flex items-center gap-1">
-              <Link href="/dashboard" className="px-4 py-2 text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-high transition-all font-body text-body-sm">
-                Shipments
-              </Link>
-              <Link href="/reports" aria-current="page" className="px-4 py-2 transition-all bg-customs-primary text-customs-on-primary-container rounded-lg font-medium shadow-sm">
-                Accuracy Report
-              </Link>
-              <Link href="/export" className="px-4 py-2 text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-high transition-all font-body text-body-sm">
-                Export
-              </Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="inline-flex items-center px-2 py-0.5 rounded bg-customs-surface-container text-customs-secondary font-label-code-sm text-label-code-sm uppercase tracking-wider font-semibold border border-customs-border-hairline">
-              DOCUMENTATION MANAGER
-            </span>
-            <span className="font-label-code-md text-label-code-md text-customs-ink-secondary hidden lg:inline-block">
-              manager@demo.local
-            </span>
-            <div className="h-4 w-px bg-customs-border-hairline hidden lg:block"></div>
-            <button aria-label="Toggle dark mode" className="w-8 h-8 rounded-lg flex items-center justify-center text-customs-on-surface-variant hover:bg-customs-surface-container-high hover:text-customs-on-surface transition-colors" type="button">
-              {isDark ? (
-                <Sun className="text-[20px]" aria-hidden="true" />
-              ) : (
-                <Moon className="text-[20px]" aria-hidden="true" />
-              )}
-            </button>
-            <button aria-label="Sign out" className="w-8 h-8 rounded-lg flex items-center justify-center text-customs-on-surface-variant hover:bg-customs-surface-container-high hover:text-customs-on-surface transition-colors" type="button">
-              <LogOut className="text-[20px]" aria-hidden="true" />
-            </button>
-            <div className="w-8 h-8 rounded-full bg-customs-primary flex items-center justify-center shadow-sm">
-              <User className="text-customs-on-primary text-[18px]" aria-hidden="true" />
-            </div>
-          </div>
-        </div>
-      </header>
       <main className="w-full pt-16 bg-customs-surface-base flex-1">
         <div className="flex flex-col w-full">
           <div className="w-full max-w-7xl mx-auto px-p-6 py-8 flex flex-col gap-6">

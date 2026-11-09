@@ -9,43 +9,6 @@ import { ShieldCheck, HardDrive, Database, Verified, Settings } from "lucide-rea
 export default function ExportEmptyPage() {
   return (
     <div className="bg-customs-surface font-body text-body-md text-customs-on-surface min-h-screen flex flex-col">
-      <header className="fixed top-0 w-full z-50 bg-customs-surface-raised/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,27,45,0.04)]">
-        <div className="h-16 w-full px-8 flex items-center justify-between gap-6">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-lg bg-customs-primary flex items-center justify-center text-customs-on-primary shadow-sm">
-                <Icon as={ShieldCheck} size={20} aria-hidden="true" />
-              </div>
-              <span className="font-headline text-headline-sm text-customs-ink-primary tracking-tight whitespace-nowrap">
-                Customs Doc Check
-              </span>
-            </div>
-            <nav className="hidden lg:flex items-center gap-1 p-1 bg-customs-surface-container-low rounded-full">
-              <Link href="/dashboard" className="px-4 py-1.5 transition-colors font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full">
-                Shipments
-              </Link>
-              <Link href="/reports" className="px-4 py-1.5 font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full">
-                Accuracy Report
-              </Link>
-              <Link href="/export" className="px-4 py-1.5 transition-colors bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-full" aria-current="page">
-                Export
-              </Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-2 pl-p-2 border-l border-customs-border-hairline">
-            <div className="hidden sm:flex flex-col text-right">
-              <span className="font-label-code text-label-code-sm text-customs-ink-primary">
-                manager@demo.local
-              </span>
-              <div className="flex items-center justify-end gap-1">
-                <span className="inline-block px-1.5 py-0.25 bg-customs-secondary-container text-customs-on-secondary-container font-caption text-caption rounded">
-                  DOCUMENTATION MANAGER
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
 
       <main className="w-full pt-16 flex-1 bg-customs-surface">
         <div className="flex flex-col w-full">

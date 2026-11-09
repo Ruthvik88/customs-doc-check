@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "@/hooks/useSession";
 import { createClient } from "@/lib/supabase/browser";
-import { ShieldCheck, LogOut, Menu, X, BarChart3, FileText, Sun, Moon } from "lucide-react";
+import { ShieldCheck, LogOut, Menu, X, BarChart3, FileText } from "lucide-react";
 import { Icon } from "@/components/ui/icon";
 
 export function Header({
@@ -19,7 +19,6 @@ export function Header({
   const pathname = usePathname();
   const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null);
   const [localMobileOpen, setLocalMobileOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
 
@@ -36,15 +35,6 @@ export function Header({
     }
   };
 
-  const handleThemeToggle = () => {
-    const nextIsDark = !isDark;
-    setIsDark(nextIsDark);
-    if (document.documentElement) {
-      document.documentElement.classList.toggle("dark");
-    }
-    localStorage.setItem("customs-doc-check-theme", nextIsDark ? "dark" : "light");
-  };
-
   useEffect(() => {
     if (isOpen) {
       document.querySelector<HTMLElement>("#primary-navigation a")?.focus();
@@ -53,14 +43,6 @@ export function Header({
     }
     wasOpen.current = isOpen;
   }, [isOpen]);
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDark]);
 
   const handleSignOut = async () => {
     if (!supabase) return;
@@ -138,19 +120,6 @@ export function Header({
               </div>
             </div>
           )}
-          <button
-            type="button"
-            onClick={handleThemeToggle}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-customs-ink-secondary hover:text-customs-ink-primary hover:bg-customs-surface-base transition-colors"
-            aria-label={`Switch to ${document.documentElement.classList.contains("dark") ? "light" : "dark"} mode`}
-          >
-            {typeof document !== "undefined" &&
-            document.documentElement.classList.contains("dark") ? (
-              <Icon as={Sun} size={20} aria-hidden="true" />
-            ) : (
-              <Icon as={Moon} size={20} aria-hidden="true" />
-            )}
-          </button>
           <button
             type="button"
             onClick={handleSignOut}

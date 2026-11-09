@@ -45,57 +45,6 @@ export default function ReviewScreenPage() {
   return (
     <div className="bg-surface font-body-md text-on-surface antialiased min-h-screen">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-surface-raised/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-        <div className="h-14 w-full px-4 lg:px-8 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1">
-              <ShieldCheck className="text-primary text-[22px]" />
-              <span className="font-headline-sm text-headline-sm tracking-tight text-ink-primary">Customs Doc Check</span>
-            </div>
-            <span className="h-4 w-px bg-outline-variant/60"></span>
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-1 font-body-sm text-body-sm text-ink-secondary hover:text-ink-primary transition-colors no-underline"
-            >
-              <ArrowLeft className="text-[16px]" />
-              <span>Shipments</span>
-            </Link>
-            <span className="h-4 w-px bg-outline-variant/60"></span>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-status-progress-bg text-status-progress-text font-label-code-sm text-label-code-sm font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-status-progress-text animate-pulse" />
-              <span>SHP-24811 • Review Mode</span>
-            </span>
-          </div>
-          <nav className="hidden xl:flex items-center gap-1 p-1 rounded-lg bg-surface-base" data-active-classes="bg-surface-container text-ink-primary font-semibold">
-            <Link href="/dashboard" className="px-3 py-1 rounded font-body-sm text-body-sm text-ink-secondary hover:text-ink-primary transition-colors no-underline">
-              Matrix
-            </Link>
-            <Link href="/review/screen" aria-current="page" className="px-3 py-1 rounded transition-colors bg-surface-container text-ink-primary font-semibold no-underline">
-              Split Review
-            </Link>
-            <Link href="/dashboard" className="px-3 py-1 rounded font-body-sm text-body-sm text-ink-secondary hover:text-ink-primary transition-colors no-underline">
-              Accuracy Report
-            </Link>
-            <Link href="/dashboard" className="px-3 py-1 rounded font-body-sm text-body-sm text-ink-secondary hover:text-ink-primary transition-colors no-underline">
-              Audit Log
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <div className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-status-confirmed-bg text-status-confirmed-text font-label-code-sm text-label-code-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-status-confirmed-text animate-pulse" />
-              <span>SYSTEM ONLINE</span>
-            </div>
-            <span className="hidden md:block h-4 w-px bg-outline-variant/60"></span>
-            <div className="hidden sm:flex flex-col text-right">
-              <span className="font-label-code-sm text-label-code-sm text-ink-primary">manager@demo.local</span>
-              <span className="font-caption text-caption text-ink-muted uppercase tracking-wider">Documentation Manager</span>
-            </div>
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-              <User className="text-on-primary text-[18px]" />
-            </div>
-          </div>
-        </div>
-      </header>
 
       <main className="w-full pt-14 bg-surface min-h-[calc(100vh-3rem)]">
         <div className="flex flex-col w-full h-[calc(100vh-3.5rem)] overflow-hidden">

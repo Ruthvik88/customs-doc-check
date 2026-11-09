@@ -56,29 +56,6 @@ export default function ReviewManagerApprovalPage() {
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface">
       {/* Header */}
-      <header className="fixed top-0 w-full z-50 bg-surface-raised/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,27,45,0.04)]">
-        <div className="h-16 w-full px-8 flex items-center justify-between gap-6">
-          <div className="flex items-center gap-p-8">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm">
-                <ShieldCheck className="text-[20px]" />
-              </div>
-              <span className="font-headline-sm text-headline-sm text-ink-primary font-bold tracking-tight whitespace-nowrap">Customs Doc Check</span>
-            </div>
-            <nav className="hidden lg:flex items-center gap-1 p-1 bg-surface-container-low rounded-xl" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg">
-              <Link href="/dashboard" className="px-4 py-1.5 transition-colors bg-primary-container text-on-primary-container font-semibold rounded-lg">Shipments</Link>
-              <Link href="/dashboard/reports" className="px-4 py-1.5 font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors">Accuracy Report</Link>
-              <Link href="/dashboard/export" className="px-4 py-1.5 font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors">Export</Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex flex-col text-right">
-              <span className="font-body-sm text-body-sm text-ink-primary font-medium leading-none">manager@demo.local</span>
-              <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mt-1">DOCUMENTATION MANAGER</span>
-            </div>
-          </div>
-        </div>
-      </header>
 
       <main className="w-full pt-16 bg-surface">
         <div className="flex flex-col w-full">
