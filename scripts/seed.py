@@ -17,6 +17,7 @@ import os
 import re
 import secrets
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -1224,6 +1225,10 @@ def load_into_supabase(manifest):
                 "supplier_id": supplier_ids[s["key"]],
                 "status": s["status"],
                 "created_by": exec_id,
+                **({
+                    "approved_by": exec_id,
+                    "approved_at": datetime.now(timezone.utc).isoformat(),
+                } if s["status"] == "Approved" else {}),
             }).execute(),
             f"insert shipment {num}",
         )
