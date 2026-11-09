@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useSession } from "@/hooks/useSession";
 import { createClient } from "@/lib/supabase/browser";
 import { ShieldCheck, User, LogOut, Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 export function Header({
   mobileSidebarOpen = false,
@@ -120,6 +121,8 @@ export function Header({
               </div>
             </div>
           )}
+          {/* Theme Toggle */}
+          <ThemeToggle />
           <div className="w-8 h-8 rounded-full bg-customs-primary text-customs-on-primary flex items-center justify-center shadow-xs">
             <User className="w-4 h-4" aria-hidden="true" />
           </div>
