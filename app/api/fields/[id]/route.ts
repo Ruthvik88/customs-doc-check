@@ -38,7 +38,7 @@ export async function PATCH(
   // Verify field exists and user can edit it (executive on their shipment).
   const { data: field } = await supabase
     .from("fields")
-    .select("*, shipments(created_by, supplier_id)")
+    .select("*, shipments(created_by, supplier_id, status)")
     .eq("id", params.id)
     .single();
   if (!field) {
@@ -46,6 +46,9 @@ export async function PATCH(
   }
   if (field.shipments.created_by !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+  if (field.shipments.status === "Exported") {
+    return NextResponse.json({ error: "Exported shipments cannot be changed" }, { status: 409 });
   }
 
   const service = requireServiceRoleClient();

@@ -145,9 +145,9 @@ export default function ExportPage() {
     return (
       <div className="w-full min-h-screen flex flex-col">
         <header className="fixed top-0 left-0 right-0 z-50 bg-customs-surface-raised/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,27,45,0.04)]">
-          <div className="h-16 w-full px-margin-desktop flex items-center justify-between gap-space-lg">
-            <div className="flex items-center gap-space-lg">
-              <div className="flex items-center gap-space-sm">
+          <div className="h-16 w-full px-8 flex items-center justify-between gap-6">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
                 <div className="w-9 h-9 rounded-lg bg-customs-primary flex items-center justify-center text-customs-on-primary shadow-sm">
                   <Icon as={ShieldCheck} size={20} aria-hidden="true" />
                 </div>
@@ -155,33 +155,33 @@ export default function ExportPage() {
                   Customs Doc Check
                 </span>
               </div>
-              <nav className="hidden lg:flex items-center gap-space-xs p-space-xs bg-customs-surface-container-low rounded-full">
+              <nav className="hidden lg:flex items-center gap-1 p-1 bg-customs-surface-container-low rounded-full">
                 <Link
                   href="/dashboard"
-                  className="px-space-md py-1.5 transition-colors font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full"
+                  className="px-4 py-1.5 transition-colors font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full"
                 >
                   Shipments
                 </Link>
                 <Link
                   href="/reports"
-                  className="px-space-md py-1.5 font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full"
+                  className="px-4 py-1.5 font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full"
                 >
                   Accuracy Report
                 </Link>
                 <Link
                   href="/export"
-                  className="px-space-md py-1.5 transition-colors bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-full" aria-current="page"
+                  className="px-4 py-1.5 transition-colors bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-full" aria-current="page"
                 >
                   Export
                 </Link>
               </nav>
             </div>
-            <div className="flex items-center gap-space-md">
-              <div className="hidden xl:flex items-center gap-space-xs px-2 py-1 rounded-full bg-customs-status-confirmed-bg text-customs-status-confirmed-text font-label-code text-label-code-sm">
+            <div className="flex items-center gap-4">
+              <div className="hidden xl:flex items-center gap-1 px-2 py-1 rounded-full bg-customs-status-confirmed-bg text-customs-status-confirmed-text font-label-code text-label-code-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-customs-status-confirmed-text animate-pulse" aria-hidden="true" />
                 <span>SYSTEM ONLINE</span>
               </div>
-              <div className="flex items-center gap-space-sm pl-space-sm border-l border-customs-border-hairline">
+              <div className="flex items-center gap-2 pl-p-2 border-l border-customs-border-hairline">
                 <div className="hidden sm:flex flex-col text-right">
                   <span className="font-label-code text-label-code-sm text-customs-ink-primary">
                     manager@demo.local
@@ -209,10 +209,10 @@ export default function ExportPage() {
         </header>
         <main className="w-full pt-16 flex-1 bg-customs-surface">
           <div className="flex flex-col w-full">
-            <div className="w-full px-margin-desktop py-space-lg flex flex-col gap-space-lg">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md pb-space-sm">
-                <div className="flex flex-col gap-space-xs">
-                  <div className="flex items-center gap-space-sm">
+            <div className="w-full px-8 py-6 flex flex-col gap-6">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-p-2">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
                     <span className="font-label-code text-label-code-sm uppercase tracking-wider text-customs-primary">
                       Compliance Clearance Hub
                     </span>
@@ -228,7 +228,7 @@ export default function ExportPage() {
                     One row per line item, in the filing software&apos;s import layout
                   </p>
                 </div>
-                <div className="flex items-center gap-space-sm bg-customs-surface-container-high px-space-md py-space-xs rounded-lg shadow-sm">
+                <div className="flex items-center gap-2 bg-customs-surface-container-high px-4 py-1 rounded-lg shadow-sm">
                   <div className="flex items-center gap-2">
                     <div className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-customs-primary opacity-75" aria-hidden="true" />
@@ -244,8 +244,8 @@ export default function ExportPage() {
                   </span>
                 </div>
               </div>
-              <div className="relative overflow-hidden rounded-xl bg-customs-status-progress-bg px-space-lg py-3.5 shadow-sm">
-                <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+              <div className="relative overflow-hidden rounded-xl bg-customs-status-progress-bg px-6 py-3.5 shadow-sm">
+                <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 rounded-lg bg-customs-surface-raised flex items-center justify-center text-customs-status-progress-text shadow-sm flex-shrink-0">
                       <Icon as={RefreshCw} size={16} className="animate-spin" aria-hidden="true" />
@@ -262,7 +262,7 @@ export default function ExportPage() {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-space-sm self-start sm:self-auto pl-10 sm:pl-0">
+                  <div className="flex items-center gap-2 self-start sm:self-auto pl-10 sm:pl-0">
                     <div className="h-1.5 w-24 bg-customs-surface-raised rounded-full overflow-hidden">
                       <div className="h-full bg-customs-primary rounded-full animate-pulse w-3/5" />
                     </div>
@@ -273,13 +273,13 @@ export default function ExportPage() {
                 </div>
               </div>
               <div className="rounded-xl bg-customs-surface-raised shadow-md overflow-hidden flex flex-col">
-                <div className="p-space-md bg-customs-surface-raised flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
-                  <div className="flex items-center gap-space-sm w-full sm:w-80">
+                <div className="p-4 bg-customs-surface-raised flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-2 w-full sm:w-80">
                     <div className="relative w-full h-9 bg-customs-surface-base rounded-lg overflow-hidden">
                       <div className="absolute inset-0 -translate-x-full animate-[shimmer_1_8s_infinite] bg-gradient-to-r from-transparent via-customs-surface-container-high/60 to-transparent" />
                     </div>
                   </div>
-                  <div className="flex items-center gap-space-sm">
+                  <div className="flex items-center gap-2">
                     <div className="w-28 h-9 bg-customs-surface-base rounded-lg overflow-hidden relative">
                       <div className="absolute inset-0 -translate-x-full animate-[shimmer_1_8s_infinite] bg-gradient-to-r from-transparent via-customs-surface-container-high/60 to-transparent" />
                     </div>
@@ -293,7 +293,7 @@ export default function ExportPage() {
                     <thead>
                       <tr className="h-10 bg-customs-surface-base text-customs-ink-secondary">
                         {[26, 28, 18, 16, 12].map((pct, i) => (
-                          <th key={i} className={`px-space-lg w-[${pct}%]`} scope="col">
+                          <th key={i} className={`px-6 w-[${pct}%]`} scope="col">
                             <div className="flex items-center gap-2">
                               <div className="h-3 bg-customs-surface-dim rounded relative overflow-hidden">
                                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_1_5s_infinite] bg-gradient-to-r from-transparent via-white/80 to-transparent" />
@@ -309,7 +309,7 @@ export default function ExportPage() {
                     <tbody className="bg-customs-surface-raised divide-none">
                       {[1, 2, 3, 4, 5, 6].map((i) => (
                         <tr key={i} className={`h-16 ${i % 2 === 0 ? "bg-customs-surface-container-low/20" : ""}`}>
-                          <td className="px-space-lg py-space-sm">
+                          <td className="px-6 py-2">
                             <div className="flex flex-col gap-1.5">
                               <div className="flex items-center gap-2">
                                 <div className={`h-4 w-${i % 2 === 0 ? 36 : 32} bg-customs-surface-dim rounded font-label-code-md relative overflow-hidden`}>
@@ -324,7 +324,7 @@ export default function ExportPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-space-md py-space-sm">
+                          <td className="px-4 py-2">
                             <div className="flex flex-col gap-1">
                               <div className={`h-4 w-${i % 2 === 0 ? 40 : 48} bg-customs-surface-dim rounded relative overflow-hidden`}>
                                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_1_6s_infinite] bg-gradient-to-r from-transparent via-white/70 to-transparent" />
@@ -334,7 +334,7 @@ export default function ExportPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-space-md py-space-sm">
+                          <td className="px-4 py-2">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-full bg-customs-surface-dim relative overflow-hidden flex-shrink-0">
                                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_1_6s_infinite] bg-gradient-to-r from-transparent via-white/70 to-transparent" />
@@ -344,7 +344,7 @@ export default function ExportPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-space-md py-space-sm">
+                          <td className="px-4 py-2">
                             <div className="flex flex-col gap-1">
                               <div className={`h-3.5 w-${i % 2 === 0 ? 24 : 28} bg-customs-surface-dim rounded font-label-code-sm relative overflow-hidden`}>
                                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_1_6s_infinite] bg-gradient-to-r from-transparent via-white/70 to-transparent" />
@@ -354,7 +354,7 @@ export default function ExportPage() {
                               </div>
                             </div>
                           </td>
-                          <td className="px-space-lg py-space-sm text-right">
+                          <td className="px-6 py-2 text-right">
                             <div className="inline-flex justify-end">
                               <div className="h-9 w-24 bg-customs-primary/20 rounded-lg relative overflow-hidden shadow-sm">
                                 <div className="absolute inset-0 -translate-x-full animate-[shimmer_1_6s_infinite] bg-gradient-to-r from-transparent via-white/80 to-transparent" />
@@ -366,7 +366,7 @@ export default function ExportPage() {
                     </tbody>
                   </table>
                 </div>
-                <div className="px-space-lg py-space-md bg-customs-surface-raised flex items-center justify-between">
+                <div className="px-6 py-4 bg-customs-surface-raised flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="h-3.5 w-32 bg-customs-surface-dim rounded relative overflow-hidden">
                       <div className="absolute inset-0 -translate-x-full animate-[shimmer_1_5s_infinite] bg-gradient-to-r from-transparent via-white/70 to-transparent" />
@@ -415,9 +415,9 @@ export default function ExportPage() {
   return (
     <div className="bg-customs-surface font-body text-body-md text-customs-on-surface min-h-screen flex flex-col">
       <header className="fixed top-0 left-0 right-0 z-50 bg-customs-surface-raised/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,27,45,0.04)]">
-        <div className="h-16 w-full px-margin-desktop flex items-center justify-between gap-space-lg">
-          <div className="flex items-center gap-space-lg">
-            <div className="flex items-center gap-space-sm">
+        <div className="h-16 w-full px-8 flex items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
               <div className="w-9 h-9 rounded-lg bg-customs-primary flex items-center justify-center text-customs-on-primary shadow-sm">
                 <Icon as={ShieldCheck} size={20} aria-hidden="true" />
               </div>
@@ -425,29 +425,29 @@ export default function ExportPage() {
                 Customs Doc Check
               </span>
             </div>
-            <nav className="hidden lg:flex items-center gap-space-xs p-space-xs bg-customs-surface-container-low rounded-full">
+            <nav className="hidden lg:flex items-center gap-1 p-1 bg-customs-surface-container-low rounded-full">
               <Link
                 href="/dashboard"
-                className="px-space-md py-1.5 transition-colors font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full"
+                className="px-4 py-1.5 transition-colors font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full"
               >
                 Shipments
               </Link>
               <Link
                 href="/reports"
-                className="px-space-md py-1.5 font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full"
+                className="px-4 py-1.5 font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full"
               >
                 Accuracy Report
               </Link>
               <Link
                 href="/export"
-                className="px-space-md py-1.5 transition-colors bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-full" aria-current="page"
+                className="px-4 py-1.5 transition-colors bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-full" aria-current="page"
               >
                 Export
               </Link>
             </nav>
           </div>
-          <div className="flex items-center gap-space-md">
-            <div className="flex items-center gap-space-sm pl-space-sm border-l border-customs-border-hairline">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 pl-p-2 border-l border-customs-border-hairline">
               <div className="hidden sm:flex flex-col text-right">
                 <span className="font-label-code text-label-code-sm text-customs-ink-primary">
                   manager@demo.local
@@ -476,11 +476,11 @@ export default function ExportPage() {
 
       <main className="w-full pt-16 flex-1 bg-customs-surface">
         <div className="flex flex-col w-full">
-          <div className="w-full px-margin-desktop py-space-lg flex flex-col gap-space-lg">
+          <div className="w-full px-8 py-6 flex flex-col gap-6">
             {/* Header section */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
-              <div className="flex flex-col gap-space-xs">
-                <div className="flex items-center gap-space-sm">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
                   <h1 className="font-headline text-headline-xl text-customs-ink-primary tracking-tight">
                     Export Shipments
                   </h1>
@@ -495,7 +495,7 @@ export default function ExportPage() {
             </div>
 
             {error && (
-              <div className="rounded-lg border border-customs-status-error-bg bg-customs-status-error-bg/20 p-4 shadow-sm flex items-start gap-space-sm">
+              <div className="rounded-lg border border-customs-status-error-bg bg-customs-status-error-bg/20 p-4 shadow-sm flex items-start gap-2">
                 <Icon as={X} size={16} className="text-customs-status-error-text shrink-0" aria-hidden="true" />
                 <div className="flex flex-col gap-0.5">
                   <span className="font-body-sm text-body-sm font-bold text-customs-status-error-text">
@@ -513,8 +513,8 @@ export default function ExportPage() {
             {/* Table container */}
             <div className="bg-customs-surface-raised rounded-xl shadow-sm overflow-hidden flex flex-col">
               {/* Table header */}
-              <div className="px-space-lg py-space-md bg-customs-surface-base flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
-                <div className="flex items-center gap-space-sm">
+              <div className="px-6 py-4 bg-customs-surface-base flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
                   <Icon as={CheckCheck} size={20} className="text-customs-status-confirmed-text" aria-hidden="true" />
                   <span className="font-headline text-headline-sm text-customs-ink-primary">
                     Verified Approved Consignments
@@ -523,7 +523,7 @@ export default function ExportPage() {
                     {clearedCount} Records
                   </span>
                 </div>
-                <div className="flex items-center gap-space-sm">
+                <div className="flex items-center gap-2">
                   <span className="font-caption text-caption text-customs-ink-secondary">
                     Single-click row execution runs the export.
                   </span>
@@ -534,16 +534,16 @@ export default function ExportPage() {
                 <table className="w-full text-left">
                   <thead>
                     <tr className="bg-customs-surface-base text-customs-ink-secondary font-caption text-caption uppercase tracking-wider">
-                      <th className="py-3 px-space-lg font-semibold" scope="col">
+                      <th className="py-3 px-6 font-semibold" scope="col">
                         Shipment
                       </th>
-                      <th className="py-3 px-space-md font-semibold" scope="col">
+                      <th className="py-3 px-4 font-semibold" scope="col">
                         Supplier
                       </th>
-                      <th className="py-3 px-space-md font-semibold" scope="col">
+                      <th className="py-3 px-4 font-semibold" scope="col">
                         Approved On
                       </th>
-                      <th className="py-3 px-space-lg text-right font-semibold" scope="col">
+                      <th className="py-3 px-6 text-right font-semibold" scope="col">
                         Actions / Export
                       </th>
                     </tr>
@@ -551,35 +551,35 @@ export default function ExportPage() {
                   <tbody className="divide-y-0 text-customs-ink-primary">
                     {shipments.length === 0 && (
                       <tr>
-                        <td className="px-space-lg py-space-lg text-center text-customs-ink-secondary" colSpan={4}>
+                        <td className="px-6 py-6 text-center text-customs-ink-secondary" colSpan={4}>
                           No approved shipments ready for export.
                         </td>
                       </tr>
                     )}
                     {shipments.length === 0 && (
                       <tr>
-                        <td className="px-space-lg py-space-xl" colSpan={4}>
-                          <div className="bg-customs-surface-raised rounded-xl shadow-sm p-space-xl flex flex-col items-center justify-center text-center min-h-[460px]">
-                            <h2 className="font-headline text-headline-lg text-customs-ink-primary tracking-tight mb-space-sm">
+                        <td className="px-6 py-8" colSpan={4}>
+                          <div className="bg-customs-surface-raised rounded-xl shadow-sm p-8 flex flex-col items-center justify-center text-center min-h-[460px]">
+                            <h2 className="font-headline text-headline-lg text-customs-ink-primary tracking-tight mb-p-2">
                               No approved shipments yet
                             </h2>
-                            <p className="font-body text-body-md text-customs-ink-secondary max-w-xl mx-auto leading-relaxed mb-space-xl">
+                            <p className="font-body text-body-md text-customs-ink-secondary max-w-xl mx-auto leading-relaxed mb-p-8">
                               Shipments must complete document verification and
                               receive manager approval before export CSVs can be
                               generated. Once a shipment is approved, it will
                               automatically appear here ready for filing.
                             </p>
-                            <div className="flex flex-col sm:flex-row items-center gap-space-sm">
+                            <div className="flex flex-col sm:flex-row items-center gap-2">
                               <Link
                                 href="/dashboard"
-                                className="inline-flex items-center justify-center gap-2 px-space-lg py-2.5 bg-customs-primary text-customs-on-primary font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary-container transition-colors shadow-sm"
+                                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-customs-primary text-customs-on-primary font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary-container transition-colors shadow-sm"
                               >
                                 <Icon as={CheckCheck} size={16} aria-hidden="true" />
                                 <span>View Pending Approvals</span>
                               </Link>
                               <Link
                                 href="/dashboard"
-                                className="inline-flex items-center justify-center gap-2 px-space-lg py-2.5 bg-customs-surface-base text-customs-ink-primary font-headline-sm text-headline-sm rounded-lg hover:bg-customs-surface-container transition-colors"
+                                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-customs-surface-base text-customs-ink-primary font-headline-sm text-headline-sm rounded-lg hover:bg-customs-surface-container transition-colors"
                               >
                                 <Icon as={LayoutDashboard} size={16} className="text-customs-ink-secondary" aria-hidden="true" />
                                 <span>Go to Shipments Dashboard</span>
@@ -600,9 +600,9 @@ export default function ExportPage() {
                         (isGenerating ? " bg-customs-surface-container-low/20" : "");
                       return (
                         <tr key={shipment.id} className={rowClass}>
-                          <td className="py-space-md px-space-lg align-middle">
+                          <td className="py-4 px-6 align-middle">
                             <div className="flex flex-col">
-                              <div className="flex items-center gap-space-xs">
+                              <div className="flex items-center gap-1">
                                 <span className="font-label-code text-label-code-md font-bold text-customs-ink-primary tracking-tight">
                                   {shipment.shipment_number}
                                 </span>
@@ -612,7 +612,7 @@ export default function ExportPage() {
                               </span>
                             </div>
                           </td>
-                          <td className="py-space-md px-space-md align-middle">
+                          <td className="py-4 px-4 align-middle">
                             <div className="flex flex-col">
                               <span className="font-body text-body-md font-medium text-customs-ink-primary">
                                 {supplierName(shipment.suppliers) ?? "—"}
@@ -623,7 +623,7 @@ export default function ExportPage() {
                               </span>
                             </div>
                           </td>
-                          <td className="py-space-md px-space-md align-middle">
+                          <td className="py-4 px-4 align-middle">
                             <div className="flex flex-col">
                               <span className="font-label-code text-label-code-sm font-medium text-customs-ink-primary">
                                 {shipment.approved_at
@@ -652,14 +652,14 @@ export default function ExportPage() {
                               )}
                             </div>
                           </td>
-                          <td className="py-space-md px-space-lg align-middle text-right">
+                          <td className="py-4 px-6 align-middle text-right">
                             {isGenerating ? (
-                              <Button variant="primary" size="sm" className="flex items-center gap-2 px-space-md py-1.5 text-body-sm text-body-md font-semibold" disabled type="button">
+                              <Button variant="primary" size="sm" className="flex items-center gap-2 px-4 py-1.5 text-body-sm text-body-md font-semibold" disabled type="button">
                                 <Icon as={RefreshCw} size={16} className="animate-spin text-customs-primary" aria-hidden="true" />
                                 <span>Generating CSV&hellip;</span>
                               </Button>
                             ) : isDone ? (
-                              <Button variant="primary" size="sm" className="flex items-center gap-1 px-space-md py-1.5 text-body-sm text-body-md font-semibold shadow-sm bg-customs-status-confirmed-bg text-customs-status-confirmed-text hover:bg-customs-status-confirmed-bg transition-colors" type="button">
+                              <Button variant="primary" size="sm" className="flex items-center gap-1 px-4 py-1.5 text-body-sm text-body-md font-semibold shadow-sm bg-customs-status-confirmed-bg text-customs-status-confirmed-text hover:bg-customs-status-confirmed-bg transition-colors" type="button">
                                 <Icon as={CheckCheck} size={16} aria-hidden="true" />
                                 <span>
                                   Downloaded {((downloadBytes[shipment.id] ?? 0) / 1024).toFixed(0)} KB
@@ -679,7 +679,7 @@ export default function ExportPage() {
                                 </Button>
                               </div>
                             ) : (
-                              <Button variant="primary" size="sm" className="flex items-center gap-1.5 px-space-md py-1.5 text-body-sm text-body-md font-semibold shadow-sm" onClick={() => void exportShipment(shipment.id)} type="button">
+                              <Button variant="primary" size="sm" className="flex items-center gap-1.5 px-4 py-1.5 text-body-sm text-body-md font-semibold shadow-sm" onClick={() => void exportShipment(shipment.id)} type="button">
                                 <Icon as={Download} size={16} className="text-customs-primary" aria-hidden="true" />
                                 <span>Export CSV</span>
                               </Button>
@@ -693,13 +693,13 @@ export default function ExportPage() {
               </div>
 
               {/* Pagination / Record summary footer */}
-              <div className="flex items-center gap-space-sm font-body text-body-sm text-customs-ink-secondary">
+              <div className="flex items-center gap-2 font-body text-body-sm text-customs-ink-secondary">
                 Showing <strong className="text-customs-ink-primary font-semibold">{clearedCount}</strong> of <strong className="text-customs-ink-primary font-semibold">{clearedCount}</strong> approved shipments ready for export
               </div>
             </div>
 
             {/* Export schema specification panel */}
-            <div className="bg-customs-surface-container-low p-space-md rounded-xl flex items-start gap-space-sm">
+            <div className="bg-customs-surface-container-low p-4 rounded-xl flex items-start gap-2">
               <Icon as={Database} size={20} className="text-customs-primary mt-0.5" aria-hidden="true" />
               <div className="flex flex-col gap-0.5">
                 <span className="font-headline text-headline-sm text-customs-ink-primary">
@@ -717,3 +717,4 @@ export default function ExportPage() {
     </div>
   );
 }
+

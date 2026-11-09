@@ -59,7 +59,7 @@ export async function POST(req: Request) {
   // Verify shipment exists and belongs to this executive (created_by).
   const { data: shipment, error: shipmentError } = await supabase
     .from("shipments")
-    .select("id, created_by")
+    .select("id, created_by, status")
     .eq("id", shipmentId)
     .single();
   if (shipmentError || !shipment) {
@@ -67,6 +67,9 @@ export async function POST(req: Request) {
   }
   if (shipment.created_by !== user.id) {
     return NextResponse.json({ error: "Forbidden: not your shipment" }, { status: 403 });
+  }
+  if (shipment.status === "Exported") {
+    return NextResponse.json({ error: "Exported shipments cannot be changed" }, { status: 409 });
   }
 
   const service = requireServiceRoleClient();
@@ -84,13 +87,21 @@ export async function POST(req: Request) {
 
   // Remove existing file/row if re-uploading.
   if (existing?.length) {
-    await service.storage.from(BUCKET).remove(existing.map((d) => d.storage_path));
-    await service.from("documents").delete().eq("shipment_id", shipmentId).eq("type", type);
-    for (const d of existing as any[]) {
-      await service.from("fields").delete().eq("document_id", d.id);
-      await service.from("line_items").delete().eq("document_id", d.id);
-      await service.from("extractions").delete().eq("document_id", d.id);
+    const { error: deleteError } = await service.from("documents").delete()
+      .eq("shipment_id", shipmentId).eq("type", type);
+    if (deleteError) {
+      const status = deleteError.message?.includes("Source changes are not allowed after export") ? 409 : 500;
+      return NextResponse.json({ error: deleteError.message }, { status });
     }
+    for (const d of existing as any[]) {
+      const { error: fieldError } = await service.from("fields").delete().eq("document_id", d.id);
+      if (fieldError) return NextResponse.json({ error: fieldError.message }, { status: 500 });
+      const { error: lineItemError } = await service.from("line_items").delete().eq("document_id", d.id);
+      if (lineItemError) return NextResponse.json({ error: lineItemError.message }, { status: 500 });
+      const { error: extractionError } = await service.from("extractions").delete().eq("document_id", d.id);
+      if (extractionError) return NextResponse.json({ error: extractionError.message }, { status: 500 });
+    }
+    await service.storage.from(BUCKET).remove(existing.map((d) => d.storage_path));
   }
 
   const { error: uploadError } = await service.storage.from(BUCKET).upload(storagePath, fileBuffer, {
@@ -117,11 +128,14 @@ export async function POST(req: Request) {
     .select()
     .single();
   if (docError) {
-    return NextResponse.json({ error: docError.message }, { status: 500 });
+    await service.storage.from(BUCKET).remove([storagePath]);
+    const status = docError.message?.includes("Source changes are not allowed after export") ? 409 : 500;
+    return NextResponse.json({ error: docError.message }, { status });
   }
 
-  // Reset shipment to Draft when a new document is added.
-  await supabase.from("shipments").update({ status: "Draft" }).eq("id", shipmentId);
+  // Keep review state set by the source-change trigger after approved shipments are edited.
+  await supabase.from("shipments").update({ status: "Draft" })
+    .eq("id", shipmentId).neq("status", "Needs review");
 
   return NextResponse.json({ document: doc });
 }

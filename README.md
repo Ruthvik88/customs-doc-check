@@ -58,8 +58,11 @@ cp .env.example .env
 # 3. Set up Supabase (see deployment.md)
 #    - Create project in region ap-south-1
 #    - Apply database/schema.sql
+#    - Apply database/migrations/002_exec_status_policy_and_supplier_unique.sql
 #    - Run the read-only duplicate preflight at the top of database/migrations/003_crosscheck_integrity.sql,
 #      reconcile any reported records manually, then apply that migration
+#    - Apply database/migrations/004_authorization_and_gate_hardening.sql after 003
+#      (first verify its SQL fixtures on a disposable local Supabase database)
 #    - Create private Storage bucket "documents"
 #    - Seed demo users (see deployment.md)
 
@@ -88,6 +91,13 @@ Variable names only — values go in `.env` (gitignored). See `.env.example`:
 - `docs/export-layout.md` — filing-software import CSV layout (assumption)
 - `docs/limitations.md` — honest limits (no bounding boxes, free-tier AI not
   production-compliant, no HSN/duty, no filing portal)
+
+Migration 004 prevents executives and service-role REST writes from changing
+shipment ownership. A documentation manager can make a reasoned, audited
+transfer through `transfer_shipment_ownership()`. It also requires all eight
+cross-check types before approval/export. Any source edit invalidates the
+approval and prior checks in the same transaction; exported shipments reject
+source edits and keep their export history unchanged.
 
 ## Out of scope
 Customs portal filing, HSN classification/duty calculation, customer tracking

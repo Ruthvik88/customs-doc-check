@@ -68,7 +68,7 @@ export async function POST(req: Request) {
   // Executives may process only shipments they created, as in the upload flow.
   const { data: shipment, error: shipmentError } = await supabase
     .from("shipments")
-    .select("id, created_by, shipment_number")
+    .select("id, created_by, shipment_number, status")
     .eq("id", shipmentId)
     .single();
   if (shipmentError || !shipment) {
@@ -76,6 +76,9 @@ export async function POST(req: Request) {
   }
   if (shipment.created_by !== user.id) {
     return NextResponse.json({ error: "Forbidden: not your shipment" }, { status: 403 });
+  }
+  if (shipment.status === "Exported") {
+    return NextResponse.json({ error: "Exported shipments cannot be changed" }, { status: 409 });
   }
 
   const service = requireServiceRoleClient();

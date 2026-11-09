@@ -28,9 +28,9 @@ export default function ExportApprovedPage() {
     <div className="bg-customs-surface font-body text-body-md text-customs-on-surface min-h-screen flex flex-col">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-customs-surface-raised/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,27,45,0.04)]">
-        <div className="h-16 w-full px-margin-desktop flex items-center justify-between gap-space-lg">
-          <div className="flex items-center gap-space-xl">
-            <div className="flex items-center gap-space-sm">
+        <div className="h-16 w-full px-8 flex items-center justify-between gap-6">
+          <div className="flex items-center gap-p-8">
+            <div className="flex items-center gap-2">
               <div className="w-9 h-9 rounded-lg bg-customs-primary flex items-center justify-center text-customs-on-primary shadow-sm">
                 <ShieldCheck className="text-[20px]" />
               </div>
@@ -38,24 +38,24 @@ export default function ExportApprovedPage() {
                 Customs Doc Check
               </span>
             </div>
-            <nav className="hidden lg:flex items-center gap-space-xs p-space-xs bg-customs-surface-container-low rounded-full" data-active-classes="bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-lg">
-              <Link href="/dashboard" className="px-space-md py-1.5 transition-colors font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full">
+            <nav className="hidden lg:flex items-center gap-1 p-1 bg-customs-surface-container-low rounded-full" data-active-classes="bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-lg">
+              <Link href="/dashboard" className="px-4 py-1.5 transition-colors font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full">
                 Shipments
               </Link>
-              <Link href="/reports" className="px-space-md py-1.5 font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full">
+              <Link href="/reports" className="px-4 py-1.5 font-headline-sm text-headline-sm text-customs-on-surface-variant hover:text-customs-on-surface hover:bg-customs-surface-container-low/50 rounded-full">
                 Accuracy Report
               </Link>
-              <Link href="/export" className="px-space-md py-1.5 transition-colors bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-full" aria-current="page">
+              <Link href="/export" className="px-4 py-1.5 transition-colors bg-customs-primary text-customs-on-primary-container font-headline-sm rounded-full" aria-current="page">
                 Export
               </Link>
             </nav>
           </div>
-          <div className="flex items-center gap-space-md">
-            <div className="hidden xl:flex items-center gap-space-xs px-2 py-1 rounded-full bg-customs-status-confirmed-bg text-customs-status-confirmed-text font-label-code text-label-code-sm">
+          <div className="flex items-center gap-4">
+            <div className="hidden xl:flex items-center gap-1 px-2 py-1 rounded-full bg-customs-status-confirmed-bg text-customs-status-confirmed-text font-label-code text-label-code-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-customs-status-confirmed-text animate-pulse" />
               <span>SYSTEM ONLINE</span>
             </div>
-            <div className="flex items-center gap-space-sm pl-space-sm border-l border-customs-border-hairline">
+            <div className="flex items-center gap-2 pl-p-2 border-l border-customs-border-hairline">
               <div className="hidden sm:flex flex-col text-right">
                 <span className="font-label-code text-label-code-sm text-customs-ink-primary">
                   manager@demo.local
@@ -79,11 +79,11 @@ export default function ExportApprovedPage() {
 
       <main className="w-full pt-16 flex-1 bg-customs-surface">
         <div className="flex flex-col w-full">
-          <div className="w-full px-margin-desktop py-space-lg flex flex-col gap-space-lg">
+          <div className="w-full px-8 py-6 flex flex-col gap-6">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
-              <div className="flex flex-col gap-space-xs">
-                <div className="flex items-center gap-space-sm">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
                   <h1 className="font-headline text-headline-xl text-customs-ink-primary tracking-tight">
                     Export Shipments
                   </h1>
@@ -96,7 +96,7 @@ export default function ExportApprovedPage() {
                 </p>
               </div>
               {/* Quick Metrics Counter */}
-              <div className="flex items-center gap-space-md bg-customs-surface-raised px-space-md py-2 rounded-xl shadow-sm">
+              <div className="flex items-center gap-4 bg-customs-surface-raised px-4 py-2 rounded-xl shadow-sm">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-customs-status-confirmed-text" />
                   <span className="font-caption text-caption text-customs-ink-secondary">Validation Engine</span>
@@ -115,8 +115,8 @@ export default function ExportApprovedPage() {
             {/* Table Container */}
             <div className="bg-customs-surface-raised rounded-xl shadow-sm overflow-hidden flex flex-col">
               {/* Table Header */}
-              <div className="px-space-lg py-space-md bg-customs-surface-base flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
-                <div className="flex items-center gap-space-sm">
+              <div className="px-6 py-4 bg-customs-surface-base flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
                   <CheckCircle className="text-customs-status-confirmed-text text-[20px]" aria-hidden="true" />
                   <span className="font-headline text-headline-sm text-customs-ink-primary">
                     Verified Approved Consignments
@@ -125,7 +125,7 @@ export default function ExportApprovedPage() {
                     5 Records
                   </span>
                 </div>
-                <div className="flex items-center gap-space-sm">
+                <div className="flex items-center gap-2">
                   <span className="font-caption text-caption text-customs-ink-secondary">
                     Single-click row execution applies digital signature &amp; logs audit trail
                   </span>
@@ -137,19 +137,19 @@ export default function ExportApprovedPage() {
                 <table className="w-full text-left">
                   <thead>
                     <tr className="bg-customs-surface-base text-customs-ink-secondary font-caption text-caption uppercase tracking-wider">
-                      <th className="py-3 px-space-lg font-semibold" scope="col">
+                      <th className="py-3 px-6 font-semibold" scope="col">
                         Shipment
                       </th>
-                      <th className="py-3 px-space-md font-semibold" scope="col">
+                      <th className="py-3 px-4 font-semibold" scope="col">
                         Supplier &amp; Route
                       </th>
-                      <th className="py-3 px-space-md font-semibold" scope="col">
+                      <th className="py-3 px-4 font-semibold" scope="col">
                         Approved By
                       </th>
-                      <th className="py-3 px-space-md font-semibold" scope="col">
+                      <th className="py-3 px-4 font-semibold" scope="col">
                         Approved On
                       </th>
-                      <th className="py-3 px-space-lg text-right font-semibold" scope="col">
+                      <th className="py-3 px-6 text-right font-semibold" scope="col">
                         Actions / Export
                       </th>
                     </tr>
@@ -157,9 +157,9 @@ export default function ExportApprovedPage() {
                   <tbody className="divide-y-0 text-customs-ink-primary">
                     {/* ROW 1: Default State (SHP-24811) */}
                     <tr className="hover:bg-customs-surface-container-low/40 transition-colors">
-                      <td className="py-space-md px-space-lg align-middle">
+                      <td className="py-4 px-6 align-middle">
                         <div className="flex flex-col">
-                          <div className="flex items-center gap-space-xs">
+                          <div className="flex items-center gap-1">
                             <span className="font-label-code text-label-code-md font-bold text-customs-ink-primary tracking-tight">
                               SHP-24811
                             </span>
@@ -173,7 +173,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md font-medium text-customs-ink-primary">
                             Pacific Logistics Corp
@@ -184,7 +184,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md text-customs-ink-primary">
                             Marcus Vance
@@ -194,7 +194,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-label-code text-label-code-sm font-medium text-customs-ink-primary">
                             2026-07-11 15:45:02 UTC
@@ -202,8 +202,8 @@ export default function ExportApprovedPage() {
                           <StatusBadge variant="confirmed" label="Verified Clearance" />
                         </div>
                       </td>
-                      <td className="py-space-md px-space-lg align-middle text-right">
-                        <Button variant="primary" size="sm" className="flex items-center gap-1.5 px-space-md py-1.5 text-body-sm text-body-md font-semibold shadow-sm" type="button">
+                      <td className="py-4 px-6 align-middle text-right">
+                        <Button variant="primary" size="sm" className="flex items-center gap-1.5 px-4 py-1.5 text-body-sm text-body-md font-semibold shadow-sm" type="button">
                           <Download className="text-[18px] text-customs-primary" aria-hidden="true" />
                           <span>Export CSV</span>
                         </Button>
@@ -212,9 +212,9 @@ export default function ExportApprovedPage() {
 
                     {/* ROW 2: Loading State (SHP-24819) */}
                     <tr className="hover:bg-customs-surface-container-low/40 transition-colors bg-customs-surface-container-low/20">
-                      <td className="py-space-md px-space-lg align-middle">
+                      <td className="py-4 px-6 align-middle">
                         <div className="flex flex-col">
-                          <div className="flex items-center gap-space-xs">
+                          <div className="flex items-center gap-1">
                             <span className="font-label-code text-label-code-md font-bold text-customs-ink-primary tracking-tight">
                               SHP-24819
                             </span>
@@ -228,7 +228,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md font-medium text-customs-ink-primary">
                             Global Cargo Ltd
@@ -239,7 +239,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md text-customs-ink-primary">
                             manager@demo.local
@@ -249,7 +249,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-label-code text-label-code-sm font-medium text-customs-ink-primary">
                             2026-07-11 14:12:18 UTC
@@ -257,8 +257,8 @@ export default function ExportApprovedPage() {
                           <StatusBadge variant="confirmed" label="Signed via ERP Key" />
                         </div>
                       </td>
-                      <td className="py-space-md px-space-lg align-middle text-right">
-                        <Button variant="primary" size="sm" className="flex items-center gap-2 px-space-md py-1.5 text-body-sm text-body-md font-semibold" disabled type="button">
+                      <td className="py-4 px-6 align-middle text-right">
+                        <Button variant="primary" size="sm" className="flex items-center gap-2 px-4 py-1.5 text-body-sm text-body-md font-semibold" disabled type="button">
                           <RefreshCw className="animate-spin text-[18px] text-customs-primary" aria-hidden="true" />
                           <span>Generating CSV...</span>
                         </Button>
@@ -267,9 +267,9 @@ export default function ExportApprovedPage() {
 
                     {/* ROW 3: Success State (SHP-24810) */}
                     <tr className="hover:bg-customs-surface-container-low/40 transition-colors">
-                      <td className="py-space-md px-space-lg align-middle">
+                      <td className="py-4 px-6 align-middle">
                         <div className="flex flex-col">
-                          <div className="flex items-center gap-space-xs">
+                          <div className="flex items-center gap-1">
                             <span className="font-label-code text-label-code-md font-bold text-customs-ink-primary tracking-tight">
                               SHP-24810
                             </span>
@@ -283,7 +283,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md font-medium text-customs-ink-primary">
                             Trans-Pacific Cargo Network
@@ -294,7 +294,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md text-customs-ink-primary">
                             Elena Rostova
@@ -304,7 +304,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-label-code text-label-code-sm font-medium text-customs-ink-primary">
                             2026-07-11 11:15:20 UTC
@@ -312,8 +312,8 @@ export default function ExportApprovedPage() {
                           <StatusBadge variant="confirmed" label="Pre-Audit Pass" />
                         </div>
                       </td>
-                      <td className="py-space-md px-space-lg align-middle text-right">
-                        <Button variant="primary" size="sm" className="flex items-center gap-1 px-space-md py-1.5 text-body-sm text-body-md font-semibold shadow-sm bg-customs-status-confirmed-bg text-customs-status-confirmed-text hover:bg-customs-status-confirmed-bg transition-colors" type="button">
+                      <td className="py-4 px-6 align-middle text-right">
+                        <Button variant="primary" size="sm" className="flex items-center gap-1 px-4 py-1.5 text-body-sm text-body-md font-semibold shadow-sm bg-customs-status-confirmed-bg text-customs-status-confirmed-text hover:bg-customs-status-confirmed-bg transition-colors" type="button">
                           <CheckCircle className="text-[18px]" aria-hidden="true" />
                           <span>Downloaded (24 KB)</span>
                         </Button>
@@ -322,9 +322,9 @@ export default function ExportApprovedPage() {
 
                     {/* ROW 4: Server-Error State (SHP-24802) */}
                     <tr className="hover:bg-customs-status-error-bg/10 transition-colors bg-customs-status-error-bg/20">
-                      <td className="py-space-md px-space-lg align-middle">
+                      <td className="py-4 px-6 align-middle">
                         <div className="flex flex-col">
-                          <div className="flex items-center gap-space-xs">
+                          <div className="flex items-center gap-1">
                             <span className="font-label-code text-label-code-md font-bold text-customs-ink-primary tracking-tight">
                               SHP-24802
                             </span>
@@ -338,7 +338,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md font-medium text-customs-ink-primary">
                             Shenzhen Precision Tech Co
@@ -349,7 +349,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md text-customs-ink-primary">
                             Marcus Vance
@@ -359,7 +359,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-label-code text-label-code-sm font-medium text-customs-ink-primary">
                             2026-07-11 09:30:45 UTC
@@ -370,7 +370,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-lg align-middle text-right">
+                      <td className="py-4 px-6 align-middle text-right">
                         <div className="inline-flex items-center justify-end gap-2">
                           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-customs-status-error-bg text-customs-status-error-text font-caption text-caption max-w-[240px] text-left">
                             <X className="text-[15px] flex-shrink-0" aria-hidden="true" />
@@ -388,9 +388,9 @@ export default function ExportApprovedPage() {
 
                     {/* ROW 5: Default State (SHP-24795) */}
                     <tr className="hover:bg-customs-surface-container-low/40 transition-colors">
-                      <td className="py-space-md px-space-lg align-middle">
+                      <td className="py-4 px-6 align-middle">
                         <div className="flex flex-col">
-                          <div className="flex items-center gap-space-xs">
+                          <div className="flex items-center gap-1">
                             <span className="font-label-code text-label-code-md font-bold text-customs-ink-primary tracking-tight">
                               SHP-24795
                             </span>
@@ -404,7 +404,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md font-medium text-customs-ink-primary">
                             EuroLogix Forwarding SA
@@ -415,7 +415,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-body text-body-md text-customs-ink-primary">
                             Elena Rostova
@@ -425,7 +425,7 @@ export default function ExportApprovedPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-space-md px-space-md align-middle">
+                      <td className="py-4 px-4 align-middle">
                         <div className="flex flex-col">
                           <span className="font-label-code text-label-code-sm font-medium text-customs-ink-primary">
                             2026-07-10 18:22:10 UTC
@@ -433,8 +433,8 @@ export default function ExportApprovedPage() {
                           <StatusBadge variant="confirmed" label="Verified Clearance" />
                         </div>
                       </td>
-                      <td className="py-space-md px-space-lg align-middle text-right">
-                        <Button variant="primary" size="sm" className="flex items-center gap-1.5 px-space-md py-1.5 text-body-sm text-body-md font-semibold shadow-sm" type="button">
+                      <td className="py-4 px-6 align-middle text-right">
+                        <Button variant="primary" size="sm" className="flex items-center gap-1.5 px-4 py-1.5 text-body-sm text-body-md font-semibold shadow-sm" type="button">
                           <Download className="text-[18px] text-customs-primary" aria-hidden="true" />
                           <span>Export CSV</span>
                         </Button>
@@ -445,11 +445,11 @@ export default function ExportApprovedPage() {
               </div>
 
               {/* Pagination / Record Summary Footer */}
-              <div className="px-space-lg py-space-sm bg-customs-surface-base flex flex-col sm:flex-row items-center justify-between gap-space-sm">
-                <div className="flex items-center gap-space-sm font-body text-body-sm text-customs-ink-secondary">
+              <div className="px-6 py-2 bg-customs-surface-base flex flex-col sm:flex-row items-center justify-between gap-2">
+                <div className="flex items-center gap-2 font-body text-body-sm text-customs-ink-secondary">
                   Showing <strong className="text-customs-ink-primary font-semibold">5</strong> of <strong className="text-customs-ink-primary font-semibold">5</strong> approved shipments ready for export
                 </div>
-                <div className="flex items-center gap-space-xs font-label-code text-label-code-sm">
+                <div className="flex items-center gap-1 font-label-code text-label-code-sm">
                   <span className="px-2.5 py-1 rounded bg-customs-surface-raised shadow-sm text-customs-ink-primary font-medium">
                     Page 1 of 1
                   </span>
@@ -464,7 +464,7 @@ export default function ExportApprovedPage() {
             </div>
 
             {/* Export Schema Specification Panel */}
-            <div className="bg-customs-surface-container-low p-space-md rounded-xl flex items-start gap-space-sm">
+            <div className="bg-customs-surface-container-low p-4 rounded-xl flex items-start gap-2">
               <Database className="text-customs-primary text-[20px] mt-0.5" aria-hidden="true" />
               <div className="flex flex-col gap-0.5">
                 <span className="font-headline text-headline-sm text-customs-ink-primary">
@@ -483,3 +483,4 @@ export default function ExportApprovedPage() {
     </div>
   );
 }
+

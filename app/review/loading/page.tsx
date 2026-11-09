@@ -45,9 +45,9 @@ export default function ReviewLoadingPage() {
     <div className="bg-surface font-body-md text-on-surface antialiased min-h-screen">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-surface-raised/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-        <div className="h-14 w-full px-space-md lg:px-space-xl flex items-center justify-between gap-space-md">
-          <div className="flex items-center gap-space-md">
-            <div className="flex items-center gap-space-xs">
+        <div className="h-14 w-full px-4 lg:px-8 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1">
               <ShieldCheck className="text-primary text-[22px]" />
               <span className="font-headline-sm text-headline-sm tracking-tight text-ink-primary">Customs Doc Check</span>
             </div>
@@ -79,7 +79,7 @@ export default function ReviewLoadingPage() {
               Audit Log
             </Link>
           </nav>
-          <div className="flex items-center gap-space-md">
+          <div className="flex items-center gap-4">
             <div className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-status-confirmed-bg text-status-confirmed-text font-label-code-sm text-label-code-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-status-confirmed-text animate-pulse" />
               <span>SYSTEM ONLINE</span>
@@ -98,7 +98,7 @@ export default function ReviewLoadingPage() {
 
       <main className="w-full pt-14 bg-surface min-h-[calc(100vh-3rem)]">
         <div className="flex flex-col w-full pb-10">
-          <div className="w-full px-space-md lg:px-space-xl py-space-md">
+          <div className="w-full px-4 lg:px-8 py-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface-raised p-4 rounded-xl shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0 animate-pulse">
@@ -127,8 +127,8 @@ export default function ReviewLoadingPage() {
             </div>
           </div>
 
-          <div className="w-full px-space-md lg:px-space-xl">
-            <div className="grid grid-cols-1 xl:grid-cols-12 gap-gutter-desktop items-start">
+          <div className="w-full px-4 lg:px-8">
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-p-6 items-start">
               <div className="xl:col-span-7 flex flex-col bg-surface-raised rounded-xl shadow-sm overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3 bg-surface-base">
                   <div className="flex items-center gap-1">
@@ -375,7 +375,7 @@ export default function ReviewLoadingPage() {
               </div>
             </div>
           </div>
-          <div className="w-full px-space-md lg:px-space-xl mt-6">
+          <div className="w-full px-4 lg:px-8 mt-6">
             <div className="bg-surface-raised rounded-xl p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3 text-ink-muted">
                 <span className="font-label-code-sm text-label-code-sm uppercase tracking-wider">Shortcuts:</span>
@@ -411,3 +411,4 @@ export default function ReviewLoadingPage() {
     </div>
   );
 }
+

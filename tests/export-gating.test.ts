@@ -189,6 +189,22 @@ describe("export gating", () => {
     expect(supabaseMock.rpc).toHaveBeenCalledWith("shipment_export_snapshot", { p_shipment_id: VALID_ID });
   });
 
+  it("returns conflict when the database rejects an incomplete cross-check set", async () => {
+    setUser({ id: "manager-id" });
+    setProfile("documentation_manager");
+    setTableData("shipments", { status: "Approved", id: VALID_ID });
+    supabaseMock.rpc.mockResolvedValue({
+      data: null,
+      error: { message: "Cannot progress: shipment must have exactly the complete set of eight cross-checks" },
+    });
+    const { POST } = await import("@/app/api/export/route");
+    const res = await POST(new Request("http://localhost/api/export", {
+      method: "POST", body: JSON.stringify({ shipmentId: VALID_ID }),
+    }));
+    expect(res.status).toBe(409);
+    expect(supabaseMock.rpc).toHaveBeenCalledWith("shipment_export_snapshot", { p_shipment_id: VALID_ID });
+  });
+
   it("returns 200 when all gates pass", async () => {
     setUser({ id: "manager-id" });
     setProfile("documentation_manager");
@@ -242,6 +258,50 @@ describe("role permissions", () => {
       method: "POST", body: JSON.stringify({ shipmentId: VALID_ID }),
     }));
     expect(res.status).toBe(403);
+    expect(serviceMock.from).not.toHaveBeenCalled();
+  });
+
+  it("does not start privileged extraction for an exported shipment", async () => {
+    setUser({ id: "exec-id" });
+    setProfile("documentation_executive");
+    setTableData("shipments", {
+      id: VALID_ID, created_by: "exec-id", shipment_number: "SHP-EXPORTED", status: "Exported",
+    });
+    const { POST } = await import("@/app/api/extract/route");
+    const res = await POST(new Request("http://localhost/api/extract", {
+      method: "POST", body: JSON.stringify({ shipmentId: VALID_ID }),
+    }));
+    expect(res.status).toBe(409);
+    expect(serviceMock.from).not.toHaveBeenCalled();
+  });
+
+  it("does not remove or upload storage for an exported shipment", async () => {
+    setUser({ id: "exec-id" });
+    setProfile("documentation_executive");
+    setTableData("shipments", { id: VALID_ID, created_by: "exec-id", status: "Exported" });
+    const form = new FormData();
+    form.set("shipmentId", VALID_ID);
+    form.set("type", "invoice");
+    form.set("file", new Blob(["pdf"], { type: "application/pdf" }), "invoice.pdf");
+    const { POST } = await import("@/app/api/upload/route");
+    const res = await POST(new Request("http://localhost/api/upload", { method: "POST", body: form }));
+    expect(res.status).toBe(409);
+    expect(serviceMock.storage.from).not.toHaveBeenCalled();
+    expect(serviceMock.from).not.toHaveBeenCalled();
+  });
+
+  it("does not start a privileged field update for an exported shipment", async () => {
+    setUser({ id: "exec-id" });
+    setProfile("documentation_executive");
+    setTableData("fields", {
+      id: "field-1", shipment_id: VALID_ID, key: "gross_weight_kg", value: "1000",
+      shipments: { created_by: "exec-id", supplier_id: "supplier-id", status: "Exported" },
+    });
+    const { PATCH } = await import("@/app/api/fields/[id]/route");
+    const res = await PATCH(new Request("http://localhost/api/fields/field-1", {
+      method: "PATCH", body: JSON.stringify({ value: "1001" }),
+    }), { params: { id: "field-1" } });
+    expect(res.status).toBe(409);
     expect(serviceMock.from).not.toHaveBeenCalled();
   });
 

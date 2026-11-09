@@ -47,9 +47,9 @@ export default function ReviewUnavailablePage() {
     <div className="bg-surface font-body-md text-on-surface antialiased min-h-screen">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-surface-raised/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-        <div className="h-14 w-full px-space-md lg:px-space-xl flex items-center justify-between gap-space-md">
-          <div className="flex items-center gap-space-md">
-            <div className="flex items-center gap-space-xs">
+        <div className="h-14 w-full px-4 lg:px-8 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1">
               <ShieldCheck className="text-primary text-[22px]" />
               <span className="font-headline-sm text-headline-sm tracking-tight text-ink-primary">Customs Doc Check</span>
             </div>
@@ -94,7 +94,7 @@ export default function ReviewUnavailablePage() {
               Audit Log
             </Link>
           </nav>
-          <div className="flex items-center gap-space-md">
+          <div className="flex items-center gap-4">
             <div className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-status-confirmed-bg text-status-confirmed-text font-label-code-sm text-label-code-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-status-confirmed-text animate-pulse" />
               <span>SYSTEM ONLINE</span>
@@ -114,8 +114,8 @@ export default function ReviewUnavailablePage() {
       <main className="w-full pt-14 bg-surface min-h-[calc(100vh-3rem)]">
         <div className="flex flex-col w-full">
           {/* Operational breadcrumb & context bar */}
-          <div className="w-full bg-surface-raised px-space-md lg:px-space-xl py-space-sm shadow-sm flex flex-wrap items-center justify-between gap-space-md">
-            <div className="flex items-center gap-space-sm flex-wrap">
+          <div className="w-full bg-surface-raised px-4 lg:px-8 py-2 shadow-sm flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container text-ink-primary font-label-code-sm text-label-code-sm">
                 <FolderOpen className="text-[14px] text-primary" />
                 <span>CONSIGNMENT #SHP-24811</span>
@@ -130,7 +130,7 @@ export default function ReviewUnavailablePage() {
                 <span>PAGE-FAULT: OCR UNREADABLE</span>
               </div>
             </div>
-            <div className="flex items-center gap-space-md">
+            <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <span className="font-caption text-caption uppercase text-ink-muted tracking-wider">Doc Confidence</span>
                 <div className="w-20 h-2 bg-surface-container rounded-full overflow-hidden">
@@ -147,12 +147,12 @@ export default function ReviewUnavailablePage() {
           </div>
 
           {/* Primary asymmetric 55/45 split view */}
-          <div className="w-full px-space-md lg:px-space-xl py-space-md">
-            <div className="grid grid-cols-1 xl:grid-cols-12 gap-space-md items-start min-h-[calc(100vh-12rem)]">
+          <div className="w-full px-4 lg:px-8 py-4">
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 items-start min-h-[calc(100vh-12rem)]">
               {/* LEFT SIDE (55% on XL): Document Viewer Canvas with Unreadable Alert Overlay */}
               <section className="xl:col-span-7 flex flex-col bg-surface-raised rounded-xl shadow-md overflow-hidden relative">
                 {/* Document Toolbar & Tabs */}
-                <div className="px-space-md py-space-sm bg-surface-base flex items-center justify-between gap-space-md">
+                <div className="px-4 py-2 bg-surface-base flex items-center justify-between gap-4">
                   <div className="flex items-center gap-1 bg-surface-container rounded-lg p-1">
                     <Button
                       variant="outline"
@@ -173,7 +173,7 @@ export default function ReviewUnavailablePage() {
                     </Button>
                   </div>
                   {/* Page Navigator & Zoom Controls */}
-                  <div className="flex items-center gap-space-sm">
+                  <div className="flex items-center gap-2">
                     <div className="inline-flex items-center gap-1 bg-surface-raised rounded-lg px-2 py-1 shadow-sm">
                       <Button
                         variant="outline"
@@ -205,7 +205,7 @@ export default function ReviewUnavailablePage() {
                   </div>
                 </div>
                 {/* Document Viewport with Degraded Underlay & Prominent Error Dialog Overlay */}
-                <div className="relative w-full min-h-[680px] bg-surface-container-high/40 flex items-center justify-center p-space-md lg:p-space-lg overflow-hidden">
+                <div className="relative w-full min-h-[680px] bg-surface-container-high/40 flex items-center justify-center p-4 lg:p-6 overflow-hidden">
                   {/* Background: Heavily blurred, skewed, simulated degraded invoice scan */}
                   <div className="absolute inset-4 lg:inset-8 bg-surface-raised shadow-xl rounded-lg p-8 select-none filter blur-[3.5px] opacity-40 rotate-[1.8deg] pointer-events-none transform scale-95 overflow-hidden">
                     <div className="flex justify-between items-start mb-8">
@@ -259,8 +259,8 @@ export default function ReviewUnavailablePage() {
                     </div>
                   </div>
                   {/* Foreground OCR Alert Callout Card */}
-                  <div className="relative z-20 w-full max-w-xl bg-surface-raised/95 backdrop-blur-xl rounded-xl shadow-2xl p-space-lg flex flex-col gap-space-md transform transition-all duration-200">
-                    <div className="flex items-start gap-space-md">
+                  <div className="relative z-20 w-full max-w-xl bg-surface-raised/95 backdrop-blur-xl rounded-xl shadow-2xl p-6 flex flex-col gap-4 transform transition-all duration-200">
+                    <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-status-error-bg flex items-center justify-center shrink-0">
                         <Scan className="text-status-error-text text-[28px]" />
                       </div>
@@ -279,7 +279,7 @@ export default function ReviewUnavailablePage() {
                       </div>
                     </div>
                     {/* Diagnostics Pill Checklist */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-space-sm rounded-lg bg-surface-base">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-2 rounded-lg bg-surface-base">
                       <div className="flex items-center gap-2 px-2 py-1">
                         <X className="text-[16px] text-status-error-text" />
                         <span className="font-body-sm text-body-sm text-ink-secondary">Resolution: 96 DPI</span>
@@ -303,7 +303,7 @@ export default function ReviewUnavailablePage() {
                       <span className="font-label-code-sm text-label-code-sm text-status-error-text font-bold">SNR: 4.2 dB</span>
                     </div>
                     {/* Quick Action Buttons */}
-                    <div className="flex flex-wrap items-center gap-space-sm pt-2">
+                    <div className="flex flex-wrap items-center gap-2 pt-2">
                       <Button size="sm" className="px-4 py-2 rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm flex items-center gap-2 hover:bg-primary-container transition-colors shadow-sm">
                         <Upload className="w-4 h-4" />
                         <span>Upload replacement page</span>
@@ -328,7 +328,7 @@ export default function ReviewUnavailablePage() {
               {/* RIGHT SIDE (45% on XL): Field Extraction Panel Adapting to Manual Input */}
               <section className="xl:col-span-5 flex flex-col bg-surface-raised rounded-xl shadow-md overflow-hidden">
                 {/* Sticky Sub-Header with Alert Counter */}
-                <div className="sticky top-0 z-30 px-space-md py-space-sm bg-status-review-bg text-status-review-text flex items-center justify-between gap-space-sm shadow-sm">
+                <div className="sticky top-0 z-30 px-4 py-2 bg-status-review-bg text-status-review-text flex items-center justify-between gap-2 shadow-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-lg bg-status-review-text text-surface-raised flex items-center justify-center font-headline-sm text-headline-sm font-bold">5</div>
                     <div>
@@ -342,16 +342,16 @@ export default function ReviewUnavailablePage() {
                   </div>
                 </div>
                 {/* Scrollable Extraction Form Fields */}
-                <div className="p-space-md flex flex-col gap-space-md overflow-y-auto max-h-[600px]">
+                <div className="p-4 flex flex-col gap-4 overflow-y-auto max-h-[600px]">
                   {/* Context Notification */}
-                  <div className="px-space-md py-space-sm rounded-lg bg-surface-base flex items-start gap-space-sm">
+                  <div className="px-4 py-2 rounded-lg bg-surface-base flex items-start gap-2">
                     <Info className="text-primary text-[20px] shrink-0 mt-0.5" />
                     <div className="font-body-sm text-body-sm text-ink-secondary">
                       Input verified values from physical paper copy or inspect the left magnified scan. Auto-save triggers on field blur.
                     </div>
                   </div>
                   {/* Line Items Section Flagged for Manual Entry */}
-                  <div className="flex flex-col gap-space-sm">
+                  <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
                       <span className="font-caption text-caption uppercase text-ink-muted tracking-wider">Unverified Item 05 (Page 2)</span>
                       <span className="font-label-code-sm text-label-code-sm text-status-error-text font-medium">Missing OCR Match</span>
@@ -404,7 +404,7 @@ export default function ReviewUnavailablePage() {
                       </div>
                     </div>
                     {/* Field 3 & 4: Quantity & Unit Price Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <div className="p-3 rounded-lg bg-surface-container-low focus-within:bg-surface-raised focus-within:shadow-md transition-all">
                         <div className="flex justify-between items-center mb-1">
                           <label htmlFor="item-qty-05" className="font-headline-sm text-headline-sm text-ink-primary font-semibold flex items-center gap-1">
@@ -448,7 +448,7 @@ export default function ReviewUnavailablePage() {
                     </div>
                   </div>
                   {/* Cross-checks & Compliance Section Paused */}
-                  <div className="p-space-md rounded-xl bg-status-review-bg/50 flex flex-col gap-space-sm mt-2">
+                  <div className="p-4 rounded-xl bg-status-review-bg/50 flex flex-col gap-2 mt-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <AlertCircle className="text-status-review-text text-[20px]" />
@@ -480,10 +480,10 @@ export default function ReviewUnavailablePage() {
             </div>
           </div>
           {/* BOTTOM BAR: Fixed Docked Actions Bar */}
-          <div className="w-full bg-surface-raised shadow-md px-space-md lg:px-space-xl py-space-sm mt-auto z-40 shrink-0">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-space-md">
+          <div className="w-full bg-surface-raised shadow-md px-4 lg:px-8 py-2 mt-auto z-40 shrink-0">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               {/* Keycap Shortcuts */}
-              <div className="flex items-center gap-space-md flex-wrap text-ink-secondary">
+              <div className="flex items-center gap-4 flex-wrap text-ink-secondary">
                 <span className="font-caption text-caption uppercase text-ink-muted tracking-wider font-semibold">Shortcuts:</span>
                 <div className="flex items-center gap-1.5">
                   <kbd className="px-2 py-0.5 rounded bg-surface-base text-ink-primary font-label-code-sm text-label-code-sm shadow-sm">Tab</kbd>
@@ -503,7 +503,7 @@ export default function ReviewUnavailablePage() {
                 </div>
               </div>
               {/* Actions & Disabled Status Explanation */}
-              <div className="flex items-center gap-space-md w-full md:w-auto justify-end">
+              <div className="flex items-center gap-4 w-full md:w-auto justify-end">
                 <div className="flex flex-col text-right hidden sm:block">
                   <span className="font-body-sm text-body-sm font-semibold text-status-error-text flex items-center gap-1 justify-end">
                     <Lock className="w-4 h-4" />
@@ -537,3 +537,4 @@ export default function ReviewUnavailablePage() {
     </div>
   );
 }
+

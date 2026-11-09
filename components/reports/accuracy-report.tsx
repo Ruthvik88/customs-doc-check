@@ -90,15 +90,15 @@ export function AccuracyReport({
 
   if (isEmpty) {
     return (
-      <div className="w-full max-w-7xl mx-auto px-gutter-desktop py-space-xl flex flex-col gap-space-lg">
+      <div className="w-full max-w-7xl mx-auto px-p-6 py-8 flex flex-col gap-6">
         {/* Page header */}
-        <div className="flex flex-col gap-space-xs">
-          <div className="flex items-center gap-space-xs font-label-code text-label-code-sm text-customs-ink-muted uppercase tracking-wider">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1 font-label-code text-label-code-sm text-customs-ink-muted uppercase tracking-wider">
             <span>CUSTOMS VERIFICATION ENGINE</span>
             <span>/</span>
             <span className="text-customs-secondary font-semibold">METRICS EVALUATION</span>
           </div>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <h1 className="font-headline text-headline-xl text-customs-ink-primary tracking-tight">
                 Accuracy Report
@@ -108,7 +108,7 @@ export function AccuracyReport({
                 manual field corrections.
               </p>
             </div>
-            <div className="flex items-center gap-space-sm bg-customs-surface-raised px-space-md py-space-xs rounded-lg shadow-sm">
+            <div className="flex items-center gap-2 bg-customs-surface-raised px-4 py-1 rounded-lg shadow-sm">
               <span className="inline-block w-2 h-2 rounded-full bg-customs-status-review-text animate-pulse" aria-hidden="true" />
               <span className="font-label-code text-label-code-sm text-customs-ink-secondary uppercase tracking-wider">
                 Awaiting Initial Feedback Loop
@@ -122,46 +122,46 @@ export function AccuracyReport({
           <div aria-label="Accuracy aggregation levels" className="flex p-1 bg-customs-surface-container rounded-lg" role="tablist">
             <button
               aria-selected="true"
-              className="flex items-center gap-space-xs px-space-md py-space-sm rounded-md bg-customs-surface-raised text-customs-primary font-headline-sm text-headline-sm shadow-sm transition-colors" role="tab" type="button"
+              className="flex items-center gap-1 px-4 py-2 rounded-md bg-customs-surface-raised text-customs-primary font-headline-sm text-headline-sm shadow-sm transition-colors" role="tab" type="button"
             >
               <Icon as={Table} size={16} aria-hidden="true" />
               <span>By field</span>
             </button>
             <button
               aria-selected="false"
-              className="flex items-center gap-space-xs px-space-md py-space-sm rounded-md text-customs-on-surface-variant hover:text-customs-on-surface font-headline-sm text-headline-sm transition-colors" role="tab" type="button"
+              className="flex items-center gap-1 px-4 py-2 rounded-md text-customs-on-surface-variant hover:text-customs-on-surface font-headline-sm text-headline-sm transition-colors" role="tab" type="button"
             >
               <Icon as={Building} size={16} aria-hidden="true" />
               <span>By supplier</span>
             </button>
           </div>
-          <div className="hidden sm:flex items-center gap-space-xs text-customs-ink-muted font-label-code text-label-code-sm">
+          <div className="hidden sm:flex items-center gap-1 text-customs-ink-muted font-label-code text-label-code-sm">
             <Icon as={Info} size={16} aria-hidden="true" />
           </div>
         </div>
 
         {/* Empty state */}
-        <div className="w-full bg-customs-surface-raised rounded-xl shadow-sm p-space-xl flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[460px]">
+        <div className="w-full bg-customs-surface-raised rounded-xl shadow-sm p-8 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[460px]">
           <div className="relative z-10 flex flex-col items-center max-w-lg mx-auto">
-            <div className="w-20 h-20 rounded-2xl bg-customs-surface-container flex items-center justify-center text-customs-primary shadow-sm mb-space-lg relative">
+            <div className="w-20 h-20 rounded-2xl bg-customs-surface-container flex items-center justify-center text-customs-primary shadow-sm mb-p-6 relative">
               <Icon as={Table} size={20} aria-hidden="true" />
             </div>
-            <h2 className="font-headline text-headline-lg text-customs-ink-primary tracking-tight mb-space-sm">
+            <h2 className="font-headline text-headline-lg text-customs-ink-primary tracking-tight mb-p-2">
               No reviews yet
             </h2>
-            <p className="font-body text-body-md text-customs-ink-secondary leading-relaxed mb-space-xl max-w-md">
+            <p className="font-body text-body-md text-customs-ink-secondary leading-relaxed mb-p-8 max-w-md">
               Accuracy metrics will appear here once operators complete document
               reviews and confirm or correct extracted fields.
             </p>
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-space-sm px-space-lg py-space-sm bg-customs-primary-container text-customs-on-primary-container font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-2 bg-customs-primary-container text-customs-on-primary-container font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary transition-colors shadow-sm"
             >
               <Icon as={Truck} size={16} className="transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
               <span>Go to Shipments</span>
               <Icon as={ArrowRight} size={16} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
             </Link>
-            <div className="mt-space-xl flex items-center gap-space-md text-customs-ink-muted font-caption text-caption">
+            <div className="mt-p-8 flex items-center gap-4 text-customs-ink-muted font-caption text-caption">
               <div className="flex items-center gap-1">
                 <Icon as={FileText} size={16} className="text-customs-ink-muted" aria-hidden="true" />
                 <span>Commercial Invoices</span>
@@ -184,10 +184,10 @@ export function AccuracyReport({
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-gutter-desktop py-space-xl">
+    <div className="w-full max-w-7xl mx-auto px-p-6 py-8">
       {/* Page header */}
-      <div className="flex flex-col gap-space-xs mb-space-lg">
-        <div className="flex items-center gap-space-xs text-customs-ink-muted font-label-code text-label-code-sm uppercase tracking-wider">
+      <div className="flex flex-col gap-1 mb-p-6">
+        <div className="flex items-center gap-1 text-customs-ink-muted font-label-code text-label-code-sm uppercase tracking-wider">
           <span>Analytics</span>
           <span>/</span>
           <span className="text-customs-secondary font-semibold">Extraction Metrics</span>
@@ -202,13 +202,13 @@ export function AccuracyReport({
       </div>
 
       {/* Tabs + context */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md mb-space-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-p-4">
         <div aria-label="Accuracy Breakdown View" className="inline-flex p-1 bg-customs-surface-container rounded-xl gap-1" role="tablist">
           <button
             aria-controls="panel-fields"
             aria-selected={activeTab === "fields"}
             id="tab-btn-fields"
-            className={`relative px-space-lg py-1.5 rounded-lg font-headline-sm text-headline-sm transition-colors duration-200 flex items-center gap-space-xs ${
+            className={`relative px-6 py-1.5 rounded-lg font-headline-sm text-headline-sm transition-colors duration-200 flex items-center gap-1 ${
               activeTab === "fields"
                 ? "bg-customs-surface-raised text-customs-primary shadow-sm"
                 : "text-customs-ink-secondary hover:text-customs-ink-primary hover:bg-customs-surface-raised/50"
@@ -227,7 +227,7 @@ export function AccuracyReport({
             aria-controls="panel-suppliers"
             aria-selected={activeTab === "suppliers"}
             id="tab-btn-suppliers"
-            className={`relative px-space-lg py-1.5 rounded-lg font-headline-sm text-headline-sm transition-colors duration-200 flex items-center gap-space-xs ${
+            className={`relative px-6 py-1.5 rounded-lg font-headline-sm text-headline-sm transition-colors duration-200 flex items-center gap-1 ${
               activeTab === "suppliers"
                 ? "bg-customs-surface-raised text-customs-primary shadow-sm"
                 : "text-customs-ink-secondary hover:text-customs-ink-primary hover:bg-customs-surface-raised/50"
@@ -243,8 +243,8 @@ export function AccuracyReport({
             </span>
           </button>
         </div>
-        <div className="flex items-center gap-space-sm text-customs-ink-secondary font-caption text-caption">
-          <span className="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-customs-surface-raised shadow-sm font-label-code text-label-code-sm text-customs-ink-secondary">
+        <div className="flex items-center gap-2 text-customs-ink-secondary font-caption text-caption">
+          <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-customs-surface-raised shadow-sm font-label-code text-label-code-sm text-customs-ink-secondary">
             <span className="w-2 h-2 rounded-full bg-customs-status-confirmed-text" aria-hidden="true" />
             Baseline: 100% - (Corrected / Reviewed)
           </span>
@@ -256,16 +256,16 @@ export function AccuracyReport({
           <table className="w-full border-collapse text-left">
             <thead>
               <tr className="bg-customs-surface-base h-9 text-customs-ink-secondary font-caption text-caption uppercase tracking-wider">
-                <th className="py-2.5 px-space-lg font-semibold w-2/5" scope="col">
+                <th className="py-2.5 px-6 font-semibold w-2/5" scope="col">
                   Field Name
                 </th>
-                <th className="py-2.5 px-space-lg font-semibold text-right w-1/5" scope="col">
+                <th className="py-2.5 px-6 font-semibold text-right w-1/5" scope="col">
                   Times reviewed
                 </th>
-                <th className="py-2.5 px-space-lg font-semibold text-right w-1/5" scope="col">
+                <th className="py-2.5 px-6 font-semibold text-right w-1/5" scope="col">
                   Times corrected
                 </th>
-                <th className="py-2.5 px-space-lg font-semibold text-right w-1/5" scope="col">
+                <th className="py-2.5 px-6 font-semibold text-right w-1/5" scope="col">
                   Accuracy rate
                 </th>
               </tr>
@@ -277,8 +277,8 @@ export function AccuracyReport({
                   const tone = accuracyTone(stat.accuracy);
                   return (
                     <tr key={stat.key} className="h-14 transition-colors hover:bg-customs-surface-container-low group">
-                      <td className="py-3 px-space-lg">
-                        <div className="flex items-center gap-space-sm">
+                      <td className="py-3 px-6">
+                        <div className="flex items-center gap-2">
                           <div className="w-7 h-7 rounded-lg bg-customs-surface-container flex items-center justify-center text-customs-secondary">
                             <Icon as={fieldIcon} size={16} aria-hidden="true" />
                           </div>
@@ -292,13 +292,13 @@ export function AccuracyReport({
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-space-lg text-right font-label-code text-label-code-md text-customs-ink-secondary">
+                      <td className="py-3 px-6 text-right font-label-code text-label-code-md text-customs-ink-secondary">
                         {stat.total}
                       </td>
-                      <td className="py-3 px-space-lg text-right font-label-code text-label-code-md {editedTone(stat.edited, stat.accuracy)}">
+                      <td className="py-3 px-6 text-right font-label-code text-label-code-md {editedTone(stat.edited, stat.accuracy)}">
                         {stat.edited}
                       </td>
-                      <td className="py-3 px-space-lg">
+                      <td className="py-3 px-6">
                         <div className="flex flex-col items-end gap-1.5 ml-auto max-w-[160px]">
                           <span className={`font-label-code text-label-code-md font-semibold ${tone.text}`}>
                             {accuracyLabel(stat)}
@@ -318,8 +318,8 @@ export function AccuracyReport({
                   const tone = accuracyTone(stat.accuracy);
                   return (
                     <tr key={stat.name} className="h-14 transition-colors hover:bg-customs-surface-container-low group">
-                      <td className="py-3 px-space-lg">
-                        <div className="flex items-center gap-space-sm">
+                      <td className="py-3 px-6">
+                        <div className="flex items-center gap-2">
                           <div className="w-7 h-7 rounded-lg bg-customs-surface-container flex items-center justify-center text-customs-secondary">
                             <Icon as={Building} size={16} aria-hidden="true" />
                           </div>
@@ -333,13 +333,13 @@ export function AccuracyReport({
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-space-lg text-right font-label-code text-label-code-md text-customs-ink-secondary">
+                      <td className="py-3 px-6 text-right font-label-code text-label-code-md text-customs-ink-secondary">
                         {stat.total}
                       </td>
-                      <td className="py-3 px-space-lg text-right font-label-code text-label-code-md {editedTone(stat.edited, stat.accuracy)}">
+                      <td className="py-3 px-6 text-right font-label-code text-label-code-md {editedTone(stat.edited, stat.accuracy)}">
                         {stat.edited}
                       </td>
-                      <td className="py-3 px-space-lg">
+                      <td className="py-3 px-6">
                         <div className="flex flex-col items-end gap-1.5 ml-auto max-w-[160px]">
                           <span className={`font-label-code text-label-code-md font-semibold ${tone.text}`}>
                             {accuracyLabel(stat)}
@@ -358,8 +358,8 @@ export function AccuracyReport({
             </tbody>
           </table>
         </div>
-        <div className="bg-customs-surface-base px-space-lg py-space-sm flex flex-col sm:flex-row items-center justify-between gap-space-xs text-customs-ink-secondary font-caption text-caption">
-          <div className="flex items-center gap-space-xs">
+        <div className="bg-customs-surface-base px-6 py-2 flex flex-col sm:flex-row items-center justify-between gap-1 text-customs-ink-secondary font-caption text-caption">
+          <div className="flex items-center gap-1">
             <Info className="text-[15px] text-customs-ink-muted" aria-hidden="true" />
             <span id="footer-count-text">
               Showing {rows.length} {activeTab === "fields" ? "fields" : "suppliers"} • Computed across verified shipments
@@ -373,3 +373,4 @@ export function AccuracyReport({
     </div>
   );
 }
+

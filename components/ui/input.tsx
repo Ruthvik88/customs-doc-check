@@ -11,15 +11,18 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 export function Input({ className, label, error, id, ...props }: InputProps) {
   const generatedId = React.useId();
   const inputId = id || generatedId;
+  const errorId = `${inputId}-error`;
   return (
     <div className="space-y-1">
       {label && <label htmlFor={inputId} className="field-label">{label}</label>}
       <input
         id={inputId}
-        className={cn("input", error && "border-red-500", className)}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
+        className={cn("input", error && "input-error", className)}
         {...props}
       />
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p id={errorId} className="field-error" role="alert">{error}</p>}
     </div>
   );
 }
