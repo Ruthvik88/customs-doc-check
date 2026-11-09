@@ -3,6 +3,7 @@
 import React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { Icon } from "@/components/ui/icon";
 import { Search, RefreshCw, Download, CloudUpload, ClipboardCheck, ChevronLeft, ChevronRight, MoreVertical, X } from "lucide-react";
 import { useSupabaseClient } from "@/hooks/useSupabaseClient";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -209,14 +210,6 @@ export default function ShipmentsPage() {
         </div>
         <div className="flex items-center gap-3 bg-customs-surface-raised px-4 py-2.5 rounded-xl shadow-sm border border-customs-border-hairline">
           <div className="flex flex-col">
-            <span className="font-caption text-caption text-customs-ink-muted uppercase">Extraction Accuracy</span>
-            <span className="font-label-code-md text-label-code-md font-semibold text-customs-status-confirmed-text flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-customs-status-confirmed-text"></span>
-              99.4%
-            </span>
-          </div>
-          <div className="w-px h-7 bg-customs-surface-container-high"></div>
-          <div className="flex flex-col">
             <span className="font-caption text-caption text-customs-ink-muted uppercase">SLA Target</span>
             <span className="font-label-code-md text-label-code-md font-semibold text-customs-ink-primary">&lt; 14m</span>
           </div>
@@ -250,7 +243,7 @@ export default function ShipmentsPage() {
       <div className="p-3 bg-customs-surface-raised rounded-xl shadow-sm mb-4 border border-customs-border-hairline flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
           <div className="relative w-full lg:w-80 flex-shrink-0">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-customs-ink-muted text-[18px]" aria-hidden="true" />
+            <Icon as={Search} size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-customs-ink-muted" aria-hidden="true" />
             <Input
               id="shipment-search"
               type="search"
