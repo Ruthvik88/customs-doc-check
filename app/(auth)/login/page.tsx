@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useSession } from "@/hooks/useSession";
 import { useSupabaseClient } from "@/hooks/useSupabaseClient";
 import {
@@ -11,10 +10,8 @@ import {
   EyeOff,
   Loader2,
   LogIn,
-  ShieldCheck,
-  FileCheck2,
-  ShipmentIcon,
-  ChevronDown,
+  Mail,
+  Lock,
 } from "lucide-react";
 
 export default function LoginPage() {
@@ -27,18 +24,15 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [authStage, setAuthStage] = useState<"idle" | "verifying" | "success">("idle");
+  const [authStage, setAuthStage] = useState<"idle" | "verifying" | "error" | "success">("idle");
 
-  useEffect(() => {
-    if (sessionLoading || !session) return;
-    if (role === "documentation_manager") {
-      router.replace("/export");
-    } else {
-      router.replace("/dashboard");
-    }
-  }, [session, sessionLoading, role, router]);
+  const isVerifying = authStage === "verifying";
+  const isError = authStage === "error";
 
-  if (sessionLoading || session) {
+  if (session) {
+    if (sessionLoading) return null;
+    if (role === "documentation_manager") router.replace("/export");
+    else router.replace("/dashboard");
     return null;
   }
 
@@ -47,10 +41,12 @@ export default function LoginPage() {
     setError("");
     if (!email || !password) {
       setError("Email and password are required.");
+      setAuthStage("error");
       return;
     }
     if (!supabase) {
       setError("Supabase authentication is not configured.");
+      setAuthStage("error");
       return;
     }
 
@@ -59,7 +55,7 @@ export default function LoginPage() {
     const { data, error: err } = await supabase.auth.signInWithPassword({ email, password });
     if (err) {
       setSubmitting(false);
-      setAuthStage("idle");
+      setAuthStage("error");
       setError(err.message || "Sign in failed");
       return;
     }
@@ -72,211 +68,266 @@ export default function LoginPage() {
     else router.replace("/dashboard");
   };
 
+  const isDisabled = isVerifying || submitting;
+
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-10 bg-[#e7e5e4]/60 dark:bg-[#0c0a09] transition-colors">
-      {/* Outer Card with large rounded corners matching Image 4 */}
-      <div className="w-full max-w-[1080px] rounded-[36px] lg:rounded-[44px] shadow-2xl overflow-hidden border border-black/[0.08] dark:border-white/[0.08] bg-white dark:bg-zinc-900 grid grid-cols-1 lg:grid-cols-12 min-h-[660px]">
-        {/* Left Column: Dark Panel with Phone Mockup */}
-        <div className="lg:col-span-6 bg-[#1a1614] text-white p-8 lg:p-12 relative flex flex-col justify-between overflow-hidden">
-          {/* Subtle concentric background radar circles */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full border border-white/[0.04] pointer-events-none" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full border border-white/[0.05] pointer-events-none" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] rounded-full border border-white/[0.06] pointer-events-none" />
+    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-brand-page text-brand-text-primary font-sans antialiased">
+      <main className="w-full max-w-[1180px] bg-brand-surface rounded-3xl shadow-card border border-brand-hairline overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[680px]">
+        {/* Left Brand Panel */}
+        <section
+          className="lg:col-span-6 bg-brand-navy p-8 sm:p-12 lg:p-14 relative flex flex-col justify-between overflow-hidden text-white"
+          data-purpose="brand-overview"
+        >
+          {/* Background ambient glow */}
+          <div aria-hidden="true" className="absolute -top-32 -left-32 w-80 h-80 bg-brand-cobalt/15 rounded-full blur-3xl pointer-events-none"></div>
+          <div aria-hidden="true" className="absolute -bottom-32 -right-32 w-80 h-80 bg-brand-cobalt/10 rounded-full blur-3xl pointer-events-none"></div>
 
-          {/* Top text */}
-          <div className="relative z-10 space-y-4">
-            <p className="text-xs text-zinc-400 font-normal tracking-wide">
-              Customs document verification made simple — AI-powered compliance for brokers and forwarders.
-            </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-sans font-bold tracking-tight text-white leading-[1.08]">
-              Verify your<br />
-              shipment documents
-            </h1>
-          </div>
-
-          {/* Smartphone Mockup */}
-          <div className="relative z-10 mt-8 mb-4 flex justify-center lg:justify-start lg:pl-6">
-            <div className="relative w-[230px] sm:w-[250px] rounded-[36px] bg-[#0c0a09] p-3 shadow-2xl border-[3px] border-[#292524] ring-1 ring-white/10">
-              {/* Dynamic Island / Notch */}
-              <div className="absolute top-5 left-1/2 -translate-x-1/2 w-16 h-3.5 bg-black rounded-full z-20" />
-
-              {/* Screen Contents */}
-              <div className="rounded-[28px] bg-[#18181b] overflow-hidden pt-7 pb-4 px-3.5 text-white">
-                {/* Date / Subtitle */}
-                <div className="text-[10px] text-zinc-400 font-medium tracking-tight">
-                  Nhava Sheva Port • INNSA
-                </div>
-
-                {/* Big Metric Balance */}
-                <div className="text-2xl font-bold tracking-tight mt-0.5 mb-3">
-                  99.4% <span className="text-xs font-normal text-emerald-400">Accuracy</span>
-                </div>
-
-                {/* Red/Orange Bar Chart */}
-                <div className="bg-[#27272a]/60 rounded-xl p-2.5 mb-3 border border-white/[0.04]">
-                  <div className="h-16 flex items-end justify-between gap-1 pt-1">
-                    {[
-                      { h: "35%", active: false },
-                      { h: "50%", active: false },
-                      { h: "75%", active: true },
-                      { h: "100%", active: true },
-                      { h: "85%", active: true },
-                      { h: "60%", active: true },
-                      { h: "40%", active: false },
-                      { h: "30%", active: false },
-                    ].map((bar, i) => (
-                      <div
-                        key={i}
-                        className={`w-full rounded-sm transition-all duration-300 ${
-                          bar.active
-                            ? "bg-gradient-to-t from-[#ef4444] to-[#f97316]"
-                            : "bg-white/20"
-                        }`}
-                        style={{ height: bar.h }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Customs mini cards */}
-                <div className="grid grid-cols-2 gap-2 text-[9px] mb-3">
-                  <div className="bg-[#27272a]/80 p-2 rounded-lg border border-white/[0.04]">
-                    <div className="text-zinc-400 text-[8px]">Bills of Lading</div>
-                    <div className="font-semibold mt-0.5 text-zinc-200">28 Cleared</div>
-                  </div>
-                  <div className="bg-[#27272a]/80 p-2 rounded-lg border border-white/[0.04]">
-                    <div className="text-zinc-400 text-[8px]">Invoices</div>
-                    <div className="font-semibold mt-0.5 text-zinc-200">32 Verified</div>
-                  </div>
-                </div>
-
-                {/* Bottom App Navigation Bar */}
-                <div className="pt-1 flex items-center justify-around border-t border-white/[0.08]">
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
-                  <div className="w-5 h-5 rounded-full p-[1.5px] bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-500 flex items-center justify-center">
-                    <div className="w-full h-full rounded-full bg-black" />
-                  </div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
-                </div>
+          {/* Header & copy */}
+          <div className="relative z-10 space-y-5">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-brand-cobalt/20 border border-brand-cobalt/40 flex items-center justify-center text-white shadow-inner">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
-            </div>
-          </div>
-
-          {/* Bottom badge */}
-          <div className="relative z-10 flex items-center justify-between text-zinc-500 text-xs">
-            <div className="w-6 h-6 rounded-full border border-orange-500/40 flex items-center justify-center text-[10px] text-orange-400 font-bold">
-              ✦
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Clean White Form */}
-        <div className="lg:col-span-6 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 p-8 sm:p-10 lg:p-14 flex flex-col justify-between">
-          {/* Header Row: Logo */}
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-xs">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <span className="font-sans font-bold text-xl tracking-tight text-zinc-900 dark:text-white">
+              <span className="text-xl font-bold font-heading text-white tracking-tight">
                 Customs Doc Check
               </span>
             </div>
+            <p className="text-brand-text-secondary text-sm font-normal leading-relaxed pt-2">
+              Review extracted shipment data, resolve discrepancies, export with confidence.
+            </p>
           </div>
 
-          {/* Sign In Form Area */}
-          <div className="my-auto max-w-md w-full">
-            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900 dark:text-white mb-2">
-              Sign In
-            </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-8">
-              Sign in to review and verify customs documents.
-            </p>
+          {/* Abstract vector graphic: document sheets */}
+          <div className="relative z-10 my-8 py-4 flex items-center justify-center select-none" data-purpose="vector-illustration">
+            <svg
+              className="w-full max-w-[280px] h-auto drop-shadow-2xl"
+              fill="none"
+              viewBox="0 0 280 240"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect fill="#13233E" height="188" rx="8" stroke="#253A5F" strokeDasharray="3 3" strokeWidth="1.5" width="168" x="52" y="16"></rect>
+              <line stroke="#2D4671" strokeLinecap="round" strokeWidth="2.5" x1="72" x2="132" y1="36" y2="36"></line>
+              <line stroke="#1E3354" strokeLinecap="round" strokeWidth="1.5" x1="72" x2="188" y1="52" y2="52"></line>
+              <line stroke="#1E3354" strokeLinecap="round" strokeWidth="1.5" x1="72" x2="164" y1="64" y2="64"></line>
+              <rect fill="#152847" height="188" rx="8" stroke="#2C4570" strokeWidth="1.5" width="168" x="62" y="32"></rect>
+              <line stroke="#375586" strokeLinecap="round" strokeWidth="2.5" x1="82" x2="148" y1="52" y2="52"></line>
+              <line stroke="#223B60" strokeLinecap="round" strokeWidth="1.5" x1="82" x2="202" y1="68" y2="68"></line>
+              <line stroke="#223B60" strokeLinecap="round" strokeWidth="1.5" x1="82" x2="176" y1="80" y2="80"></line>
+              <rect fill="#1B3156" height="188" rx="8" stroke="#3D5F96" strokeWidth="1.5" width="168" x="74" y="48"></rect>
+              <rect fill="#1f5eff" fillOpacity="0.3" height="18" rx="4" width="22" x="90" y="66"></rect>
+              <line stroke="#FFFFFF" strokeLinecap="round" strokeOpacity="0.9" strokeWidth="2.5" x1="120" x2="182" y1="72" y2="72"></line>
+              <line stroke="#5A7BAE" strokeLinecap="round" strokeWidth="1.5" x1="120" x2="156" y1="82" y2="82"></line>
+              <line stroke="#294471" strokeWidth="1" x1="90" x2="226" y1="102" y2="102"></line>
+              <line stroke="#7193C8" strokeLinecap="round" strokeWidth="2" x1="90" x2="136" y1="116" y2="116"></line>
+              <line stroke="#9BB8E8" strokeLinecap="round" strokeWidth="2" x1="184" x2="226" y1="116" y2="116"></line>
+              <line stroke="#486899" strokeLinecap="round" strokeWidth="1.5" x1="90" x2="148" y1="130" y2="130"></line>
+              <line stroke="#7193C8" strokeLinecap="round" strokeWidth="1.5" x1="194" x2="226" y1="130" y2="130"></line>
+              <line stroke="#294471" strokeDasharray="2 2" strokeWidth="1" x1="90" x2="226" y1="144" y2="144"></line>
+              <line stroke="#486899" strokeLinecap="round" strokeWidth="1.5" x1="90" x2="124" y1="158" y2="158"></line>
+              <line stroke="#7193C8" strokeLinecap="round" strokeWidth="1.5" x1="178" x2="226" y1="158" y2="158"></line>
+              <rect fill="#122440" height="24" rx="4" stroke="#294471" strokeWidth="1" width="136" x="90" y="174"></rect>
+              <line stroke="#5A7BAE" strokeLinecap="round" strokeWidth="2" x1="100" x2="138" y1="186" y2="186"></line>
+              <line stroke="#38EF7D" strokeLinecap="round" strokeWidth="2" x1="192" x2="216" y1="186" y2="186"></line>
+              <g filter="drop-shadow(0px 8px 16px rgba(0,0,0,0.45))">
+                <circle cx="216" cy="186" fill="#1f5eff" r="22" stroke="#ffffff" strokeWidth="2.5"></circle>
+                <path d="M208.5 186.2L213.5 191.2L224 180.7" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.75"></path>
+              </g>
+            </svg>
+          </div>
 
-            {authStage === "success" && (
-              <div className="mb-6 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs flex items-center gap-3">
-                <AlertCircle className="w-4 h-4 shrink-0 text-emerald-600" />
-                <span>Session authenticated. Redirecting…</span>
+          {/* Bottom system meta: status label + dot */}
+          <div className="relative z-10 flex items-center justify-between text-xs text-brand-text-secondary font-mono pt-2 border-t border-white/5">
+            <span>Verification Engine v3.4</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-cobalt animate-soft-pulse"></span>
+              <span>Ready</span>
+            </span>
+          </div>
+        </section>
+
+        {/* Right Auth Panel */}
+        <section className="lg:col-span-6 bg-brand-surface p-8 sm:p-12 lg:p-14 flex flex-col justify-between">
+          {/* Logo header */}
+          <header className="flex items-center gap-2.5 mb-8">
+            <div className="w-9 h-9 rounded-xl bg-brand-cobalt flex items-center justify-center text-white shadow-sm">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <span className="text-xl font-bold font-heading text-brand-text-primary tracking-tight">
+              Customs Doc Check
+            </span>
+          </header>
+
+          <div className="max-w-md w-full mx-auto my-auto">
+            {/* Form titles */}
+            <div className="mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold font-heading text-brand-text-primary tracking-tight">
+                Sign in
+              </h2>
+              <p className="text-brand-text-secondary text-sm mt-2 leading-relaxed">
+                Enter your credentials to access your customs clearance dashboard.
+              </p>
+            </div>
+
+            {/* Error banner (error state only) */}
+            {isError && error && (
+              <div className="mb-5 rounded-lg p-3.5 bg-[#FEF2F2] border border-[#FCA5A5] flex items-start gap-3 shadow-sm" role="alert">
+                <AlertCircle className="w-5 h-5 text-[#DC2626] flex-shrink-0 mt-0.5" />
+                <div className="text-xs text-[#991B1B] font-medium leading-snug">
+                  {error}
+                </div>
               </div>
             )}
 
-            {error && (
-              <div className="mb-6 p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs flex items-center gap-3">
-                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-                <span>{error}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  placeholder="name@company.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={submitting}
-                  className="w-full rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 px-5 py-3.5 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all shadow-xs"
-                />
-              </div>
-
-              <div className="relative">
-                <input
-                  id="password"
-                  type={passwordVisible ? "text" : "password"}
-                  name="password"
-                  autoComplete="current-password"
-                  placeholder="Password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={submitting}
-                  className="w-full rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 px-5 py-3.5 pr-12 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all shadow-xs"
-                />
-                <button
-                  type="button"
-                  onClick={() => setPasswordVisible(!passwordVisible)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
-                  aria-label={passwordVisible ? "Hide password" : "Show password"}
-                >
-                  {passwordVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+            <form onSubmit={handleSubmit} className="space-y-5" id="loginForm">
+              {/* Email field */}
+              <div className="space-y-1.5">
+                <label htmlFor="email" className="block text-xs font-semibold text-brand-text-primary uppercase tracking-wider">
+                  Work Email
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-secondary pointer-events-none" />
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    placeholder="name@company.com"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isDisabled}
+                    className={`w-full pl-10 pr-4 py-3 rounded-lg border text-brand-text-primary placeholder:text-slate-400 text-sm focus:outline-none transition-all duration-150 ${
+                      isError
+                        ? "border-[#DC2626] bg-[#FEF2F2]/30 ring-1 ring-[#DC2626] focus:border-[#DC2626] focus:ring-2 focus:ring-[#DC2626]"
+                        : "border-brand-hairline bg-brand-surface focus:border-brand-cobalt focus:ring-2 focus:ring-brand-cobalt/20"
+                    }`}
+                  />
+                </div>
+                {isError && !email && (
+                  <p className="text-xs text-[#DC2626] font-medium flex items-center gap-1 mt-1" id="emailError">
+                    <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                    Please enter your work email address
+                  </p>
+                )}
               </div>
 
-              <div className="pt-4">
+              {/* Password field */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-xs font-semibold text-brand-text-primary uppercase tracking-wider">
+                    Password
+                  </label>
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-secondary pointer-events-none" />
+                  <input
+                    id="password"
+                    type={passwordVisible ? "text" : "password"}
+                    name="password"
+                    autoComplete="current-password"
+                    placeholder="Enter your password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isDisabled}
+                    className={`w-full pl-10 pr-10 py-3 rounded-lg border text-brand-text-primary placeholder:text-slate-400 text-sm focus:outline-none transition-all duration-150 ${
+                      isError
+                        ? "border-[#DC2626] bg-[#FEF2F2]/30 ring-1 ring-[#DC2626] focus:border-[#DC2626] focus:ring-2 focus:ring-[#DC2626]"
+                        : "border-brand-hairline bg-brand-surface focus:border-brand-cobalt focus:ring-2 focus:ring-brand-cobalt/20"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                    disabled={isDisabled}
+                    className={`absolute inset-y-0 right-0 pr-3.5 flex items-center transition-colors duration-150 ${
+                      isDisabled
+                        ? "text-slate-400 pointer-events-none"
+                        : "text-brand-text-secondary hover:text-brand-cobalt"
+                    }`}
+                    aria-label={passwordVisible ? "Hide password" : "Show password"}
+                  >
+                    {passwordVisible ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+                {isError && !password && (
+                  <p className="text-xs text-[#DC2626] font-medium flex items-center gap-1 mt-1" id="passwordError">
+                    <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                    Please enter your password
+                  </p>
+                )}
+              </div>
+
+              {/* Primary sign-in button */}
+              <div className="pt-2">
                 <button
                   type="submit"
-                  disabled={submitting}
-                  className="w-full py-3.5 px-6 rounded-full text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-60"
+                  disabled={isDisabled}
+                  className={`w-full py-3.5 px-4 text-sm font-semibold font-heading rounded-lg transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 ${
+                    isDisabled
+                      ? "bg-brand-cobalt/50 text-white opacity-60 cursor-not-allowed shadow-sm"
+                      : "bg-brand-cobalt text-white shadow-cta hover:bg-brand-cobalt-hover hover:-translate-y-0.5 hover:shadow-cta-hover active:translate-y-0 active:scale-[0.99]"
+                  }`}
                 >
-                  {authStage === "verifying" ? (
+                  {isVerifying ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Verifying…</span>
+                      <span>Verifying credentials…</span>
                     </>
                   ) : (
                     <>
-                      <LogIn className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                      <span>Sign In</span>
+                      <LogIn className="w-4 h-4" />
+                      <span>Sign in</span>
                     </>
                   )}
                 </button>
               </div>
+
+              {/* Verifying status indicator (verifying state only) */}
+              {isVerifying && (
+                <div className="pt-1.5 flex items-center justify-center gap-2 text-xs font-mono text-brand-text-secondary animate-pulse" role="status">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-cobalt"></span>
+                  <span>Verifying secure customs broker session…</span>
+                </div>
+              )}
             </form>
           </div>
 
-          {/* Footer of Right Card */}
-          <div className="mt-8 pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-zinc-400 dark:text-zinc-500 gap-3 border-t border-zinc-100 dark:border-zinc-800">
+          {/* Card footer */}
+          <footer className="pt-6 border-t border-brand-hairline flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-brand-text-secondary">
             <span>© 2026 Customs Doc Check Inc.</span>
-            <div className="flex items-center gap-4">
-              <span>Nhava Sheva Customs House</span>
-            </div>
-          </div>
-        </div>
-      </div>
+            <span className="font-mono text-[11px]">Nhava Sheva Customs House</span>
+          </footer>
+        </section>
+      </main>
     </div>
   );
 }
