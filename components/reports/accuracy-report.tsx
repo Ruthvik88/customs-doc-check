@@ -119,14 +119,14 @@ export function AccuracyReport({
           <div aria-label="Accuracy aggregation levels" className="flex p-1 bg-customs-surface-container rounded-lg" role="tablist">
             <button
               aria-selected="true"
-              className="flex items-center gap-space-xs px-space-md py-space-sm rounded-md bg-customs-surface-raised text-customs-primary font-headline-sm text-headline-sm shadow-sm transition-all" role="tab" type="button"
+              className="flex items-center gap-space-xs px-space-md py-space-sm rounded-md bg-customs-surface-raised text-customs-primary font-headline-sm text-headline-sm shadow-sm transition-colors" role="tab" type="button"
             >
               <Table className="text-[18px]" aria-hidden="true" />
               <span>By field</span>
             </button>
             <button
               aria-selected="false"
-              className="flex items-center gap-space-xs px-space-md py-space-sm rounded-md text-customs-on-surface-variant hover:text-customs-on-surface font-headline-sm text-headline-sm transition-all" role="tab" type="button"
+              className="flex items-center gap-space-xs px-space-md py-space-sm rounded-md text-customs-on-surface-variant hover:text-customs-on-surface font-headline-sm text-headline-sm transition-colors" role="tab" type="button"
             >
               <Building className="text-[18px]" aria-hidden="true" />
               <span>By supplier</span>
@@ -167,7 +167,7 @@ export function AccuracyReport({
             </p>
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-space-sm px-space-lg py-space-sm bg-customs-primary-container text-customs-on-primary-container font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary transition-all shadow-sm"
+              className="inline-flex items-center gap-space-sm px-space-lg py-space-sm bg-customs-primary-container text-customs-on-primary-container font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary transition-colors shadow-sm"
             >
               <Truck className="text-[20px] transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
               <span>Go to Shipments</span>
@@ -259,7 +259,7 @@ export function AccuracyReport({
             aria-controls="panel-fields"
             aria-selected={activeTab === "fields"}
             id="tab-btn-fields"
-            className={`relative px-space-lg py-1.5 rounded-lg font-headline-sm text-headline-sm transition-all duration-200 flex items-center gap-space-xs ${
+            className={`relative px-space-lg py-1.5 rounded-lg font-headline-sm text-headline-sm transition-colors duration-200 flex items-center gap-space-xs ${
               activeTab === "fields"
                 ? "bg-customs-surface-raised text-customs-primary shadow-sm"
                 : "text-customs-ink-secondary hover:text-customs-ink-primary hover:bg-customs-surface-raised/50"
@@ -278,7 +278,7 @@ export function AccuracyReport({
             aria-controls="panel-suppliers"
             aria-selected={activeTab === "suppliers"}
             id="tab-btn-suppliers"
-            className={`relative px-space-lg py-1.5 rounded-lg font-headline-sm text-headline-sm transition-all duration-200 flex items-center gap-space-xs ${
+            className={`relative px-space-lg py-1.5 rounded-lg font-headline-sm text-headline-sm transition-colors duration-200 flex items-center gap-space-xs ${
               activeTab === "suppliers"
                 ? "bg-customs-surface-raised text-customs-primary shadow-sm"
                 : "text-customs-ink-secondary hover:text-customs-ink-primary hover:bg-customs-surface-raised/50"
@@ -303,7 +303,7 @@ export function AccuracyReport({
       </div>
 
       <div className="w-full bg-customs-surface-raised rounded-xl shadow-sm overflow-hidden">
-        <div className="w-full overflow-x-auto" id="panel-fields" role="tabpanel">
+        <div className="w-full overflow-x-auto" id={activeTab === "fields" ? "panel-fields" : "panel-suppliers"} role="tabpanel">
           <table className="w-full border-collapse text-left">
             <thead>
               <tr className="bg-customs-surface-base h-9 text-customs-ink-secondary font-caption text-caption uppercase tracking-wider">

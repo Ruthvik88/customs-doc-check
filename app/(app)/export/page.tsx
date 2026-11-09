@@ -13,6 +13,7 @@ import {
   Plane,
   RefreshCw,
   CheckCheck,
+  LayoutDashboard,
   ShieldCheck,
   Sun,
   User,
@@ -572,6 +573,42 @@ export default function ExportPage() {
                       <tr>
                         <td className="px-space-lg py-space-lg text-center text-customs-ink-secondary" colSpan={4}>
                           No approved shipments ready for export.
+                        </td>
+                      </tr>
+                    )}
+                    {shipments.length === 0 && (
+                      <tr>
+                        <td className="px-space-lg py-space-xl" colSpan={4}>
+                          <div className="bg-customs-surface-raised rounded-xl shadow-sm p-space-xl flex flex-col items-center justify-center text-center min-h-[460px]">
+                            <h2 className="font-headline text-headline-lg text-customs-ink-primary tracking-tight mb-space-sm">
+                              No approved shipments yet
+                            </h2>
+                            <p className="font-body text-body-md text-customs-ink-secondary max-w-xl mx-auto leading-relaxed mb-space-xl">
+                              Shipments must complete document verification and
+                              receive manager approval before export CSVs can be
+                              generated. Once a shipment is approved, it will
+                              automatically appear here ready for filing.
+                            </p>
+                            <div className="flex flex-col sm:flex-row items-center gap-space-sm">
+                              <Link
+                                href="/dashboard"
+                                className="inline-flex items-center justify-center gap-2 px-space-lg py-2.5 bg-customs-primary text-customs-on-primary font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary-container transition-colors shadow-sm"
+                              >
+                                <CheckCheck className="text-[18px]" aria-hidden="true" />
+                                <span>View Pending Approvals</span>
+                              </Link>
+                              <Link
+                                href="/dashboard"
+                                className="inline-flex items-center justify-center gap-2 px-space-lg py-2.5 bg-customs-surface-base text-customs-ink-primary font-headline-sm text-headline-sm rounded-lg hover:bg-customs-surface-container transition-colors"
+                              >
+                                <LayoutDashboard
+                                  className="text-[18px] text-customs-ink-secondary"
+                                  aria-hidden="true"
+                                />
+                                <span>Go to Shipments Dashboard</span>
+                              </Link>
+                            </div>
+                          </div>
                         </td>
                       </tr>
                     )}
