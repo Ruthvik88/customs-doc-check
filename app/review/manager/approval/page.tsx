@@ -4,41 +4,50 @@ import React from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
-  ShieldCheck,
-  FileText,
-  Package,
-  Truck,
-  Search,
-  Edit,
-  Lock,
-  Settings,
-  User,
-  Maximize2,
-  RotateCcw,
-  RotateCw,
-  PlusCircle,
-  Download,
-  CloudUpload,
-  History,
-  Scan,
-  ZoomIn,
-  AlertTriangle,
-  AlertCircle,
-  X,
+  ArrowRight,
+  Building,
+  Calendar,
   CheckCircle,
   ChevronDown,
-  EyeOff,
-  Info,
-  Minus,
-  Plus,
   ChevronLeft,
   ChevronRight,
-  RefreshCw,
-  Check,
+  EyeOff,
+  FileText,
   Flag,
   Gavel,
+  History,
+  Info,
+  LayoutDashboard,
+  Lock,
+  MapPin,
+  Maximize2,
+  Minus,
+  Package,
+  Plane,
+  Plus,
+  RefreshCw,
+  RotateCcw,
+  RotateCw,
+  Scale,
+  Search,
+  Settings,
+  ShieldCheck,
+  Tag,
+  Truck,
+  User,
+  UserCheck,
+  X,
+  ZoomIn,
+  Download,
+  CloudUpload,
+  Scan,
+  AlertTriangle,
+  AlertCircle,
+  Check,
   Inbox,
+  PlusCircle,
 } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,17 +71,10 @@ export default function ReviewManagerApprovalPage() {
               <Link href="/dashboard/export" className="px-space-md py-1.5 font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors">Export</Link>
             </nav>
           </div>
-          <div className="flex items-center gap-space-lg">
-            <div className="hidden md:inline-flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-status-confirmed-bg text-status-confirmed-text">
-              <span className="w-2 h-2 rounded-full bg-status-confirmed-text animate-pulse" />
-              <span className="font-label-code-sm text-label-code-sm font-semibold tracking-wide uppercase">SYSTEM ONLINE</span>
-            </div>
-            <div className="flex items-center gap-space-md">
-              <div className="hidden sm:flex flex-col text-right">
-                <span className="font-body-sm text-body-sm text-ink-primary font-medium leading-none">manager@demo.local</span>
-                <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mt-1">DOCUMENTATION MANAGER</span>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><User className="text-on-primary text-[18px]" /></div>
+          <div className="flex items-center gap-space-md">
+            <div className="hidden sm:flex flex-col text-right">
+              <span className="font-body-sm text-body-sm text-ink-primary font-medium leading-none">manager@demo.local</span>
+              <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mt-1">DOCUMENTATION MANAGER</span>
             </div>
           </div>
         </div>
@@ -87,9 +89,9 @@ export default function ReviewManagerApprovalPage() {
               <div className="flex items-center justify-between flex-wrap gap-space-sm">
                 <nav aria-label="Breadcrumbs" className="flex items-center gap-2 font-body-sm text-body-sm text-ink-secondary">
                   <Link href="/dashboard" className="hover:text-ink-primary transition-colors">Shipments</Link>
-                  <span className="material-symbols-outlined text-[14px] text-ink-muted">chevron_right</span>
+                  <Icon as={ChevronRight} size={16} className="text-ink-muted" aria-hidden="true" />
                   <span className="font-label-code-sm text-label-code-sm text-ink-primary font-semibold">SHP-24811</span>
-                  <span className="material-symbols-outlined text-[14px] text-ink-muted">chevron_right</span>
+                  <Icon as={ChevronRight} size={16} className="text-ink-muted" aria-hidden="true" />
                   <span className="font-body-sm text-body-sm text-ink-primary font-medium">Manager Approval</span>
                 </nav>
                 <Link href="/review/screen" className="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-raised text-ink-primary hover:bg-surface-container-high transition-colors font-body-sm text-body-sm shadow-sm">
@@ -103,29 +105,29 @@ export default function ReviewManagerApprovalPage() {
                   <h1 className="font-label-code-md text-headline-xl text-ink-primary font-bold tracking-tight">SHP-24811</h1>
                   {/* Blocker Badge */}
                   <div className="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-status-error-bg text-status-error-text shadow-sm">
-                    <span className="material-symbols-outlined text-[16px]">cancel</span>
+                    <Icon as={X} size={16} className="text-ink-primary" aria-hidden="true" />
                     <span className="font-label-code-sm text-label-code-sm font-bold uppercase tracking-wider">Approval Blocked</span>
                   </div>
                   {/* Carrier Ref */}
                   <div className="inline-flex items-center gap-1 px-space-sm py-1 rounded-lg bg-surface-container-high text-on-surface">
-                    <span className="material-symbols-outlined text-[15px] text-ink-secondary">tag</span>
+                    <Icon as={Tag} size={16} className="text-ink-secondary" aria-hidden="true" />
                     <span className="font-label-code-sm text-label-code-sm font-medium">CARRIER REF #AX-9081</span>
                   </div>
                   {/* Mode Pill */}
                   <div className="inline-flex items-center gap-1 px-space-sm py-1 rounded-lg bg-surface-base text-ink-primary">
-                    <span className="material-symbols-outlined text-[16px] text-primary">flight_takeoff</span>
+                    <Icon as={Package} size={16} className="text-primary" aria-hidden="true" />
                     <span className="font-body-sm text-body-sm font-semibold">Air Cargo</span>
                   </div>
                 </div>
                 {/* Supplier & Timestamp Meta */}
                 <div className="flex flex-wrap items-center gap-space-md font-body-sm text-body-sm text-ink-secondary">
                   <span className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px] text-ink-muted">storefront</span>
+                    <Icon as={Building} size={16} className="text-ink-muted" aria-hidden="true" />
                     <span>Consignor: <strong className="text-ink-primary font-medium">Pacific Logistics Corp</strong></span>
                   </span>
                   <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
                   <span className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px] text-ink-muted">schedule</span>
+                    <Icon as={Calendar} size={16} className="text-ink-muted" aria-hidden="true" />
                     <span className="font-label-code-sm text-label-code-sm">Last checked at 2026-07-11 15:42 UTC</span>
                   </span>
                 </div>
@@ -155,7 +157,7 @@ export default function ReviewManagerApprovalPage() {
                   {/* Green Verified Digital Sign Banner */}
                   <div className="px-space-lg py-3.5 bg-status-confirmed-bg text-status-confirmed-text flex items-center justify-between gap-space-md">
                     <div className="flex items-center gap-space-sm min-w-0">
-                      <span className="material-symbols-outlined text-[22px] text-primary">verified_user</span>
+                      <Icon as={UserCheck} size={20} className="text-primary" aria-hidden="true" />
                       <span className="font-headline-sm text-body-sm font-bold truncate">Official Customs Filing Package #INNSA-2026-088192-A Generated &amp; Digitally Signed</span>
                     </div>
                     <span className="font-label-code-sm text-caption px-2 py-0.5 rounded bg-surface-raised text-status-confirmed-text font-semibold uppercase tracking-wider shrink-0">EDIFACT 204.11</span>
@@ -166,7 +168,7 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Consignor / Exporter</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-headline-sm text-body-sm text-ink-primary font-semibold">Pacific Logistics Corp</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">Shanghai, China (CN-PVG)</span>
@@ -175,7 +177,7 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Consignee &amp; GSTIN Registration</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <div className="font-headline-sm text-body-md text-ink-primary font-semibold flex items-start gap-1.5">
                         <span>Apex Logistics India Ltd</span>
@@ -186,7 +188,7 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Declared Total Value</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-headline-sm text-ink-primary font-bold">$142,850.00 USD</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">CIF Terms, Incoterms 2020</span>
@@ -195,11 +197,11 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Port Route Corridor</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <div className="flex items-center gap-2 font-headline-sm text-body-md text-ink-primary font-semibold">
                         <span className="font-label-code-sm text-label-code-sm font-bold bg-surface-container px-2 py-0.5 rounded">PVG</span>
-                        <span className="material-symbols-outlined text-[16px] text-ink-muted">arrow_forward</span>
+                        <Icon as={ArrowRight} size={16} className="text-ink-muted" aria-hidden="true" />
                         <span className="font-label-code-sm text-label-code-sm font-bold bg-surface-container px-2 py-0.5 rounded">INNSA</span>
                         <span className="font-body-sm text-body-sm text-ink-muted">Transit: Ocean &amp; Air Multi-Modal</span>
                       </div>
@@ -208,18 +210,18 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Gross Weight</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-body-lg text-ink-primary font-bold">3,165.00 kg</span>
                       <span className="font-body-sm text-body-sm text-status-confirmed-text font-medium flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[14px]">done_all</span> Reconciled &amp; Certified
+                        <Icon as={CheckCircle} size={14} aria-hidden="true" /> Reconciled &amp; Certified
                       </span>
                     </div>
                     {/* Net Weight */}
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Net Weight &amp; Packaging Metric</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-body-lg text-ink-primary font-bold">2,940.00 kg</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">14 Pallets / 280 Cartons</span>
@@ -228,7 +230,7 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Primary HSN Classification</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-body-lg text-ink-primary font-bold">8471.30.10</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">Data processing units &lt; 10kg</span>
@@ -237,7 +239,7 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Electronic Filing ID</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-sm text-label-code-md text-ink-primary font-semibold truncate">CBIC-ICEGATE-TXN-9948210</span>
                       <span className="font-caption text-caption text-ink-muted">Gateway Node Mumbai-Air cargo</span>
@@ -246,7 +248,7 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Duty Assessed / Debited</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-headline-sm text-ink-primary font-bold">$18,637.50 USD</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">Direct Debit Authorized via ECL</span>
@@ -255,7 +257,7 @@ export default function ReviewManagerApprovalPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Transmission Protocol</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-sm text-label-code-md text-ink-primary font-semibold">EDIFACT 204.11</span>
                       <span className="font-caption text-caption text-status-confirmed-text font-medium">Encrypted SHA-256 Asymmetric</span>
@@ -264,7 +266,7 @@ export default function ReviewManagerApprovalPage() {
                   {/* Bottom Micro-footer */}
                   <div className="px-space-lg py-2.5 bg-surface-container-high/60 flex items-center justify-between text-ink-secondary">
                     <span className="font-caption text-caption flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[14px]">history_edu</span> Consolidated Clearance Package Manifest Rev 2.0 (Frozen)
+                      <Icon as={History} size={14} className="text-ink-muted" aria-hidden="true" /> Consolidated Clearance Package Manifest Rev 2.0 (Frozen)
                     </span>
                     <span className="font-label-code-sm text-caption">CRC32: 9D41F20C</span>
                   </div>
@@ -273,7 +275,7 @@ export default function ReviewManagerApprovalPage() {
                 <article className="bg-surface-raised rounded-xl shadow-md overflow-hidden flex flex-col">
                   <div className="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
                     <div className="flex items-center gap-space-sm">
-                      <span className="material-symbols-outlined text-[20px] text-primary">history_edu</span>
+                      <Icon as={History} size={20} className="text-primary" aria-hidden="true" />
                       <h2 className="font-headline-sm text-headline-sm text-ink-primary font-bold">Changes made by the reviewer</h2>
                     </div>
                     <span className="font-label-code-sm text-label-code-sm px-2 py-0.5 rounded-full bg-surface-container text-ink-secondary font-medium">4 Recorded Modifications</span>
@@ -293,49 +295,49 @@ export default function ReviewManagerApprovalPage() {
                         {/* Row 1: Gross Weight */}
                         <tr className="h-10 hover:bg-surface-container-low/50 transition-colors">
                           <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px] text-ink-muted">scale</span> Gross Weight
+                            <Icon as={Scale} size={16} className="text-ink-muted" aria-hidden="true" /> Gross Weight
                           </td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">3,240.00 kg</td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">3,165.00 kg</td>
                           <td className="py-2 px-space-md text-ink-secondary text-caption max-w-[200px] truncate" title="Matched to Air Waybill revised cargo manifest tare weight">Matched to Air Waybill manifest tare weight</td>
                           <td className="py-2 px-space-md text-center">
-                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><span className="material-symbols-outlined text-[18px]">check_circle</span></span>
+                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><Icon as={CheckCircle} size={18} aria-hidden="true" /></span>
                           </td>
                         </tr>
                         {/* Row 2: HSN Code classification */}
                         <tr className="h-10 hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/20">
                           <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px] text-ink-muted">sell</span> HSN Code
+                            <Icon as={Tag} size={16} className="text-ink-muted" aria-hidden="true" /> HSN Code
                           </td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">8471.30.00</td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">8471.30.10</td>
                           <td className="py-2 px-space-md text-ink-secondary text-caption max-w-[200px] truncate" title="Updated sub-item code per CBIC technical data sheet">Updated sub-item per CBIC data sheet</td>
                           <td className="py-2 px-space-md text-center">
-                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><span className="material-symbols-outlined text-[18px]">check_circle</span></span>
+                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><Icon as={CheckCircle} size={18} aria-hidden="true" /></span>
                           </td>
                         </tr>
                         {/* Row 3: Incoterm Place */}
                         <tr className="h-10 hover:bg-surface-container-low/50 transition-colors">
                           <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px] text-ink-muted">pin_drop</span> Incoterm Place
+                            <Icon as={MapPin} size={16} className="text-ink-muted" aria-hidden="true" /> Incoterm Place
                           </td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">FOB Shanghai</td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">CIF Nhava Sheva</td>
                           <td className="py-2 px-space-md text-ink-secondary text-caption max-w-[200px] truncate" title="Corrected per final Commercial Invoice rider #3">Corrected per final Commercial Invoice rider #3</td>
                           <td className="py-2 px-space-md text-center">
-                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><span className="material-symbols-outlined text-[18px]">check_circle</span></span>
+                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><Icon as={CheckCircle} size={18} aria-hidden="true" /></span>
                           </td>
                         </tr>
                         {/* Row 4: Total Cartons Count */}
                         <tr className="h-10 hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/20">
                           <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px] text-ink-muted">package_2</span> Carton Count
+                            <Icon as={Package} size={16} className="text-ink-muted" aria-hidden="true" /> Carton Count
                           </td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">275 Cartons</td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">280 Cartons</td>
                           <td className="py-2 px-space-md text-ink-secondary text-caption max-w-[200px] truncate" title="Reconciled with signed Packing List tally sheet">Reconciled with signed Packing List tally sheet</td>
                           <td className="py-2 px-space-md text-center">
-                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><span className="material-symbols-outlined text-[18px]">check_circle</span></span>
+                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><Icon as={CheckCircle} size={18} aria-hidden="true" /></span>
                           </td>
                         </tr>
                       </tbody>
@@ -343,7 +345,7 @@ export default function ReviewManagerApprovalPage() {
                   </div>
                   {/* Alert Banner below reviewer table */}
                   <div className="m-space-md p-space-md rounded-lg bg-status-error-bg flex items-start gap-space-sm text-status-error-text">
-                    <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5">error</span>
+                    <Icon as={AlertCircle} size={20} className="text-primary shrink-0 mt-0.5" aria-hidden="true" />
                     <div className="flex flex-col gap-0.5">
                       <span className="font-body-md text-body-sm font-bold">Weight Cross-Check Audit Notice</span>
                       <p className="font-body-sm text-body-sm leading-relaxed">Gross weight cross-check was not signed off by operator. Discrepancy exceeds the allowable 0.5% statutory threshold. Manager sign-off is restricted under customs compliance protocol 14-C.</p>
@@ -359,7 +361,7 @@ export default function ReviewManagerApprovalPage() {
                   <div className="p-space-lg flex flex-col items-center text-center">
                     {/* Large Emerald Success Emblem */}
                     <div className="relative w-20 h-20 rounded-full bg-status-confirmed-bg text-status-confirmed-text flex items-center justify-center mb-space-md shadow-sm">
-                      <span className="material-symbols-outlined text-[48px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                      <Icon as={CheckCircle} size={48} style={{ fontVariationSettings: "'FILL' 1" }} aria-hidden="true" />
                     </div>
                     {/* Heading & Subtext */}
                     <h2 className="font-headline-lg text-headline-lg text-ink-primary font-bold tracking-tight mb-2">Customs Clearance Package Transmitted</h2>
@@ -391,28 +393,28 @@ export default function ReviewManagerApprovalPage() {
                     <div className="w-full flex flex-col gap-2.5 mb-space-lg text-left">
                       <div className="flex items-center justify-between py-1.5 px-space-sm rounded-lg bg-status-confirmed-bg/50">
                         <div className="flex items-center gap-2">
-                          <span className="material-symbols-outlined text-status-confirmed-text text-[18px]">check_circle</span>
+                          <Icon as={CheckCircle} size={18} className="text-status-confirmed-text" aria-hidden="true" />
                           <span className="font-body-sm text-body-sm font-medium text-ink-primary">Commercial Invoice &amp; PL Reconciled</span>
                         </div>
                         <span className="font-label-code-sm text-caption text-status-confirmed-text font-semibold">15:44:10</span>
                       </div>
                       <div className="flex items-center justify-between py-1.5 px-space-sm rounded-lg bg-status-confirmed-bg/50">
                         <div className="flex items-center gap-2">
-                          <span className="material-symbols-outlined text-status-confirmed-text text-[18px]">check_circle</span>
+                          <Icon as={CheckCircle} size={18} className="text-status-confirmed-text" aria-hidden="true" />
                           <span className="font-body-sm text-body-sm font-medium text-ink-primary">Sanctions &amp; Denied Parties Screened</span>
                         </div>
                         <span className="font-label-code-sm text-caption text-status-confirmed-text font-semibold">15:44:38</span>
                       </div>
                       <div className="flex items-center justify-between py-1.5 px-space-sm rounded-lg bg-status-confirmed-bg/50">
                         <div className="flex items-center gap-2">
-                          <span className="material-symbols-outlined text-status-confirmed-text text-[18px]">check_circle</span>
+                          <Icon as={CheckCircle} size={18} className="text-status-confirmed-text" aria-hidden="true" />
                           <span className="font-body-sm text-body-sm font-medium text-ink-primary">E-Sign Token Hardware Authenticated</span>
                         </div>
                         <span className="font-label-code-sm text-caption text-status-confirmed-text font-semibold">15:45:00</span>
                       </div>
                       <div className="flex items-center justify-between py-1.5 px-space-sm rounded-lg bg-status-confirmed-bg/50">
                         <div className="flex items-center gap-2">
-                          <span className="material-symbols-outlined text-status-confirmed-text text-[18px]">check_circle</span>
+                          <Icon as={CheckCircle} size={18} className="text-status-confirmed-text" aria-hidden="true" />
                           <span className="font-body-sm text-body-sm font-medium text-ink-primary">Direct ICEGATE EDI Gateway Transmission</span>
                         </div>
                         <span className="font-label-code-sm text-caption text-status-confirmed-text font-semibold">15:45:02</span>
@@ -421,15 +423,15 @@ export default function ReviewManagerApprovalPage() {
                     {/* Action Buttons Suite */}
                     <div className="w-full flex flex-col gap-space-sm">
                       <a className="w-full h-11 px-space-md rounded-lg bg-status-confirmed-text text-surface-container-lowest font-headline-sm text-body-md font-semibold inline-flex items-center justify-center gap-2 hover:opacity-95 shadow-sm transition-all active:scale-[0.99]" href="#">
-                        <span className="material-symbols-outlined text-[20px]">download</span>
+                        <Icon as={Download} size={20} aria-hidden="true" />
                         <span>Download Official Customs Declaration (PDF)</span>
                       </a>
                       <a className="w-full h-9 px-space-md rounded-lg bg-surface-container-low text-ink-primary font-headline-sm text-body-sm font-medium inline-flex items-center justify-center gap-2 hover:bg-surface-container transition-colors" href="#" target="_blank">
-                        <span className="material-symbols-outlined text-[18px] text-primary">open_in_new</span>
+                        <Icon as={Maximize2} size={18} className="text-primary" aria-hidden="true" />
                         <span>View in ICEGATE Live Tracker</span>
                       </a>
                       <a className="w-full h-9 px-space-md rounded-lg bg-transparent text-ink-secondary hover:text-ink-primary font-body-sm text-body-sm font-medium inline-flex items-center justify-center gap-1.5 transition-colors" href="#">
-                        <span className="material-symbols-outlined text-[18px]">dashboard</span>
+                        <Icon as={LayoutDashboard} size={18} aria-hidden="true" />
                         <span>Return to Shipments Dashboard</span>
                       </a>
                     </div>
@@ -440,7 +442,7 @@ export default function ReviewManagerApprovalPage() {
                   </div>
                   {/* Supplemental Secondary Card: Audit Trail Hash Signature */}
                   <div className="p-space-md rounded-xl bg-surface-raised shadow-sm flex items-start gap-space-sm text-ink-secondary">
-                    <span className="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">verified_user</span>
+                    <Icon as={UserCheck} size={20} className="text-primary shrink-0 mt-0.5" aria-hidden="true" />
                     <div className="flex flex-col gap-1 min-w-0">
                       <span className="font-headline-sm text-body-sm font-semibold text-ink-primary">Cryptographic Audit Enclave Active</span>
                       <p className="font-caption text-caption text-ink-secondary">All modifications and transmission packets are permanently mirrored to the WCO Safe Framework audit node. Local copies locked against changes.</p>

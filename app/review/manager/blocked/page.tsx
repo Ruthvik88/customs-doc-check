@@ -37,7 +37,17 @@ import {
   Check,
   Flag,
   Gavel,
+  Building,
+  ArrowRight,
+  Calendar,
+  LayoutDashboard,
+  MapPin,
+  Plane,
+  Scale,
+  Tag,
+  UserCheck,
 } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -70,10 +80,7 @@ export default function ReviewManagerBlockedPage() {
             </nav>
           </div>
           <div className="flex items-center gap-space-lg">
-            <div className="hidden md:inline-flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-status-confirmed-bg text-status-confirmed-text">
-              <span className="w-2 h-2 rounded-full bg-status-confirmed-text animate-pulse" />
-              <span className="font-label-code-sm text-label-code-sm font-semibold tracking-wide uppercase">SYSTEM ONLINE</span>
-            </div>
+
             <div className="flex items-center gap-space-md">
               <div className="hidden sm:flex flex-col text-right">
                 <span className="font-body-sm text-body-sm text-ink-primary font-medium leading-none">manager@demo.local</span>
@@ -96,9 +103,9 @@ export default function ReviewManagerBlockedPage() {
               <div className="flex items-center justify-between flex-wrap gap-space-sm">
                 <nav aria-label="Breadcrumb" className="flex items-center gap-2 font-body-sm text-body-sm text-ink-secondary">
                   <Link href="/dashboard" className="hover:text-ink-primary transition-colors">Shipments</Link>
-                  <span className="material-symbols-outlined text-[14px] text-ink-muted">chevron_right</span>
+                  <Icon as={ChevronRight} size={16} className="text-ink-muted" aria-hidden="true" />
                   <span className="font-label-code-sm text-label-code-sm text-ink-primary font-semibold">SHP-24811</span>
-                  <span className="material-symbols-outlined text-[14px] text-ink-muted">chevron_right</span>
+                  <Icon as={ChevronRight} size={16} className="text-ink-muted" aria-hidden="true" />
                   <span className="font-body-sm text-body-sm text-ink-primary font-medium">Manager Approval</span>
                 </nav>
                 <Link href="/review/screen" className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-surface-base text-ink-primary hover:bg-surface-container-high transition-colors font-body-sm text-body-sm shadow-sm">
@@ -117,25 +124,25 @@ export default function ReviewManagerBlockedPage() {
                   </div>
                   {/* Carrier Ref */}
                   <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-high text-on-surface">
-                    <span className="material-symbols-outlined text-[15px] text-ink-secondary">tag</span>
+                    <Icon as={Tag} size={16} className="text-ink-secondary" aria-hidden="true" />
                     <span className="font-label-code-sm text-label-code-sm font-medium">CARRIER REF #AX-9081</span>
                   </div>
                   {/* Mode Pill */}
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-base text-ink-primary">
-                    <span className="material-symbols-outlined text-[16px] text-primary">flight_takeoff</span>
+                    <Icon as={Package} size={16} className="text-primary" aria-hidden="true" />
                     <span className="font-body-sm text-body-sm font-semibold">Air Cargo</span>
                   </div>
                 </div>
                 {/* Supplier & Timestamp Meta */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-space-lg lg:text-right">
                   <div className="flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[16px] text-ink-muted">business</span>
+                    <Icon as={Building} size={16} className="text-ink-muted" aria-hidden="true" />
                     <span className="font-body-sm text-body-sm font-medium text-ink-primary">Pacific Logistics Corp</span>
                   </div>
                   <span className="hidden sm:inline text-outline-variant font-label-code-sm">Ã¢â‚¬Â¢</span>
                   <div className="flex flex-col">
                     <span className="font-caption text-caption text-status-confirmed-text uppercase font-semibold flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">lock</span> Audit Immutable
+                      <Icon as={Lock} size={14} aria-hidden="true" />
                     </span>
                     <span className="font-label-code-sm text-label-code-sm text-ink-secondary">Approved by manager@demo.local at 2026-07-11 15:45:02 UTC</span>
                   </div>
@@ -153,11 +160,11 @@ export default function ReviewManagerBlockedPage() {
                   {/* Card Header Bar */}
                   <div className="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between gap-space-sm">
                     <div className="flex items-center gap-space-sm">
-                      <span className="material-symbols-outlined text-[22px] text-primary">fact_check</span>
+                      <Icon as={CheckCircle} size={20} className="text-primary" aria-hidden="true" />
                       <h2 className="font-headline-md text-headline-md text-ink-primary font-semibold">Reconciled Shipment Summary</h2>
                     </div>
                     <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-status-confirmed-bg text-status-confirmed-text font-label-code-sm text-label-code-sm font-semibold uppercase tracking-wider shrink-0">
-                      <span className="material-symbols-outlined text-[14px]">check_circle</span>
+                      <Icon as={CheckCircle} size={14} aria-hidden="true" />
                       <span>3-WAY MATCH VALIDATED</span>
                     </div>
                   </div>
@@ -167,7 +174,7 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Consignor / Exporter</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-headline-sm text-body-md text-ink-primary font-semibold">Pacific Logistics Corp</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">Shanghai, China (CN-PVG)</span>
@@ -176,7 +183,7 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Consignee &amp; GSTIN Registration</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <div className="font-headline-sm text-body-md text-ink-primary font-semibold flex items-start gap-1.5">
                         <span>Apex Logistics India Ltd</span>
@@ -187,7 +194,7 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Declared Total Value</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-headline-sm text-ink-primary font-bold">$142,850.00 USD</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">CIF Terms, Incoterms 2020</span>
@@ -196,11 +203,11 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Port Route Corridor</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <div className="flex items-center gap-2 font-headline-sm text-body-md text-ink-primary font-semibold">
                         <span className="font-label-code-sm text-label-code-sm font-bold bg-surface-container px-2 py-0.5 rounded">PVG</span>
-                        <span className="material-symbols-outlined text-[16px] text-ink-muted">arrow_forward</span>
+                        <Icon as={ArrowRight} size={16} className="text-ink-muted" aria-hidden="true" />
                         <span className="font-label-code-sm text-label-code-sm font-bold bg-surface-container px-2 py-0.5 rounded">INNSA</span>
                         <span className="font-body-sm text-body-sm text-ink-muted">Transit: Ocean &amp; Air Multi-Modal</span>
                       </div>
@@ -209,18 +216,18 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Gross Weight</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-body-lg text-ink-primary font-bold">3,165.00 kg</span>
                       <span className="font-body-sm text-body-sm text-status-confirmed-text font-medium flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[14px]">done_all</span> Reconciled &amp; Certified
+                        <Icon as={CheckCircle} size={14} aria-hidden="true" />
                       </span>
                     </div>
                     {/* Net Weight */}
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Net Weight &amp; Packaging Metric</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-body-lg text-ink-primary font-bold">2,940.00 kg</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">14 Pallets / 280 Cartons</span>
@@ -229,7 +236,7 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Primary HSN Classification</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-body-lg text-ink-primary font-bold">8471.30.10</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">Data processing units &lt; 10kg</span>
@@ -238,7 +245,7 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Electronic Filing ID</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-sm text-label-code-md text-ink-primary font-semibold truncate">CBIC-ICEGATE-TXN-9948210</span>
                       <span className="font-caption text-caption text-ink-muted">Gateway Node Mumbai-Air cargo</span>
@@ -247,7 +254,7 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Duty Assessed / Debited</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-md text-headline-sm text-ink-primary font-bold">$18,637.50 USD</span>
                       <span className="font-body-sm text-body-sm text-ink-muted">Direct Debit Authorized via ECL</span>
@@ -256,7 +263,7 @@ export default function ReviewManagerBlockedPage() {
                     <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
                       <div className="flex items-center justify-between">
                         <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Transmission Protocol</span>
-                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                        <Icon as={CheckCircle} size={16} className="text-status-confirmed-text" aria-hidden="true" />
                       </div>
                       <span className="font-label-code-sm text-label-code-md text-ink-primary font-semibold">EDIFACT 204.11</span>
                       <span className="font-caption text-caption text-status-confirmed-text font-medium">Encrypted SHA-256 Asymmetric</span>
@@ -265,7 +272,7 @@ export default function ReviewManagerBlockedPage() {
                   {/* Bottom Micro-footer on Card 1 */}
                   <div className="px-space-lg py-2.5 bg-surface-container-high/60 flex items-center justify-between text-ink-secondary">
                     <span className="font-caption text-caption flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[14px]">history_edu</span> Consolidated Clearance Package Manifest Rev 2.0 (Frozen)
+                      <Icon as={History} size={14} className="text-ink-muted" aria-hidden="true" /> Consolidated Clearance Package Manifest Rev 2.0 (Frozen)
                     </span>
                     <span className="font-label-code-sm text-caption">CRC32: 9D41F20C</span>
                   </div>
@@ -274,7 +281,7 @@ export default function ReviewManagerBlockedPage() {
                 <article className="bg-surface-raised rounded-xl shadow-md overflow-hidden flex flex-col">
                   <div className="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
                     <div className="flex items-center gap-space-sm">
-                      <span className="material-symbols-outlined text-[20px] text-primary">history_edu</span>
+                      <Icon as={History} size={20} className="text-primary" aria-hidden="true" />
                       <h2 className="font-headline-sm text-headline-sm text-ink-primary font-bold">Changes made by the reviewer</h2>
                     </div>
                     <span className="font-label-code-sm text-label-code-sm px-2 py-0.5 rounded-full bg-surface-base text-ink-secondary font-medium">4 Audited Reconciliations</span>
@@ -295,7 +302,7 @@ export default function ReviewManagerBlockedPage() {
                         {/* Row 1: Gross Weight */}
                         <tr className="h-10 hover:bg-surface-container-low/50 transition-colors">
                           <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px] text-ink-muted">scale</span> Gross Weight
+                            <Icon as={Scale} size={16} className="text-ink-muted" aria-hidden="true" /> Gross Weight
                           </td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">3,240.00 kg</td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">3,165.00 kg</td>
@@ -304,14 +311,14 @@ export default function ReviewManagerBlockedPage() {
                           </td>
                           <td className="py-2 px-space-md text-center">
                             <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved">
-                              <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                              <Icon as={CheckCircle} size={18} aria-hidden="true" />
                             </span>
                           </td>
                         </tr>
                         {/* Row 2: HSN Code classification */}
                         <tr className="h-10 hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/20">
                           <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px] text-ink-muted">sell</span> HSN Code
+                            <Icon as={Tag} size={16} className="text-ink-muted" aria-hidden="true" /> HSN Code
                           </td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">8471.30.00</td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">8471.30.10</td>
@@ -320,14 +327,14 @@ export default function ReviewManagerBlockedPage() {
                           </td>
                           <td className="py-2 px-space-md text-center">
                             <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved">
-                              <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                              <Icon as={CheckCircle} size={18} aria-hidden="true" />
                             </span>
                           </td>
                         </tr>
                         {/* Row 3: Incoterm Place */}
                         <tr className="h-10 hover:bg-surface-container-low/50 transition-colors">
                           <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px] text-ink-muted">pin_drop</span> Incoterm Place
+                            <Icon as={MapPin} size={16} className="text-ink-muted" aria-hidden="true" /> Incoterm Place
                           </td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">FOB Shanghai</td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">CIF Nhava Sheva</td>
@@ -336,14 +343,14 @@ export default function ReviewManagerBlockedPage() {
                           </td>
                           <td className="py-2 px-space-md text-center">
                             <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved">
-                              <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                              <Icon as={CheckCircle} size={18} aria-hidden="true" />
                             </span>
                           </td>
                         </tr>
                         {/* Row 4: Total Cartons Count */}
                         <tr className="h-10 hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/20">
                           <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px] text-ink-muted">package_2</span> Carton Count
+                            <Icon as={Package} size={16} className="text-ink-muted" aria-hidden="true" /> Carton Count
                           </td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">275 Cartons</td>
                           <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">280 Cartons</td>
@@ -352,7 +359,7 @@ export default function ReviewManagerBlockedPage() {
                           </td>
                           <td className="py-2 px-space-md text-center">
                             <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved">
-                              <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                              <Icon as={CheckCircle} size={18} aria-hidden="true" />
                             </span>
                           </td>
                         </tr>
@@ -361,7 +368,7 @@ export default function ReviewManagerBlockedPage() {
                   </div>
                   {/* Alert Banner below reviewer table */}
                   <div className="m-space-md p-space-md rounded-lg bg-status-error-bg flex items-start gap-space-sm text-status-error-text">
-                    <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5">error</span>
+                    <Icon as={AlertCircle} size={20} className="text-primary shrink-0 mt-0.5" aria-hidden="true" />
                     <div className="flex flex-col gap-0.5">
                       <span className="font-body-md text-body-sm font-bold">Weight Cross-Check Audit Notice</span>
                       <p className="font-body-sm text-body-sm leading-relaxed">
@@ -377,7 +384,7 @@ export default function ReviewManagerBlockedPage() {
                   {/* Sticky Header */}
                   <div className="px-space-lg py-space-md bg-surface-container-low flex items-start justify-between gap-space-sm">
                     <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-primary text-[22px]">gavel</span>
+                      <Icon as={Gavel} size={20} className="text-primary" aria-hidden="true" />
                       <h2 className="font-headline-sm text-headline-sm text-ink-primary font-bold">Manager Clearance Sign-off</h2>
                     </div>
                     <p className="font-body-sm text-body-sm text-ink-secondary mt-0.5">Authoritative dispatch &amp; customs filing sign-off</p>
@@ -397,7 +404,7 @@ export default function ReviewManagerBlockedPage() {
                         <div className="p-space-md rounded-xl bg-status-error-bg flex flex-col gap-2">
                           <div className="flex items-start gap-2.5">
                             <div className="w-6 h-6 rounded-full bg-status-error-text text-on-error flex items-center justify-center shrink-0 mt-0.5">
-                              <span className="material-symbols-outlined text-[16px]">close</span>
+                              <Icon as={X} size={16} aria-hidden="true" />
                             </div>
                             <div className="flex flex-col gap-1 min-w-0">
                               <div className="font-body-md text-body-sm font-bold text-status-error-text leading-snug">
@@ -411,14 +418,14 @@ export default function ReviewManagerBlockedPage() {
                           <div className="pl-8 pt-1">
                             <a href="#reweigh-directive" className="inline-flex items-center gap-1 font-body-sm text-body-sm font-bold text-status-error-text underline underline-offset-2 hover:opacity-80 transition-opacity">
                               <span>Return to Reviewer for Re-weigh</span>
-                              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                              <Icon as={ArrowRight} size={16} aria-hidden="true" />
                             </a>
                           </div>
                         </div>
                         {/* Verified Item 2 */}
                         <div className="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-2.5">
                           <div className="w-5 h-5 rounded-full bg-status-confirmed-bg text-status-confirmed-text flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="material-symbols-outlined text-[14px]">check</span>
+                            <Icon as={CheckCircle} size={14} aria-hidden="true" />
                           </div>
                           <div className="flex flex-col">
                             <span className="font-body-sm text-body-sm font-semibold text-ink-primary">Sanctions &amp; Denied Parties Screened</span>
@@ -428,7 +435,7 @@ export default function ReviewManagerBlockedPage() {
                         {/* Verified Item 3 */}
                         <div className="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-2.5">
                           <div className="w-5 h-5 rounded-full bg-status-confirmed-bg text-status-confirmed-text flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="material-symbols-outlined text-[14px]">check</span>
+                            <Icon as={CheckCircle} size={14} aria-hidden="true" />
                           </div>
                           <div className="flex flex-col">
                             <span className="font-body-sm text-body-sm font-semibold text-ink-primary">HS Tariff Code 8-Digit Validation</span>
@@ -438,7 +445,7 @@ export default function ReviewManagerBlockedPage() {
                         {/* Verified Item 4 */}
                         <div className="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-2.5">
                           <div className="w-5 h-5 rounded-full bg-status-confirmed-bg text-status-confirmed-text flex items-center justify-center shrink-0 mt-0.5">
-                            <span className="material-symbols-outlined text-[14px]">check</span>
+                            <Icon as={CheckCircle} size={14} aria-hidden="true" />
                           </div>
                           <div className="flex flex-col">
                             <span className="font-body-sm text-body-sm font-semibold text-ink-primary">High-Resolution Scan Integrity (Ã¢â€°Â¥150 DPI)</span>
@@ -459,7 +466,7 @@ Weight discrepancy of 45 kg exceeds 0.5% regulatory threshold. Please upload cer
                         </textarea>
                       </div>
                       <div className="flex items-start gap-1 text-ink-muted font-caption text-caption">
-                        <span className="material-symbols-outlined text-[14px] shrink-0 mt-0.5">info</span>
+                        <Icon as={Info} size={14} className="shrink-0 mt-0.5" aria-hidden="true" />
                         <span>This reason will be logged in the shipment audit timeline and returned to the documentation operator.</span>
                       </div>
                     </div>
@@ -468,18 +475,18 @@ Weight discrepancy of 45 kg exceeds 0.5% regulatory threshold. Please upload cer
                       {/* Primary Action: DISABLED Grayed-out */}
                       <div className="relative group">
                         <button aria-disabled="true" className="w-full h-11 px-4 rounded-lg bg-surface-container-highest text-ink-muted font-body-md text-body-md font-semibold flex items-center justify-center gap-2 cursor-not-allowed opacity-80 shadow-none" disabled type="button">
-                          <span className="material-symbols-outlined text-[18px]">lock</span>
+                          <Icon as={Lock} size={18} aria-hidden="true" />
                           <span>Approve &amp; Transmit to Customs</span>
                         </button>
                         {/* Lock Reason Banner directly under disabled button */}
                         <div className="mt-2 p-2 rounded bg-surface-container flex items-center gap-2 font-caption text-caption text-ink-secondary">
-                          <span className="material-symbols-outlined text-[15px] text-ink-muted shrink-0">lock_clock</span>
+                          <Icon as={Lock} size={16} className="text-ink-muted shrink-0" aria-hidden="true" />
                           <span><strong>Disabled:</strong> 1 blocking discrepancy must be resolved or waived before customs transmission.</span>
                         </div>
                       </div>
                       {/* Secondary Action: ACTIVE Prominent Return Button */}
                       <button className="w-full h-11 px-4 rounded-lg bg-error text-on-error font-body-md text-body-sm font-bold flex items-center justify-center gap-2 hover:bg-on-error-container hover:shadow-lg transition-all shadow-md active:scale-[0.99]" id="reject-action-btn" type="button">
-                        <span className="material-symbols-outlined text-[18px]">assignment_return</span>
+                        <Icon as={Maximize2} size={18} aria-hidden="true" />
                         <span>Reject &amp; Return to Reviewer</span>
                       </button>
                       <div className="text-center font-caption text-caption text-ink-muted pt-1">
@@ -490,7 +497,7 @@ Weight discrepancy of 45 kg exceeds 0.5% regulatory threshold. Please upload cer
                   {/* Audit Log Micro-timeline Preview */}
                   <div className="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-2">
                     <div className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-semibold flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[15px]">verified</span> Immutable Ledger Node
+                      <Icon as={UserCheck} size={16} aria-hidden="true" />
                     </div>
                     <div className="flex items-center justify-between font-label-code-sm text-label-code-sm text-ink-muted">
                       <span>TX_HASH: 0x9f1a...4811</span>
