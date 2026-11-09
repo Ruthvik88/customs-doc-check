@@ -1,0 +1,457 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  ShieldCheck,
+  FileText,
+  Package,
+  Truck,
+  Search,
+  Edit,
+  Lock,
+  Settings,
+  User,
+  Maximize2,
+  RotateCcw,
+  RotateCw,
+  PlusCircle,
+  Download,
+  CloudUpload,
+  History,
+  Scan,
+  ZoomIn,
+  AlertTriangle,
+  AlertCircle,
+  X,
+  CheckCircle,
+  ChevronDown,
+  EyeOff,
+  Info,
+  Minus,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+  RefreshCw,
+  Check,
+  Flag,
+  Gavel,
+  Inbox,
+} from "lucide-react";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+export default function ReviewManagerApprovalPage() {
+  return (
+    <div className="bg-surface font-body-md text-body-md text-on-surface">
+      {/* Header */}
+      <header className="fixed top-0 w-full z-50 bg-surface-raised/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,27,45,0.04)]">
+        <div className="h-16 w-full px-margin-desktop flex items-center justify-between gap-space-lg">
+          <div className="flex items-center gap-space-xl">
+            <div className="flex items-center gap-space-sm">
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm">
+                <ShieldCheck className="text-[20px]" />
+              </div>
+              <span className="font-headline-sm text-headline-sm text-ink-primary font-bold tracking-tight whitespace-nowrap">Customs Doc Check</span>
+            </div>
+            <nav className="hidden lg:flex items-center gap-space-xs p-space-xs bg-surface-container-low rounded-xl" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg">
+              <Link href="/dashboard" className="px-space-md py-1.5 transition-colors bg-primary-container text-on-primary-container font-semibold rounded-lg">Shipments</Link>
+              <Link href="/dashboard/reports" className="px-space-md py-1.5 font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors">Accuracy Report</Link>
+              <Link href="/dashboard/export" className="px-space-md py-1.5 font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors">Export</Link>
+            </nav>
+          </div>
+          <div className="flex items-center gap-space-lg">
+            <div className="hidden md:inline-flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-status-confirmed-bg text-status-confirmed-text">
+              <span className="w-2 h-2 rounded-full bg-status-confirmed-text animate-pulse" />
+              <span className="font-label-code-sm text-label-code-sm font-semibold tracking-wide uppercase">SYSTEM ONLINE</span>
+            </div>
+            <div className="flex items-center gap-space-md">
+              <div className="hidden sm:flex flex-col text-right">
+                <span className="font-body-sm text-body-sm text-ink-primary font-medium leading-none">manager@demo.local</span>
+                <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mt-1">DOCUMENTATION MANAGER</span>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><User className="text-on-primary text-[18px]" /></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="w-full pt-16 bg-surface">
+        <div className="flex flex-col w-full">
+          {/* Top Context Header Bar */}
+          <section className="w-full bg-surface-container-lowest shadow-sm px-margin-desktop py-space-md">
+            <div className="max-w-[1480px] mx-auto flex flex-col gap-space-sm">
+              {/* Breadcrumb & Back Link Navigation */}
+              <div className="flex items-center justify-between flex-wrap gap-space-sm">
+                <nav aria-label="Breadcrumbs" className="flex items-center gap-2 font-body-sm text-body-sm text-ink-secondary">
+                  <Link href="/dashboard" className="hover:text-ink-primary transition-colors">Shipments</Link>
+                  <span className="material-symbols-outlined text-[14px] text-ink-muted">chevron_right</span>
+                  <span className="font-label-code-sm text-label-code-sm text-ink-primary font-semibold">SHP-24811</span>
+                  <span className="material-symbols-outlined text-[14px] text-ink-muted">chevron_right</span>
+                  <span className="font-body-sm text-body-sm text-ink-primary font-medium">Manager Approval</span>
+                </nav>
+                <Link href="/review/screen" className="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-raised text-ink-primary hover:bg-surface-container-high transition-colors font-body-sm text-body-sm shadow-sm">
+                  <ArrowLeft className="text-[16px]" />
+                  <span>Back to Shipment Dashboard</span>
+                </Link>
+              </div>
+              {/* Main Identification Banner */}
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg pt-1">
+                <div className="flex flex-wrap items-center gap-space-md">
+                  <h1 className="font-label-code-md text-headline-xl text-ink-primary font-bold tracking-tight">SHP-24811</h1>
+                  {/* Blocker Badge */}
+                  <div className="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-status-error-bg text-status-error-text shadow-sm">
+                    <span className="material-symbols-outlined text-[16px]">cancel</span>
+                    <span className="font-label-code-sm text-label-code-sm font-bold uppercase tracking-wider">Approval Blocked</span>
+                  </div>
+                  {/* Carrier Ref */}
+                  <div className="inline-flex items-center gap-1 px-space-sm py-1 rounded-lg bg-surface-container-high text-on-surface">
+                    <span className="material-symbols-outlined text-[15px] text-ink-secondary">tag</span>
+                    <span className="font-label-code-sm text-label-code-sm font-medium">CARRIER REF #AX-9081</span>
+                  </div>
+                  {/* Mode Pill */}
+                  <div className="inline-flex items-center gap-1 px-space-sm py-1 rounded-lg bg-surface-base text-ink-primary">
+                    <span className="material-symbols-outlined text-[16px] text-primary">flight_takeoff</span>
+                    <span className="font-body-sm text-body-sm font-semibold">Air Cargo</span>
+                  </div>
+                </div>
+                {/* Supplier & Timestamp Meta */}
+                <div className="flex flex-wrap items-center gap-space-md font-body-sm text-body-sm text-ink-secondary">
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[16px] text-ink-muted">storefront</span>
+                    <span>Consignor: <strong className="text-ink-primary font-medium">Pacific Logistics Corp</strong></span>
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[16px] text-ink-muted">schedule</span>
+                    <span className="font-label-code-sm text-label-code-sm">Last checked at 2026-07-11 15:42 UTC</span>
+                  </span>
+                </div>
+                {/* Quick Summary Metrics Chip Group */}
+                <div className="flex items-center gap-space-sm">
+                  <div className="px-space-md py-2 rounded-xl bg-surface-raised shadow-sm text-right">
+                    <div className="font-caption text-caption text-ink-muted uppercase tracking-wider">Assigned Auditor</div>
+                    <div className="font-body-md text-body-md font-semibold text-ink-primary flex items-center gap-1 justify-end">
+                      <span className="w-2 h-2 rounded-full bg-status-confirmed-text"></span> alex.ross
+                    </div>
+                  </div>
+                  <div className="px-space-md py-2 rounded-xl bg-status-review-bg/50 shadow-sm text-right">
+                    <div className="font-caption text-caption text-status-review-text uppercase tracking-wider font-semibold">Gating Status</div>
+                    <div className="font-label-code-md text-label-code-md font-bold text-status-review-text">1 GATING DEFECT</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          {/* Workspace 2-Column Split: Left 62%, Right 38% */}
+          <section className="w-full px-margin-desktop py-space-lg">
+            <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-100 gap-space-lg items-start">
+              {/* LEFT COLUMN */}
+              <div className="flex flex-col gap-space-lg lg:col-span-62 min-w-0">
+                {/* CARD 1: Reconciled Shipment Summary */}
+                <article className="bg-surface-raised rounded-xl shadow-md overflow-hidden flex flex-col">
+                  {/* Green Verified Digital Sign Banner */}
+                  <div className="px-space-lg py-3.5 bg-status-confirmed-bg text-status-confirmed-text flex items-center justify-between gap-space-md">
+                    <div className="flex items-center gap-space-sm min-w-0">
+                      <span className="material-symbols-outlined text-[22px] text-primary">verified_user</span>
+                      <span className="font-headline-sm text-body-sm font-bold truncate">Official Customs Filing Package #INNSA-2026-088192-A Generated &amp; Digitally Signed</span>
+                    </div>
+                    <span className="font-label-code-sm text-caption px-2 py-0.5 rounded bg-surface-raised text-status-confirmed-text font-semibold uppercase tracking-wider shrink-0">EDIFACT 204.11</span>
+                  </div>
+                  {/* Definition Grid */}
+                  <div className="p-space-lg grid grid-cols-1 sm:grid-cols-2 gap-x-space-xl gap-y-space-md bg-surface-raised">
+                    {/* Consignor */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Consignor / Exporter</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <span className="font-headline-sm text-body-sm text-ink-primary font-semibold">Pacific Logistics Corp</span>
+                      <span className="font-body-sm text-body-sm text-ink-muted">Shanghai, China (CN-PVG)</span>
+                    </div>
+                    {/* Consignee */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Consignee &amp; GSTIN Registration</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <div className="font-headline-sm text-body-md text-ink-primary font-semibold flex items-start gap-1.5">
+                        <span>Apex Logistics India Ltd</span>
+                        <span className="font-label-code-sm text-label-code-sm text-primary font-normal">GSTIN: 27AAAC19241Q1</span>
+                      </div>
+                    </div>
+                    {/* Declared Value */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Declared Total Value</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <span className="font-label-code-md text-headline-sm text-ink-primary font-bold">$142,850.00 USD</span>
+                      <span className="font-body-sm text-body-sm text-ink-muted">CIF Terms, Incoterms 2020</span>
+                    </div>
+                    {/* Port Route */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider font-medium">Port Route Corridor</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <div className="flex items-center gap-2 font-headline-sm text-body-md text-ink-primary font-semibold">
+                        <span className="font-label-code-sm text-label-code-sm font-bold bg-surface-container px-2 py-0.5 rounded">PVG</span>
+                        <span className="material-symbols-outlined text-[16px] text-ink-muted">arrow_forward</span>
+                        <span className="font-label-code-sm text-label-code-sm font-bold bg-surface-container px-2 py-0.5 rounded">INNSA</span>
+                        <span className="font-body-sm text-body-sm text-ink-muted">Transit: Ocean &amp; Air Multi-Modal</span>
+                      </div>
+                    </div>
+                    {/* Gross Weight */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Gross Weight</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <span className="font-label-code-md text-body-lg text-ink-primary font-bold">3,165.00 kg</span>
+                      <span className="font-body-sm text-body-sm text-status-confirmed-text font-medium flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[14px]">done_all</span> Reconciled &amp; Certified
+                      </span>
+                    </div>
+                    {/* Net Weight */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Net Weight &amp; Packaging Metric</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <span className="font-label-code-md text-body-lg text-ink-primary font-bold">2,940.00 kg</span>
+                      <span className="font-body-sm text-body-sm text-ink-muted">14 Pallets / 280 Cartons</span>
+                    </div>
+                    {/* Primary HSN */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Primary HSN Classification</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <span className="font-label-code-md text-body-lg text-ink-primary font-bold">8471.30.10</span>
+                      <span className="font-body-sm text-body-sm text-ink-muted">Data processing units &lt; 10kg</span>
+                    </div>
+                    {/* Electronic Filing ID */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Electronic Filing ID</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <span className="font-label-code-sm text-label-code-md text-ink-primary font-semibold truncate">CBIC-ICEGATE-TXN-9948210</span>
+                      <span className="font-caption text-caption text-ink-muted">Gateway Node Mumbai-Air cargo</span>
+                    </div>
+                    {/* Duty Paid / Assessed */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Duty Assessed / Debited</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <span className="font-label-code-md text-headline-sm text-ink-primary font-bold">$18,637.50 USD</span>
+                      <span className="font-body-sm text-body-sm text-ink-muted">Direct Debit Authorized via ECL</span>
+                    </div>
+                    {/* Transmission Protocol */}
+                    <div className="flex flex-col gap-1 p-space-sm rounded-lg bg-surface-container-low">
+                      <div className="flex items-center justify-between">
+                        <span className="font-caption text-caption text-ink-secondary uppercase tracking-wider mb-1">Transmission Protocol</span>
+                        <span className="material-symbols-outlined text-[16px] text-status-confirmed-text">check_circle</span>
+                      </div>
+                      <span className="font-label-code-sm text-label-code-md text-ink-primary font-semibold">EDIFACT 204.11</span>
+                      <span className="font-caption text-caption text-status-confirmed-text font-medium">Encrypted SHA-256 Asymmetric</span>
+                    </div>
+                  </div>
+                  {/* Bottom Micro-footer */}
+                  <div className="px-space-lg py-2.5 bg-surface-container-high/60 flex items-center justify-between text-ink-secondary">
+                    <span className="font-caption text-caption flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px]">history_edu</span> Consolidated Clearance Package Manifest Rev 2.0 (Frozen)
+                    </span>
+                    <span className="font-label-code-sm text-caption">CRC32: 9D41F20C</span>
+                  </div>
+                </article>
+                {/* CARD 2: Table - Changes made by the reviewer */}
+                <article className="bg-surface-raised rounded-xl shadow-md overflow-hidden flex flex-col">
+                  <div className="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+                    <div className="flex items-center gap-space-sm">
+                      <span className="material-symbols-outlined text-[20px] text-primary">history_edu</span>
+                      <h2 className="font-headline-sm text-headline-sm text-ink-primary font-bold">Changes made by the reviewer</h2>
+                    </div>
+                    <span className="font-label-code-sm text-label-code-sm px-2 py-0.5 rounded-full bg-surface-container text-ink-secondary font-medium">4 Recorded Modifications</span>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead>
+                        <tr className="bg-surface-container-low/70 text-ink-secondary font-caption text-caption uppercase tracking-wider h-8">
+                          <th className="py-2 px-space-md font-semibold">Field Entity</th>
+                          <th className="py-2 px-space-md font-semibold">OCR Extracted (Raw)</th>
+                          <th className="py-2 px-space-md font-semibold">Audited Value</th>
+                          <th className="py-2 px-space-md font-semibold">Operator Justification</th>
+                          <th className="py-2 px-space-md text-center font-semibold">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-none font-body-sm text-body-sm text-ink-primary">
+                        {/* Row 1: Gross Weight */}
+                        <tr className="h-10 hover:bg-surface-container-low/50 transition-colors">
+                          <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-[16px] text-ink-muted">scale</span> Gross Weight
+                          </td>
+                          <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">3,240.00 kg</td>
+                          <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">3,165.00 kg</td>
+                          <td className="py-2 px-space-md text-ink-secondary text-caption max-w-[200px] truncate" title="Matched to Air Waybill revised cargo manifest tare weight">Matched to Air Waybill manifest tare weight</td>
+                          <td className="py-2 px-space-md text-center">
+                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><span className="material-symbols-outlined text-[18px]">check_circle</span></span>
+                          </td>
+                        </tr>
+                        {/* Row 2: HSN Code classification */}
+                        <tr className="h-10 hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/20">
+                          <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-[16px] text-ink-muted">sell</span> HSN Code
+                          </td>
+                          <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">8471.30.00</td>
+                          <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">8471.30.10</td>
+                          <td className="py-2 px-space-md text-ink-secondary text-caption max-w-[200px] truncate" title="Updated sub-item code per CBIC technical data sheet">Updated sub-item per CBIC data sheet</td>
+                          <td className="py-2 px-space-md text-center">
+                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><span className="material-symbols-outlined text-[18px]">check_circle</span></span>
+                          </td>
+                        </tr>
+                        {/* Row 3: Incoterm Place */}
+                        <tr className="h-10 hover:bg-surface-container-low/50 transition-colors">
+                          <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-[16px] text-ink-muted">pin_drop</span> Incoterm Place
+                          </td>
+                          <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">FOB Shanghai</td>
+                          <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">CIF Nhava Sheva</td>
+                          <td className="py-2 px-space-md text-ink-secondary text-caption max-w-[200px] truncate" title="Corrected per final Commercial Invoice rider #3">Corrected per final Commercial Invoice rider #3</td>
+                          <td className="py-2 px-space-md text-center">
+                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><span className="material-symbols-outlined text-[18px]">check_circle</span></span>
+                          </td>
+                        </tr>
+                        {/* Row 4: Total Cartons Count */}
+                        <tr className="h-10 hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/20">
+                          <td className="py-2 px-space-md font-medium text-ink-primary flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-[16px] text-ink-muted">package_2</span> Carton Count
+                          </td>
+                          <td className="py-2 px-space-md font-label-code-sm text-ink-muted line-through">275 Cartons</td>
+                          <td className="py-2 px-space-md font-label-code-sm text-ink-primary font-bold bg-status-confirmed-bg/30">280 Cartons</td>
+                          <td className="py-2 px-space-md text-ink-secondary text-caption max-w-[200px] truncate" title="Reconciled with signed Packing List tally sheet">Reconciled with signed Packing List tally sheet</td>
+                          <td className="py-2 px-space-md text-center">
+                            <span className="inline-flex items-center text-status-confirmed-text" title="Validated &amp; Approved"><span className="material-symbols-outlined text-[18px]">check_circle</span></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  {/* Alert Banner below reviewer table */}
+                  <div className="m-space-md p-space-md rounded-lg bg-status-error-bg flex items-start gap-space-sm text-status-error-text">
+                    <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5">error</span>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-body-md text-body-sm font-bold">Weight Cross-Check Audit Notice</span>
+                      <p className="font-body-sm text-body-sm leading-relaxed">Gross weight cross-check was not signed off by operator. Discrepancy exceeds the allowable 0.5% statutory threshold. Manager sign-off is restricted under customs compliance protocol 14-C.</p>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              {/* RIGHT COLUMN: Sticky Decision Card */}
+              <div className="lg:col-span-38 flex flex-col gap-space-lg lg:sticky lg:top-20">
+                <div className="bg-surface-raised rounded-xl shadow-xl overflow-hidden flex flex-col">
+                  {/* Emerald Card Accent Header Top */}
+                  <div className="h-2 w-full bg-status-confirmed-text"></div>
+                  <div className="p-space-lg flex flex-col items-center text-center">
+                    {/* Large Emerald Success Emblem */}
+                    <div className="relative w-20 h-20 rounded-full bg-status-confirmed-bg text-status-confirmed-text flex items-center justify-center mb-space-md shadow-sm">
+                      <span className="material-symbols-outlined text-[48px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                    </div>
+                    {/* Heading & Subtext */}
+                    <h2 className="font-headline-lg text-headline-lg text-ink-primary font-bold tracking-tight mb-2">Customs Clearance Package Transmitted</h2>
+                    <p className="font-body-md text-body-md text-ink-secondary mb-space-lg max-w-sm">
+                      Shipment <span className="font-label-code-sm font-semibold text-ink-primary">SHP-24811</span> has been successfully signed, cryptographically hashed, and transmitted to Nhava Sheva Customs (ICEGATE node 204.11).
+                    </p>
+                    {/* Clearance Receipt Details Box */}
+                    <div className="w-full rounded-xl bg-surface-container-low p-space-md flex flex-col gap-2.5 text-left mb-space-lg">
+                      <div className="flex items-center justify-between py-1">
+                        <span className="font-caption text-caption text-ink-secondary uppercase">Customs Filing Reference</span>
+                        <span className="font-label-code-md text-label-code-md font-bold text-ink-primary">INNSA-CBIC-2026-90281</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1">
+                        <span className="font-caption text-caption text-ink-secondary uppercase">Electronic Signature Hash</span>
+                        <span className="font-label-code-sm text-caption text-ink-secondary truncate max-w-[190px]" title="sha256:4f8a9e88d19a2b8510f2791ccda4320b29c81b">sha256:4f8a9e...29c81b</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1">
+                        <span className="font-caption text-caption text-ink-secondary uppercase">Filing Timestamp</span>
+                        <span className="font-label-code-sm text-caption text-ink-primary font-semibold">2026-07-11 15:45:02 UTC</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1 pt-2">
+                        <span className="font-caption text-caption text-ink-secondary uppercase">Transmission Status</span>
+                        <span className="font-body-sm text-body-sm font-semibold text-status-confirmed-text flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-status-confirmed-text"></span> EDI Confirmed (ACK-200)
+                        </span>
+                      </div>
+                    </div>
+                    {/* Verification Checklist */}
+                    <div className="w-full flex flex-col gap-2.5 mb-space-lg text-left">
+                      <div className="flex items-center justify-between py-1.5 px-space-sm rounded-lg bg-status-confirmed-bg/50">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-status-confirmed-text text-[18px]">check_circle</span>
+                          <span className="font-body-sm text-body-sm font-medium text-ink-primary">Commercial Invoice &amp; PL Reconciled</span>
+                        </div>
+                        <span className="font-label-code-sm text-caption text-status-confirmed-text font-semibold">15:44:10</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1.5 px-space-sm rounded-lg bg-status-confirmed-bg/50">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-status-confirmed-text text-[18px]">check_circle</span>
+                          <span className="font-body-sm text-body-sm font-medium text-ink-primary">Sanctions &amp; Denied Parties Screened</span>
+                        </div>
+                        <span className="font-label-code-sm text-caption text-status-confirmed-text font-semibold">15:44:38</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1.5 px-space-sm rounded-lg bg-status-confirmed-bg/50">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-status-confirmed-text text-[18px]">check_circle</span>
+                          <span className="font-body-sm text-body-sm font-medium text-ink-primary">E-Sign Token Hardware Authenticated</span>
+                        </div>
+                        <span className="font-label-code-sm text-caption text-status-confirmed-text font-semibold">15:45:00</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1.5 px-space-sm rounded-lg bg-status-confirmed-bg/50">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-status-confirmed-text text-[18px]">check_circle</span>
+                          <span className="font-body-sm text-body-sm font-medium text-ink-primary">Direct ICEGATE EDI Gateway Transmission</span>
+                        </div>
+                        <span className="font-label-code-sm text-caption text-status-confirmed-text font-semibold">15:45:02</span>
+                      </div>
+                    </div>
+                    {/* Action Buttons Suite */}
+                    <div className="w-full flex flex-col gap-space-sm">
+                      <a className="w-full h-11 px-space-md rounded-lg bg-status-confirmed-text text-surface-container-lowest font-headline-sm text-body-md font-semibold inline-flex items-center justify-center gap-2 hover:opacity-95 shadow-sm transition-all active:scale-[0.99]" href="#">
+                        <span className="material-symbols-outlined text-[20px]">download</span>
+                        <span>Download Official Customs Declaration (PDF)</span>
+                      </a>
+                      <a className="w-full h-9 px-space-md rounded-lg bg-surface-container-low text-ink-primary font-headline-sm text-body-sm font-medium inline-flex items-center justify-center gap-2 hover:bg-surface-container transition-colors" href="#" target="_blank">
+                        <span className="material-symbols-outlined text-[18px] text-primary">open_in_new</span>
+                        <span>View in ICEGATE Live Tracker</span>
+                      </a>
+                      <a className="w-full h-9 px-space-md rounded-lg bg-transparent text-ink-secondary hover:text-ink-primary font-body-sm text-body-sm font-medium inline-flex items-center justify-center gap-1.5 transition-colors" href="#">
+                        <span className="material-symbols-outlined text-[18px]">dashboard</span>
+                        <span>Return to Shipments Dashboard</span>
+                      </a>
+                    </div>
+                    {/* ISO Compliance Regulatory Seal Box */}
+                    <div className="p-space-md bg-surface-container-low text-center">
+                      <p className="font-caption text-caption text-ink-muted leading-tight">Encrypted ledger receipt generated and archived under <span className="font-semibold text-ink-secondary">ISO/IEC 27001</span> regulatory standards.</p>
+                    </div>
+                  </div>
+                  {/* Supplemental Secondary Card: Audit Trail Hash Signature */}
+                  <div className="p-space-md rounded-xl bg-surface-raised shadow-sm flex items-start gap-space-sm text-ink-secondary">
+                    <span className="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">verified_user</span>
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <span className="font-headline-sm text-body-sm font-semibold text-ink-primary">Cryptographic Audit Enclave Active</span>
+                      <p className="font-caption text-caption text-ink-secondary">All modifications and transmission packets are permanently mirrored to the WCO Safe Framework audit node. Local copies locked against changes.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  );
+}
