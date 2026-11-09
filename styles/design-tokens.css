@@ -1,22 +1,124 @@
-/* Design tokens — Customs Doc Check (brand: navy / cobalt) */
+/* Design tokens — Customs Doc Check (Customs clearance operations) */
 :root {
-  /* Brand */
-  --brand-navy: 223 56% 10%;
-  --brand-navy-dark: 223 52% 6%;
-  --brand-cobalt: 226 99% 54%;
-  --brand-cobalt-hover: 224 96% 48%;
-  --brand-surface: 0 0% 100%;
-  --brand-page: 220 18% 96%;
-  --brand-hairline: 220 13% 89%;
-  --brand-text-primary: 220 33% 13%;
-  --brand-text-secondary: 220 18% 47%;
+  /* Brand / primary accent */
+  --customs-primary: 220 100% 42%;
+  --customs-primary-container: 223 100% 56%;
+  --customs-on-primary-container: 240 100% 97%;
+  --customs-on-primary-fixed: 224 100% 16%;
+  --customs-primary-fixed: 231 100% 93%;
+  --customs-primary-fixed-dim: 228 100% 86%;
 
-  /* Brand surfaces (HSL for theme layering) */
-  --brand-navy-rgb: 11, 21, 40;
-  --brand-cobalt-rgb: 31, 94, 255;
+  /* Secondary / tertiary */
+  --customs-secondary: 222 23% 41%;
+  --customs-secondary-container: 224 100% 89%;
+  --customs-on-secondary-container: 223 23% 40%;
+  --customs-tertiary: 190 100% 22%;
+  --customs-tertiary-container: 190 100% 28%;
+  --customs-tertiary-fixed: 194 100% 85%;
+
+  /* Surfaces */
+  --customs-surface: 231 100% 99%;
+  --customs-surface-raised: 0 0% 100%;
+  --customs-surface-container-low: 225 100% 97%;
+  --customs-surface-container-lowest: 0 0% 100%;
+  --customs-surface-container: 221 100% 95%;
+  --customs-surface-container-high: 219 94% 93%;
+  --customs-surface-container-highest: 219 70% 91%;
+  --customs-surface-dim: 218 52% 88%;
+  --customs-surface-bright: 231 100% 99%;
+  --customs-surface-base: 220 37% 97%;
+  --customs-surface-variant: 219 70% 91%;
+  --customs-surface-tint: 220 100% 45%;
+
+  /* Text */
+  --customs-on-surface: 215 43% 12%;
+  --customs-on-surface-variant: 231 12% 30%;
+  --customs-ink-primary: 216 50% 12%;
+  --customs-ink-secondary: 217 14% 41%;
+  --customs-ink-muted: 219 14% 60%;
+
+  /* Borders */
+  --customs-outline: 231 8% 49%;
+  --customs-outline-variant: 235 22% 81%;
+  --customs-border-hairline: 218 24% 91%;
+
+  /* Status semantics — label + dot, never colour alone */
+  --customs-status-confirmed-text: 152 60% 26%;
+  --customs-status-confirmed-bg: 143 37% 93%;
+  --customs-status-error-text: 4 76% 40%;
+  --customs-status-error-bg: 6 83% 95%;
+  --customs-status-review-text: 26 90% 37%;
+  --customs-status-review-bg: 41 100% 93%;
+  --customs-status-progress-text: 193 82% 31%;
+  --customs-status-progress-bg: 204 94% 94%;
+  --customs-status-neutral-text: 215 19% 35%;
+  --customs-status-neutral-bg: 210 40% 96%;
+  --customs-error: 0 75% 42%;
+
+  /* Radii */
+  --customs-radius: 0.25rem;
+  --customs-radius-lg: 0.5rem;
+  --customs-radius-xl: 0.75rem;
+  --customs-radius-full: 9999px;
+
+  /* Spacing */
+  --customs-space-xs: 0.25rem;
+  --customs-space-sm: 0.5rem;
+  --customs-space-md: 1rem;
+  --customs-space-lg: 1.5rem;
+  --customs-space-xl: 2rem;
+  --customs-gutter: 1rem;
+  --customs-gutter-desktop: 1.5rem;
+  --customs-margin: 1rem;
+  --customs-margin-desktop: 2rem;
 
   /* Shadows */
-  --shadow-card: 0 24px 48px -12px rgba(11, 21, 40, 0.12), 0 1px 3px rgba(11, 21, 40, 0.05);
-  --shadow-cta: 0 10px 25px -4px rgba(31, 94, 255, 0.38);
-  --shadow-cta-hover: 0 14px 28px -2px rgba(31, 94, 255, 0.48);
+  --customs-shadow-card: 0 8px 24px rgba(15, 27, 45, 0.06);
+  --customs-shadow-sm: 0 1px 3px rgba(15, 27, 45, 0.08);
+}
+
+@layer base {
+  :root {
+    /* Type scale — mapped to the designs' font table (size, lineHeight, letterSpacing, weight) */
+    --customs-fs-headline-xl: 32px;
+    --customs-lh-headline-xl: 40px;
+    --customs-ls-headline-xl: -0.02em;
+    --customs-fw-headline-xl: 700;
+    --customs-fs-headline-lg: 24px;
+    --customs-lh-headline-lg: 32px;
+    --customs-ls-headline-lg: -0.015em;
+    --customs-fw-headline-lg: 600;
+    --customs-fs-headline-md: 20px;
+    --customs-lh-headline-md: 28px;
+    --customs-ls-headline-md: -0.01em;
+    --customs-fw-headline-md: 600;
+    --customs-fs-headline-sm: 16px;
+    --customs-lh-headline-sm: 24px;
+    --customs-ls-headline-sm: 0em;
+    --customs-fw-headline-sm: 600;
+    --customs-fs-body-lg: 16px;
+    --customs-lh-body-lg: 24px;
+    --customs-ls-body-lg: 0em;
+    --customs-fw-body-lg: 400;
+    --customs-fs-body-md: 14px;
+    --customs-lh-body-md: 20px;
+    --customs-ls-body-md: 0em;
+    --customs-fw-body-md: 400;
+    --customs-fs-body-sm: 12px;
+    --customs-lh-body-sm: 16px;
+    --customs-ls-body-sm: 0.01em;
+    --customs-fw-body-sm: 400;
+    --customs-fs-label-code-md: 13px;
+    --customs-lh-label-code-md: 18px;
+    --customs-ls-label-code-md: -0.01em;
+    --customs-fw-label-code-md: 500;
+    --customs-fs-label-code-sm: 11px;
+    --customs-lh-label-code-sm: 14px;
+    --customs-ls-label-code-sm: 0em;
+    --customs-fw-label-code-sm: 500;
+    --customs-fs-caption: 11px;
+    --customs-lh-caption: 14px;
+    --customs-ls-caption: 0.02em;
+    --customs-fw-caption: 500;
+  }
 }
