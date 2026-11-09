@@ -220,6 +220,7 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isDisabled}
+                    aria-describedby={isError ? "emailError" : undefined}
                     className={`w-full pl-10 pr-4 py-3 rounded-lg border text-brand-text-primary placeholder:text-slate-400 text-sm focus:outline-none transition-all duration-150 ${
                       isError
                         ? "border-[#DC2626] bg-[#FEF2F2]/30 ring-1 ring-[#DC2626] focus:border-[#DC2626] focus:ring-2 focus:ring-[#DC2626]"
@@ -254,6 +255,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isDisabled}
+                    aria-describedby={isError ? "passwordError" : undefined}
                     className={`w-full pl-10 pr-10 py-3 rounded-lg border text-brand-text-primary placeholder:text-slate-400 text-sm focus:outline-none transition-all duration-150 ${
                       isError
                         ? "border-[#DC2626] bg-[#FEF2F2]/30 ring-1 ring-[#DC2626] focus:border-[#DC2626] focus:ring-2 focus:ring-[#DC2626]"
