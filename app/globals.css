@@ -188,6 +188,10 @@
   .btn:focus-visible {
     outline-color: hsl(var(--ring));
   }
+  button:focus-visible {
+    outline: 2px solid hsl(var(--customs-primary));
+    outline-offset: 2px;
+  }
   .btn:active:not(:disabled) {
     transform: scale(0.98);
   }
