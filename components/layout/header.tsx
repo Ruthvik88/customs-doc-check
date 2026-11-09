@@ -2,10 +2,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession } from "@/hooks/useSession";
 import { createClient } from "@/lib/supabase/browser";
-import { ShieldCheck, LogOut, Menu, X, BarChart3, FileText } from "lucide-react";
+import { LogOut, Menu, X, BarChart3, FileText } from "lucide-react";
 import { Icon } from "@/components/ui/icon";
 
 export function Header({
@@ -50,17 +51,10 @@ export function Header({
     window.location.href = "/login";
   };
 
-  const isManager = role === "documentation_manager";
-
-  // Only real, working routes — role gated.
   const navLinks = [
-    { href: "/dashboard", label: "Shipments", icon: ShieldCheck },
-    ...(isManager
-      ? [
-          { href: "/reports", label: "Accuracy report", icon: BarChart3 },
-          { href: "/export", label: "Export", icon: FileText },
-        ]
-      : []),
+    { href: "/dashboard", label: "Shipments", icon: FileText },
+    { href: "/reports", label: "Accuracy Report", icon: BarChart3 },
+    { href: "/export", label: "Export", icon: FileText },
   ];
 
   return (
@@ -75,7 +69,7 @@ export function Header({
             className="flex items-center gap-2 text-customs-ink-primary no-underline group shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-customs-primary rounded-full"
           >
             <div className="w-7 h-7 rounded-lg bg-customs-primary-container text-customs-on-primary-container flex items-center justify-center shadow-xs transition-transform group-hover:scale-105">
-              <Icon as={ShieldCheck} size={20} aria-hidden="true" />
+              <Image src="/branding/logo-compact.png" alt="" width={512} height={512} className="w-full h-full object-contain" />
             </div>
             <span className="font-headline-sm text-headline-sm text-customs-ink-primary font-bold tracking-tight whitespace-nowrap">
               Customs Doc Check

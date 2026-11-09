@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSession } from "@/hooks/useSession";
 import { createClient } from "@/lib/supabase/browser";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,6 @@ import {
   LogOut,
   ChevronLeft,
   X,
-  ShieldCheck,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -63,7 +63,7 @@ export function Sidebar({
           href="/dashboard"
           className="flex items-center gap-2 font-heading font-semibold text-[hsl(var(--foreground))] tracking-tight text-sm no-underline"
         >
-          <ShieldCheck aria-hidden="true" size={18} strokeWidth={1.75} className="text-[hsl(var(--primary))]" />
+          <Image src="/branding/logo-compact.png" alt="" width={512} height={512} className="h-8 w-8 object-contain" />
           <span className={collapsed ? "hidden lg:inline" : ""}>Customs Doc Check</span>
         </Link>
         {!collapsed && (

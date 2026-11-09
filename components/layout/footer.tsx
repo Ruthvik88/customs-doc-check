@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, Check, X, Mail } from "lucide-react";
+import Image from "next/image";
+import { Check, X, Mail } from "lucide-react";
 
 export function Footer() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -31,7 +32,7 @@ export function Footer() {
               className="inline-flex items-center gap-2.5 text-slate-900 dark:text-white no-underline group"
             >
               <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
-                <ShieldCheck className="w-4 h-4" aria-hidden="true" />
+                <Image src="/branding/logo-compact.png" alt="" width={512} height={512} className="h-full w-full object-contain" />
               </div>
               <span className="font-heading font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
                 Customs Doc Check
@@ -117,11 +118,6 @@ export function Footer() {
                 >
                   support@customsdoc.example
                 </a>
-              </div>
-              <div className="text-xs text-slate-400 dark:text-zinc-500 leading-relaxed">
-                Nhava Sheva Customs House,<br />
-                Jawaharlal Nehru Port Trust,<br />
-                Mumbai, Maharashtra 400038
               </div>
             </div>
           </div>
