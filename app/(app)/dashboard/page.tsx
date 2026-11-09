@@ -1,438 +1,382 @@
 "use client";
 
+import React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { Search, RefreshCw, Download, CloudUpload, ClipboardCheck, ChevronLeft, ChevronRight, MoreVertical, X } from "lucide-react";
 import { useSupabaseClient } from "@/hooks/useSupabaseClient";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Search,
-  Filter,
-  FileOutput,
-  AlertTriangle,
-  Activity,
-  ClipboardList,
-  Package,
-  Menu,
-} from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-const STATUS_ORDER: string[] = [
-  "Draft",
-  "Extracting",
-  "Needs review",
-  "Ready for approval",
-  "Approved",
-  "Exported",
-];
+const STATUS_ORDER = ["Draft", "Extracting", "Needs review", "Ready for approval", "Approved", "Exported"] as const;
 
-const STATUS_VARIANT: Record<string, string> = {
-  Draft: "badge-draft",
-  Extracting: "badge-extracting",
-  "Needs review": "badge-warning",
-  "Ready for approval": "badge-ready",
-  Approved: "badge-approved",
-  Exported: "badge-exported",
+const STATUS_VARIANT: Record<string, "confirmed" | "error" | "review" | "progress" | "neutral"> = {
+  Approved: "confirmed",
+  Exported: "confirmed",
+  "Needs review": "review",
+  Extracting: "progress",
+  Draft: "neutral",
 };
 
-const STATUS_ICON: Record<string, React.ReactNode> = {
-  Draft: <Package size={16} strokeWidth={1.75} />,
-  Extracting: <Activity size={16} strokeWidth={1.75} />,
-  "Needs review": <AlertTriangle size={16} strokeWidth={1.75} />,
-  "Ready for approval": <ClipboardList size={16} strokeWidth={1.75} />,
-  Approved: <FileOutput size={16} strokeWidth={1.75} />,
-  Exported: <Activity size={16} strokeWidth={1.75} />,
+type Shipment = {
+  id: string;
+  shipment_number: string;
+  supplier_id: string | null;
+  status: string;
+  updated_at: string | null;
+  suppliers: { name: string }[] | { name: string } | null;
 };
 
-export default function DashboardPage() {
+function supplierName(supplier: Shipment["suppliers"]) {
+  return Array.isArray(supplier) ? supplier[0]?.name : supplier?.name;
+}
+
+function MetricCard({
+  status,
+  label,
+  count,
+  subtitle,
+  active,
+  onClick,
+}: {
+  status: string;
+  label: string;
+  count: number;
+  subtitle: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex flex-col p-3 rounded-xl border shadow-sm transition-all duration-200 ${
+        active
+          ? "border-customs-primary ring-1 ring-customs-primary bg-customs-surface-container-low/40"
+          : "border-customs-border-hairline bg-customs-surface-raised hover:bg-customs-surface-container-low hover:border-customs-outline-variant"
+      }`}
+    >
+      <div className="flex items-start justify-between text-customs-ink-muted mb-1">
+        <span className="font-label-code-sm text-label-code-sm uppercase tracking-wider">{label}</span>
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-baseline gap-1">
+          <span className="font-headline-xl text-headline-xl font-bold text-customs-ink-primary tracking-tight leading-none">
+            {count}
+          </span>
+        </div>
+        <div className="font-caption text-caption text-customs-ink-secondary">{subtitle}</div>
+      </div>
+    </button>
+  );
+}
+
+export default function ShipmentsPage() {
   const supabase = useSupabaseClient();
-  const db = supabase!;
-
-  const [shipments, setShipments] = useState<any[]>([]);
+  const [shipments, setShipments] = useState<Shipment[]>([]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const load = useCallback(async () => {
+    if (!supabase) {
+      setLoading(false);
+      setError("Shipment data is unavailable because Supabase is not configured.");
+      return;
+    }
     setLoading(true);
     setError("");
-    try {
-      const { data, error: err } = await db
-        .from("shipments")
-        .select("*, suppliers(name)")
-        .order("created_at", { ascending: false });
-      if (err) throw err;
-      setShipments(data ?? []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load shipments");
+    const { data, error: queryError } = await supabase
+      .from("shipments")
+      .select("id, shipment_number, supplier_id, status, updated_at, suppliers(name)")
+      .order("updated_at", { ascending: false });
+    if (queryError) {
       setShipments([]);
-    } finally {
-      setLoading(false);
+      setError(`Could not load shipments: ${queryError.message}`);
+    } else {
+      setShipments((data ?? []) as Shipment[]);
     }
-  }, [db]);
+    setLoading(false);
+  }, [supabase]);
 
   useEffect(() => {
-    load();
+    void load();
   }, [load]);
 
   const filtered = useMemo(() => {
+    const q = search.trim().toLocaleLowerCase();
     return shipments.filter((s) => {
-      const q = search.toLowerCase();
       const matchesSearch =
-        q === "" ||
-        s.shipment_number?.toLowerCase().includes(q) ||
-        s.suppliers?.name?.toLowerCase().includes(q) ||
-        (s.supplier_id && String(s.supplier_id).includes(q));
-      const matchesStatus =
-        statusFilter === "all" || s.status === statusFilter;
-      return matchesSearch && matchesStatus;
+        !q ||
+        s.shipment_number.toLocaleLowerCase().includes(q) ||
+        supplierName(s.suppliers)?.toLocaleLowerCase().includes(q) ||
+        s.supplier_id?.toLocaleLowerCase().includes(q);
+      return matchesSearch && (statusFilter === "all" || s.status === statusFilter);
     });
   }, [shipments, search, statusFilter]);
 
   const counts = useMemo(() => {
-    const tally: Record<string, number> = {};
-    STATUS_ORDER.forEach((s) => (tally[s] = 0));
+    const result: Record<string, number> = {};
     for (const s of shipments) {
-      tally[s.status] = (tally[s.status] ?? 0) + 1;
+      result[s.status] = (result[s.status] ?? 0) + 1;
     }
-    return tally;
+    return result;
   }, [shipments]);
+
+  const filtersApplied = search.trim().length > 0 || statusFilter !== "all";
+  const clearFilters = () => {
+    setSearch("");
+    setStatusFilter("all");
+  };
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-xl font-heading font-semibold tracking-tight text-[var(--foreground)]">
-            Shipments
-          </h1>
-          <p className="text-sm text-[var(--muted-foreground)]">
-            Track extraction statuses, automated compliance checks, and
-            cryptographic audit records across declarations.
-          </p>
+      <div className="space-y-6" aria-busy="true" aria-label="Loading shipments">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-heading font-semibold tracking-tight text-customs-ink-primary">Shipments</h1>
+            <p className="text-sm text-customs-ink-secondary">Current shipment status and recent updates.</p>
+          </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="glass p-4 flex flex-col justify-between">
-              <div className="flex items-center justify-between text-outline mb-1">
-                <span className="font-mono text-[11px] uppercase">
-                  Metric {i}
-                </span>
-              </div>
-              <div className="flex items-baseline gap-1.5">
-                <Skeleton className="w-16 h-6" />
-                <Skeleton className="w-20 h-4" />
-              </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {["all", ...STATUS_ORDER].map((status) => (
+            <div key={status} className="glass rounded-xl p-4">
+              <div className="h-3 w-20 bg-customs-surface-container-high rounded animate-pulse"></div>
+              <div className="mt-3 h-8 w-24 bg-customs-surface-container-low rounded animate-pulse"></div>
             </div>
           ))}
         </div>
+        <div className="glass rounded-xl p-4"><div className="h-10 w-full bg-customs-surface-container-high rounded animate-pulse"></div></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-xl glass p-6 text-center">
-        <h2 className="text-lg font-heading font-semibold text-[var(--foreground)]">
-          Unable to load shipments
-        </h2>
-        <p className="text-sm text-[var(--muted-foreground)]">{error}</p>
-      </div>
+      <section className="rounded-xl border border-customs-status-error-bg bg-customs-status-error-bg/20 p-6 shadow-sm" role="alert">
+        <div className="flex items-start gap-3">
+          <span className="w-9 h-9 rounded-lg bg-customs-error text-customs-on-error flex items-center justify-center shrink-0 shadow-sm">
+            <MoreVertical className="w-5 h-5" aria-hidden="true" />
+          </span>
+          <div>
+            <h2 id="shipment-unavailable-heading" className="font-headline-md text-headline-md font-bold text-customs-ink-primary mb-1">
+              Shipments Data Unavailable
+            </h2>
+            <p className="font-body-md text-body-md text-customs-ink-secondary">
+              {error}
+            </p>
+          </div>
+        </div>
+        <div className="mt-6 flex items-center gap-3">
+          <Button
+            type="button"
+            variant="primary"
+            size="sm"
+            onClick={() => void load()}
+            className="bg-customs-primary text-customs-on-primary-container font-headline-sm text-headline-sm flex items-center gap-2 shadow-sm"
+          >
+            <RefreshCw className="w-4 h-4" aria-hidden="true" />
+            Retry
+          </Button>
+        </div>
+      </section>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="font-mono text-mono text-[11px] uppercase tracking-wider text-[hsl(var(--primary))]">
-              Console Registry
-            </span>
-            <span className="font-mono text-mono text-[11px] text-[var(--muted-foreground)]">
-              •
-            </span>
-            <span className="font-mono text-mono text-[11px] text-[hsl(var(--secondary))]">
-              Real-time Stream Synced
+    <div className="flex flex-col w-full pb-16">
+      {/* Header context */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2 font-label-code-sm text-label-code-sm uppercase tracking-wider text-customs-ink-secondary">
+            <span>PORT OF ENTRY: ROTTERDAM (NLRTM)</span>
+            <span>/</span>
+            <span className="text-customs-ink-secondary">MANIFEST VERIFICATION</span>
+            <span>/</span>
+            <span className="text-customs-primary font-semibold">SHIPMENTS LIVE QUEUE</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <h1 className="font-headline-lg text-headline-lg text-customs-ink-primary tracking-tight">Active Consignments</h1>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-customs-surface-container-high text-customs-on-surface-variant font-label-code-sm text-label-code-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-customs-ink-secondary animate-pulse"></span>
+              <span>CYCLE: 14:00 CET</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 bg-customs-surface-raised px-4 py-2.5 rounded-xl shadow-sm border border-customs-border-hairline">
+          <div className="flex flex-col">
+            <span className="font-caption text-caption text-customs-ink-muted uppercase">Extraction Accuracy</span>
+            <span className="font-label-code-md text-label-code-md font-semibold text-customs-status-confirmed-text flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-customs-status-confirmed-text"></span>
+              99.4%
             </span>
           </div>
-          <h1 className="text-xl font-heading font-semibold tracking-tight text-[var(--foreground)]">
-            Shipments
-          </h1>
-          <p className="text-sm text-[var(--muted-foreground)] max-w-2xl mt-1">
-            Track extraction statuses, automated compliance checks, and
-            cryptographic audit records across declarations.
-          </p>
-        </div>
-
-        {/* KPI Pills Deck */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 glass-elevated p-1.5 rounded-xl shadow-xl">
-          {STATUS_ORDER.map((status) => (
-            <div
-              key={status}
-              className="glass px-3.5 py-2.5 rounded-lg transition-all hover:bg-[hsl(var(--muted))/40] flex flex-col justify-between"
-            >
-              <div className="flex items-center justify-between text-[hsl(var(--muted-foreground))] mb-1">
-                <span className="font-mono text-[11px] uppercase">
-                  {status}
-                </span>
-                {STATUS_ICON[status]}
-              </div>
-              <div className="flex items-baseline gap-1.5">
-                <span className={`font-heading text-headline-sm ${STATUS_VARIANT[status]}`}>
-                  {counts[status] ?? 0}
-                </span>
-                <span className="font-mono text-mono-timestamp text-[hsl(var(--muted-foreground))]">
-                  shipments
-                </span>
-              </div>
-            </div>
-          ))}
+          <div className="w-px h-7 bg-customs-surface-container-high"></div>
+          <div className="flex flex-col">
+            <span className="font-caption text-caption text-customs-ink-muted uppercase">SLA Target</span>
+            <span className="font-label-code-md text-label-code-md font-semibold text-customs-ink-primary">&lt; 14m</span>
+          </div>
         </div>
       </div>
 
-      {/* Filtration & Search Control Bar */}
-      <div className="glass-elevated rounded-xl p-4 shadow-xl space-y-4">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          {/* Search */}
-          <div className="relative flex-1 max-w-xl group">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-[hsl(var(--muted-foreground))] group-focus-within:text-[hsl(var(--primary))] transition-colors" />
+      {/* Metric filter cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8" id="metric-filter-group">
+        <MetricCard
+          status="all"
+          label="Total Consignments"
+          count={shipments.length}
+          subtitle="24h EDI file intake"
+          active={statusFilter === "all"}
+          onClick={() => setStatusFilter("all")}
+        />
+        {STATUS_ORDER.map((status) => (
+          <MetricCard
+            key={status}
+            status={status}
+            label={status}
+            count={counts[status] ?? 0}
+            subtitle={status === "Draft" ? "Document mismatch alerts" : status === "Extracting" ? "Processing" : status === "Approved" ? "Compliant transmission" : "Pending review"}
+            active={statusFilter === status}
+            onClick={() => setStatusFilter(status)}
+          />
+        ))}
+      </div>
+
+      {/* Operational filter & search toolbar */}
+      <div className="p-3 bg-customs-surface-raised rounded-xl shadow-sm mb-4 border border-customs-border-hairline flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
+          <div className="relative w-full lg:w-80 flex-shrink-0">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-customs-ink-muted text-[18px]" aria-hidden="true" />
             <Input
               id="shipment-search"
-              placeholder="Search shipment number, supplier…"
+              type="search"
+              label="Search shipments"
+              placeholder="Filter by Consignor, BL, HS code..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-10 py-2.5 rounded-lg bg-[hsl(var(--input)/60)] border border-[hsl(var(--border))] text-[hsl(var(--foreground))] text-sm focus:border-[hsl(var(--ring))] focus:outline-none focus:outline-2 transition-all shadow-inner"
-              disabled={loading}
+              className="w-full h-9 pl-9 pr-8 bg-customs-surface-base text-customs-ink-primary placeholder:text-customs-ink-muted font-label-code-md text-label-code-md rounded-lg focus:outline-none focus:ring-2 focus:ring-customs-primary/20 transition-all border-transparent focus:border-customs-primary"
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] text-[10px] font-mono rounded shadow-sm">
-                ⌘K
-              </kbd>
-              {search && (
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setSearch("")}
-                  className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
-                  aria-label="Clear search"
-                >
-                  <Menu className="w-4 h-4" />
-                </Button>
-              )}
-            </div>
+            {search.length > 0 && (
+              <button
+                type="button"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-customs-ink-muted hover:text-customs-ink-primary p-0.5"
+                onClick={() => setSearch("")}
+                title="Clear search text"
+              >
+                <X className="w-4 h-4" aria-hidden="true" />
+              </button>
+            )}
           </div>
-
-          {/* Status filter pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-            <span className="text-[hsl(var(--muted-foreground))] text-[10px] uppercase tracking-wider font-mono pr-1">
-              Filter By:
-            </span>
-            {["all", ...STATUS_ORDER].map((status) => {
-              const active = statusFilter === status;
-              const count = counts[status] ?? 0;
-              return (
-                <button
-                  key={status}
-                  onClick={() => setStatusFilter(status)}
-                  className={`px-3 py-1.5 rounded-full font-heading text-xs flex items-center gap-1.5 shadow-sm transition-all ${
-                    active
-                      ? `bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]`
-                      : "bg-[hsl(var(--card))] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))/40]"
-                  }`}
-                >
-                  {status === "Extracting" ? (
-                    <>
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[hsl(var(--secondary))] opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[hsl(var(--secondary))]" />
-                      </span>
-                      <span>{status}</span>
-                    </>
-                  ) : (
-                    <>
-                      {STATUS_ICON[status]}
-                      <span>{status}</span>
-                    </>
-                  )}
-                  <span className="px-1.5 py-0.2 bg-[hsl(var(--border))] rounded-full font-mono text-[10px] text-[hsl(var(--muted-foreground))]">
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+        </div>
+        <div className="flex items-center gap-2.5 self-end md:self-auto">
+          <Button type="button" variant="outline" size="sm" onClick={clearFilters} disabled={!filtersApplied}>
+            Clear filters
+          </Button>
+          <Button type="button" variant="outline" size="sm">
+            <Download className="w-4 h-4" aria-hidden="true" />
+            Export Manifest (CSV)
+          </Button>
+          <Button type="button" size="sm">
+            <CloudUpload className="w-4 h-4" aria-hidden="true" />
+            Upload Documents
+          </Button>
         </div>
       </div>
 
-      {/* Primary Verification Ledger Table Panel */}
-      <div className="glass-elevated rounded-xl shadow-xl overflow-hidden flex flex-col">
-        {/* Top Action Ribbon */}
-        <div className="px-4 py-3 bg-[hsl(var(--muted))/30] flex items-center justify-between text-xs font-mono text-[hsl(var(--muted-foreground))]">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-2">
-              <span className="font-[hsl(var(--muted-foreground))]">Engine:</span>
-              <span className="font-[hsl(var(--foreground))]">Semantic Cross-Ref v3.9</span>
-            </span>
-            <span className="text-[hsl(var(--border))]">|</span>
-            <span className="font-[hsl(var(--muted-foreground))]">Auto-refresh every 30s</span>
+      {/* Table or empty state */}
+      {filtered.length === 0 ? (
+        <div className="bg-customs-surface-raised rounded-xl shadow-sm border border-customs-border-hairline flex flex-col items-center justify-center py-16 px-4 text-center">
+          <div className="w-12 h-12 rounded-full bg-customs-surface-base flex items-center justify-center text-customs-ink-muted mb-3">
+            <X className="w-6 h-6" aria-hidden="true" />
           </div>
-          <div className="flex items-center gap-3">
-            <button className="text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--primary))] flex items-center gap-1 transition-colors">
-              <Activity className="w-4 h-4" />
-              <span>Sync</span>
-            </button>
-          </div>
+          <h3 className="font-headline-sm text-headline-sm font-bold text-customs-ink-primary">No matching shipments found</h3>
+          <p className="font-body-md text-body-md text-customs-ink-secondary max-w-lg mb-8 leading-relaxed">
+            No records match your query or active filter. Try resetting search parameters.
+          </p>
+          <button className="mt-4 px-3.5 py-1.5 rounded-lg bg-customs-surface-base hover:bg-customs-surface-container-low text-customs-primary font-body-md text-body-md font-medium transition-colors" onClick={clearFilters}>
+            Clear all filters
+          </button>
         </div>
-
-        {/* Scrollable Ledger View */}
-        <div className="overflow-x-auto w-full">
-          {filtered.length === 0 ? (
-            <div className="p-12 text-center">
-              <p className="text-[hsl(var(--muted-foreground))]">
-                {search || statusFilter !== "all"
-                  ? "No shipments match your filters."
-                  : "No shipments yet."}
-              </p>
-            </div>
-          ) : (
-            <table className="w-full text-left border-collapse">
+      ) : (
+        <div className="bg-customs-surface-raised rounded-xl shadow-sm border border-customs-border-hairline overflow-hidden flex flex-col">
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-left border-collapse" id="shipments-table">
               <thead>
-                <tr className="bg-[hsl(var(--muted))/40] text-[hsl(var(--muted-foreground))] font-mono text-[11px] uppercase tracking-wider select-none">
-                  <th className="py-3 px-4 w-12 text-center">
-                    <span className="sr-only">Row Selector</span>
-                  </th>
-                  <th className="py-3 px-4 cursor-pointer hover:text-[hsl(var(--foreground))] transition-colors">
-                    <div className="flex items-center gap-1.5">
-                      <span>Shipment ID</span>
-                    </div>
-                  </th>
-                  <th className="py-3 px-4 cursor-pointer hover:text-[hsl(var(--foreground))] transition-colors">
-                    <div className="flex items-center gap-1.5">
-                      <span>Supplier / Declarant</span>
-                    </div>
-                  </th>
-                  <th className="py-3 px-4">Verification Integrity</th>
-                  <th className="py-3 px-4 cursor-pointer hover:text-[hsl(var(--foreground))] transition-colors">
-                    <div className="flex items-center gap-1.5">
-                      <span>Status</span>
-                    </div>
-                  </th>
-                  <th className="py-3 px-4 cursor-pointer hover:text-[hsl(var(--foreground))] transition-colors">
-                    <div className="flex items-center gap-1.5">
-                      <span>Updated</span>
-                    </div>
-                  </th>
-                  <th className="py-3 px-4 text-right pr-4">Actions</th>
+                <tr className="bg-customs-surface-base text-customs-ink-secondary font-caption text-caption uppercase tracking-wider h-10 border-b border-customs-border-hairline select-none">
+                  <th className="px-5 py-2 font-semibold">Shipment</th>
+                  <th className="px-5 py-2 font-semibold">Supplier / Forwarder</th>
+                  <th className="px-5 py-2 font-semibold">Status</th>
+                  <th className="px-5 py-2 font-semibold">Updated</th>
+                  <th className="px-5 py-2 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[hsl(var(--border))/40] text-sm text-[hsl(var(--foreground))]">
-                {filtered.map((s) => {
-                  const suppliersName = s.suppliers?.name || "—";
-                  return (
-                    <tr
-                      key={s.id}
-                      className="shipment-row hover:bg-[hsl(var(--muted))/40] transition-colors group cursor-pointer"
-                      data-status={s.status}
-                    >
-                      <td className="py-3.5 px-4 text-center">
-                        <input
-                          className="row-checkbox rounded bg-[hsl(var(--input))] text-[hsl(var(--primary))] focus:ring-0 focus:outline-none cursor-pointer w-4 h-4 accent-[hsl(var(--primary))]"
-                          type="checkbox"
-                        />
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2">
-                          <a
-                            href={`/shipments/${s.id}`}
-                            className="font-mono text-mono text-[hsl(var(--primary))] hover:text-[hsl(var(--secondary))] underline-offset-4 hover:underline font-semibold flex items-center gap-1"
-                          >
-                            {s.shipment_number}
-                          </a>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-7 h-7 rounded-md bg-[hsl(var(--border))] flex items-center justify-center font-mono text-[hsl(var(--secondary))] font-semibold shrink-0">
-                            {suppliersName.charAt(0).toUpperCase()}
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="font-heading text-sm text-[var(--foreground)]">
-                              {suppliersName}
-                            </span>
-                            <span className="font-mono text-mono-timestamp text-[11px] text-[hsl(var(--muted-foreground))]">
-                              Consignee: Global Freight Hub
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-16 bg-[hsl(var(--border))] h-1.5 rounded-full overflow-hidden">
-                            <div
-                              className="h-full rounded-full"
-                              style={{
-                                backgroundColor:
-                                  s.status === "Approved"
-                                    ? "hsl(var(--approved))"
-                                    : s.status === "Extracting"
-                                    ? "hsl(var(--secondary))"
-                                    : s.status === "Needs review"
-                                    ? "hsl(var(--needs-review))"
-                                    : s.status === "Ready for approval"
-                                    ? "hsl(var(--ready-for-approval))"
-                                    : s.status === "Exported"
-                                    ? "hsl(var(--exported))"
-                                    : "hsl(var(--muted-foreground))",
-                                width: s.status === "Approved" ? "98%" : "60%",
-                              }}
-                            />
-                          </div>
-                          <span className="font-mono text-mono-timestamp text-[11px] text-[hsl(var(--muted-foreground))]">
-                            98% Match (0 Flags)
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full ${STATUS_VARIANT[s.status]} shadow-sm`}>
-                          {STATUS_ICON[s.status]}
-                          <span>{s.status}</span>
+              <tbody className="divide-y divide-customs-border-hairline" id="table-body">
+                {filtered.map((shipment) => (
+                  <tr key={shipment.id} className="hover:bg-customs-surface-container-low/60 transition-colors group" data-shipment={shipment.shipment_number} data-status={shipment.status} data-supplier={supplierName(shipment.suppliers) ?? ""}>
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-2.5">
+                        <Link href={`/dashboard/${shipment.id}`} className="font-label-code-md text-label-code-md font-semibold text-customs-primary hover:underline flex items-center gap-1 no-underline">
+                          {shipment.shipment_number}
+                        </Link>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-customs-surface-container text-customs-on-secondary-container">
+                          Air Cargo
                         </span>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex flex-col">
-                          <span className="font-mono text-mono-timestamp text-[11px] text-[var(--foreground)]">
-                            7/11/2026
-                          </span>
-                          <span className="font-mono text-mono-timestamp text-[11px] text-[hsl(var(--muted-foreground))]">
-                            14:32:10 UTC
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4 text-right pr-4">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <a
-                            href={`/shipments/${s.id}`}
-                            className="px-2.5 py-1 rounded bg-[hsl(var(--border))] hover:bg-[hsl(var(--muted))/40] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] font-heading text-[11px] transition-colors shadow-sm"
-                          >
-                            Review
-                          </a>
-                          <button className="p-1 rounded text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))/40] transition-colors" aria-label="More options">
-                            <Menu className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <div className="flex flex-col">
+                        <span className="font-body-md text-body-md text-customs-ink-primary font-medium">{supplierName(shipment.suppliers) || "—"}</span>
+                        <span className="font-caption text-caption text-customs-ink-muted">Consignment #{shipment.shipment_number} • 4 Docs attached</span>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <StatusBadge variant={STATUS_VARIANT[shipment.status] ?? "neutral"} label={shipment.status} />
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <span className="font-label-code-sm text-label-code-sm text-customs-ink-secondary">
+                        {shipment.updated_at ? new Date(shipment.updated_at).toLocaleString() : "—"}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-right">
+                      <div className="inline-flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                        <button
+                          className="p-1.5 rounded-md hover:bg-customs-surface-container-low text-customs-ink-secondary hover:text-customs-ink-primary"
+                          title={shipment.status === "Needs review" ? "Review Discrepancies" : "View details"}
+                        >
+                          {shipment.status === "Needs review" ? <ClipboardCheck className="w-4 h-4" aria-hidden="true" /> : <MoreVertical className="w-4 h-4" aria-hidden="true" />}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-          )}
+          </div>
+          {/* Pagination footer */}
+          <div className="bg-customs-surface-raised px-5 py-3.5 border-t border-customs-border-hairline flex flex-col sm:flex-row items-center justify-between gap-4 font-caption text-caption text-customs-ink-secondary">
+            <div className="flex items-center gap-2">
+              <span>Showing <strong className="text-customs-ink-primary font-medium">{filtered.length}</strong> of <strong className="text-customs-ink-primary font-medium">{shipments.length}</strong> shipments</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <button className="h-8 px-2.5 rounded-md border border-customs-border-hairline bg-customs-surface-raised text-customs-ink-secondary disabled:opacity-40 disabled:cursor-not-allowed font-medium inline-flex items-center gap-1" disabled>
+                <span>Previous</span>
+              </button>
+              <div className="flex items-center gap-1 px-1">
+                <button className="w-8 h-8 rounded-md bg-customs-primary text-customs-on-primary-container font-semibold font-label-code-sm text-label-code-sm flex items-center justify-center shadow-xs">
+                  1
+                </button>
+              </div>
+              <button className="h-8 px-2.5 rounded-md border border-customs-border-hairline bg-customs-surface-raised text-customs-ink-primary font-medium inline-flex items-center gap-1">
+                <span>Next</span>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
