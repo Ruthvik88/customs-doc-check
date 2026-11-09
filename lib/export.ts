@@ -32,6 +32,11 @@ export const EXPORT_COLUMNS = [
   "vessel",
   "port_of_loading",
   "port_of_discharge",
+  "description",
+  "hsn",
+  "qty",
+  "unit_price",
+  "line_total",
 ] as const;
 
 export function buildExportRow(shipment: {
@@ -49,25 +54,41 @@ export function buildExportRow(shipment: {
   vessel: string | null;
   port_of_loading: string | null;
   port_of_discharge: string | null;
-}, fieldByKey: Record<string, string>): string[] {
-  const containers = Array.isArray(shipment.containers) ? shipment.containers.join(", ") : "";
+}, fieldByKey: Record<string, string>, lineItem: {
+  description: string | null;
+  hsn: string | null;
+  qty: number | null;
+  unit_price: number | null;
+  line_total: number | null;
+} = { description: null, hsn: null, qty: null, unit_price: null, line_total: null }): string[] {
+  const field = (key: string) => fieldByKey[key] ?? "";
+  const value = (key: string, shipmentValue: string | number | null) =>
+    shipmentValue != null ? String(shipmentValue) : field(key);
+  const containers = Array.isArray(shipment.containers)
+    ? shipment.containers.join(", ")
+    : field("containers");
   return [
     shipment.shipment_number,
-    shipment.suppliers?.name ?? "",
-    fieldByKey["consignee"] ?? "",
-    shipment.invoice_number ?? "",
-    shipment.invoice_date ?? "",
-    shipment.currency ?? "",
-    shipment.incoterm ?? "",
-    fieldByKey["invoice_total"] ?? "",
-    shipment.total_packages != null ? String(shipment.total_packages) : "",
-    shipment.gross_weight_kg != null ? String(shipment.gross_weight_kg) : "",
-    shipment.net_weight_kg != null ? String(shipment.net_weight_kg) : "",
+    shipment.suppliers?.name ?? field("supplier"),
+    field("consignee"),
+    value("invoice_number", shipment.invoice_number),
+    value("invoice_date", shipment.invoice_date),
+    value("currency", shipment.currency),
+    value("incoterm", shipment.incoterm),
+    field("invoice_total"),
+    value("packages", shipment.total_packages),
+    value("gross_weight_kg", shipment.gross_weight_kg),
+    value("net_weight_kg", shipment.net_weight_kg),
     containers,
-    shipment.bl_number ?? "",
-    shipment.vessel ?? "",
-    shipment.port_of_loading ?? "",
-    shipment.port_of_discharge ?? "",
+    value("bl_number", shipment.bl_number),
+    value("vessel", shipment.vessel),
+    value("port_of_loading", shipment.port_of_loading),
+    value("port_of_discharge", shipment.port_of_discharge),
+    lineItem.description ?? "",
+    lineItem.hsn ?? "",
+    lineItem.qty == null ? "" : String(lineItem.qty),
+    lineItem.unit_price == null ? "" : String(lineItem.unit_price),
+    lineItem.line_total == null ? "" : String(lineItem.line_total),
   ];
 }
 

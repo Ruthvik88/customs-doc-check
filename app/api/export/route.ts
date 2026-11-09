@@ -1,7 +1,7 @@
 "use strict";
 
 import { NextResponse } from "next/server";
-import { requireSupabaseClient } from "@/lib/supabase/server";
+import { requireSupabaseClient, requireServiceRoleClient } from "@/lib/supabase/server";
 import { getProfileRole } from "@/lib/supabase/authorization";
 import { buildExportRow, buildCsv, EXPORT_COLUMNS } from "@/lib/export";
 
@@ -42,8 +42,19 @@ export async function POST(req: Request) {
     shipment: Parameters<typeof buildExportRow>[0];
     fields: Record<string, string>;
   };
-  const row = buildExportRow(shipment, fieldByKey);
-  const csv = buildCsv(EXPORT_COLUMNS, [row]);
+  const service = requireServiceRoleClient();
+  const [fieldsResult, linesResult] = await Promise.all([
+    service.from("fields").select("key,value").eq("shipment_id", shipmentId).in("status", ["confirmed", "edited"]),
+    service.from("line_items").select("description,hsn,qty,unit_price,line_total").eq("shipment_id", shipmentId).order("id", { ascending: true }),
+  ]);
+  if (fieldsResult.error || linesResult.error) {
+    return NextResponse.json({ error: "Failed to load confirmed export data" }, { status: 500 });
+  }
+  const confirmedFields = Object.fromEntries((fieldsResult.data ?? []).map((field) => [field.key, field.value ?? ""]));
+  const allFields = { ...fieldByKey, ...confirmedFields };
+  const lineItems = linesResult.data ?? [];
+  const rows = lineItems.map((lineItem) => buildExportRow(shipment, allFields, lineItem));
+  const csv = buildCsv(EXPORT_COLUMNS, rows);
   const fileName = `export_${shipment.shipment_number}.csv`;
 
   return new NextResponse(csv, {

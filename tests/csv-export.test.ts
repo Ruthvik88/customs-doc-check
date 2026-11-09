@@ -19,8 +19,8 @@ describe("csvEscape", () => {
 });
 
 describe("EXPORT_COLUMNS", () => {
-  it("has the expected 16 columns", () => {
-    expect(EXPORT_COLUMNS).toHaveLength(16);
+  it("has the expected 21 columns", () => {
+    expect(EXPORT_COLUMNS).toHaveLength(21);
     expect(EXPORT_COLUMNS[0]).toBe("shipment_number");
     expect(EXPORT_COLUMNS[15]).toBe("port_of_discharge");
   });
@@ -68,6 +68,27 @@ describe("buildExportRow", () => {
     const row = buildExportRow({ ...shipment, suppliers: null }, {});
     expect(row[1]).toBe("");
     expect(row[2]).toBe("");
+  });
+
+  it("exports SHP-24812 with one complete row per sample line item", () => {
+    const lineItems = [{ description: "Steel ball valve DN50", hsn: "848180", qty: 180, unit_price: 42.5, line_total: 7650 }];
+    const fields = {
+      supplier: "Company C", consignee: "Nhava Sheva Imports Pvt. Ltd.", invoice_number: "INV-SE-3310",
+      invoice_date: "2025-10-22", currency: "EUR", incoterm: "CIF", invoice_total: "EUR 7650.00",
+      packages: "6", gross_weight_kg: "1460", net_weight_kg: "1420", containers: "CMAU5555552",
+      bl_number: "BL-SE-7741", vessel: "MV Baltic Trader", port_of_loading: "Gothenburg, Sweden",
+      port_of_discharge: "Nhava Sheva, India",
+    };
+    const sparseShipment = {
+      ...shipment, suppliers: null, invoice_number: null, invoice_date: null, currency: null, incoterm: null,
+      total_packages: null, gross_weight_kg: null, net_weight_kg: null, containers: null,
+      bl_number: null, vessel: null, port_of_loading: null, port_of_discharge: null,
+    };
+    const rows = lineItems.map((item) => buildExportRow(sparseShipment, fields, item));
+    expect(rows).toHaveLength(lineItems.length);
+    expect(rows[0]).toHaveLength(EXPORT_COLUMNS.length);
+    expect(rows[0].every((value) => value.trim() !== "")).toBe(true);
+    expect(rows[0].slice(16)).toEqual(["Steel ball valve DN50", "848180", "180", "42.5", "7650"]);
   });
 });
 
