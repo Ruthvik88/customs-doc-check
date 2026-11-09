@@ -3,8 +3,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
-  ChevronLeft,
-  ChevronRight,
   Database,
   Download,
   Lock,
@@ -20,6 +18,7 @@ import {
   X,
   Moon,
 } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { useSession } from "@/hooks/useSession";
 import { useSupabaseClient } from "@/hooks/useSupabaseClient";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -150,7 +149,7 @@ export default function ExportPage() {
             <div className="flex items-center gap-space-lg">
               <div className="flex items-center gap-space-sm">
                 <div className="w-9 h-9 rounded-lg bg-customs-primary flex items-center justify-center text-customs-on-primary shadow-sm">
-                  <ShieldCheck className="text-[20px]" aria-hidden="true" />
+                  <Icon as={ShieldCheck} size={20} aria-hidden="true" />
                 </div>
                 <span className="font-headline text-headline-sm text-customs-ink-primary tracking-tight whitespace-nowrap">
                   Customs Doc Check
@@ -196,13 +195,13 @@ export default function ExportPage() {
                 <button aria-label="Toggle dark mode" className="w-8 h-8 rounded-lg flex items-center justify-center text-customs-ink-secondary hover:text-customs-ink-primary hover:bg-customs-surface-base transition-colors" type="button">
                   {typeof document !== "undefined" &&
                   document.documentElement.classList.contains("dark") ? (
-                    <Sun className="text-[20px]" aria-hidden="true" />
+                    <Icon as={Sun} size={20} aria-hidden="true" />
                   ) : (
-                    <Moon className="text-[20px]" aria-hidden="true" />
+                    <Icon as={Moon} size={20} aria-hidden="true" />
                   )}
                 </button>
                 <div className="w-8 h-8 rounded-full bg-customs-primary flex items-center justify-center">
-                  <User className="text-customs-on-primary text-[18px]" aria-hidden="true" />
+                  <Icon as={User} size={16} className="text-customs-on-primary" aria-hidden="true" />
                 </div>
               </div>
             </div>
@@ -249,7 +248,7 @@ export default function ExportPage() {
                 <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 rounded-lg bg-customs-surface-raised flex items-center justify-center text-customs-status-progress-text shadow-sm flex-shrink-0">
-                      <RefreshCw className="animate-spin text-[18px]" aria-hidden="true" />
+                      <Icon as={RefreshCw} size={16} className="animate-spin" aria-hidden="true" />
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                       <span className="font-body text-body-md font-semibold text-customs-status-progress-text">
@@ -384,7 +383,7 @@ export default function ExportPage() {
               </div>
               <div className="flex items-center justify-between text-customs-ink-secondary px-1">
                 <div className="flex items-center gap-2">
-                  <Lock className="text-[16px] text-customs-ink-secondary" aria-hidden="true" />
+                  <Icon as={Lock} size={16} className="text-customs-ink-secondary" aria-hidden="true" />
                   <span className="font-caption text-caption text-customs-ink-secondary">
                     Filing Engine Integration: Auto-formatted for direct manifest ingestion (Form 8-B).
                   </span>
@@ -420,7 +419,7 @@ export default function ExportPage() {
           <div className="flex items-center gap-space-lg">
             <div className="flex items-center gap-space-sm">
               <div className="w-9 h-9 rounded-lg bg-customs-primary flex items-center justify-center text-customs-on-primary shadow-sm">
-                <ShieldCheck className="text-[20px]" aria-hidden="true" />
+                <Icon as={ShieldCheck} size={20} aria-hidden="true" />
               </div>
               <span className="font-headline text-headline-sm text-customs-ink-primary tracking-tight whitespace-nowrap">
                 Customs Doc Check
@@ -448,10 +447,6 @@ export default function ExportPage() {
             </nav>
           </div>
           <div className="flex items-center gap-space-md">
-            <div className="hidden xl:flex items-center gap-space-xs px-2 py-1 rounded-full bg-customs-status-confirmed-bg text-customs-status-confirmed-text font-label-code text-label-code-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-customs-status-confirmed-text animate-pulse" aria-hidden="true" />
-              <span>SYSTEM ONLINE</span>
-            </div>
             <div className="flex items-center gap-space-sm pl-space-sm border-l border-customs-border-hairline">
               <div className="hidden sm:flex flex-col text-right">
                 <span className="font-label-code text-label-code-sm text-customs-ink-primary">
@@ -466,13 +461,13 @@ export default function ExportPage() {
               <button aria-label="Toggle dark mode" className="w-8 h-8 rounded-lg flex items-center justify-center text-customs-ink-secondary hover:text-customs-ink-primary hover:bg-customs-surface-base transition-colors" type="button">
                 {typeof document !== "undefined" &&
                 document.documentElement.classList.contains("dark") ? (
-                  <Sun className="text-[20px]" aria-hidden="true" />
+                  <Icon as={Sun} size={20} aria-hidden="true" />
                 ) : (
-                  <Moon className="text-[20px]" aria-hidden="true" />
+                  <Icon as={Moon} size={20} aria-hidden="true" />
                 )}
               </button>
               <div className="w-8 h-8 rounded-full bg-customs-primary flex items-center justify-center">
-                <User className="text-customs-on-primary text-[18px]" aria-hidden="true" />
+                <Icon as={User} size={16} className="text-customs-on-primary" aria-hidden="true" />
               </div>
             </div>
           </div>
@@ -497,26 +492,11 @@ export default function ExportPage() {
                   One row per line item, in the filing software&apos;s import layout
                 </p>
               </div>
-              {/* Telemetry counter (real count of approved shipments) */}
-              <div className="flex items-center gap-space-md bg-customs-surface-raised px-space-md py-2 rounded-xl shadow-sm">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-customs-status-confirmed-text" aria-hidden="true" />
-                  <span className="font-caption text-caption text-customs-ink-secondary">Validation Engine</span>
-                  <span className="font-label-code text-label-code-sm text-customs-status-confirmed-text font-semibold">
-                    ISO-COMPLIANT
-                  </span>
-                </div>
-                <div className="w-px h-4 bg-customs-surface-container-highest" />
-                <div className="flex items-center gap-1.5 font-label-code text-label-code-sm text-customs-ink-primary">
-                  <span className="text-customs-ink-secondary">Active Gateway:</span>
-                  <span className="font-semibold text-customs-primary">ERP-SYNC-V4</span>
-                </div>
-              </div>
             </div>
 
             {error && (
               <div className="rounded-lg border border-customs-status-error-bg bg-customs-status-error-bg/20 p-4 shadow-sm flex items-start gap-space-sm">
-                <X className="text-customs-status-error-text text-[18px] shrink-0" aria-hidden="true" />
+                <Icon as={X} size={16} className="text-customs-status-error-text shrink-0" aria-hidden="true" />
                 <div className="flex flex-col gap-0.5">
                   <span className="font-body-sm text-body-sm font-bold text-customs-status-error-text">
                     Export failed
@@ -524,7 +504,7 @@ export default function ExportPage() {
                   <p className="font-caption text-caption text-customs-status-error-text/90">{error}</p>
                 </div>
                 <Button variant="outline" size="sm" onClick={handleRefresh} disabled={refreshing} className="mt-1" type="button">
-                  <RefreshCw className="text-[16px] text-customs-ink-secondary mr-2" aria-hidden="true" />
+                  <Icon as={RefreshCw} size={16} className="text-customs-ink-secondary mr-2" aria-hidden="true" />
                   Retry
                 </Button>
               </div>
@@ -535,7 +515,7 @@ export default function ExportPage() {
               {/* Table header */}
               <div className="px-space-lg py-space-md bg-customs-surface-base flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
                 <div className="flex items-center gap-space-sm">
-                  <CheckCheck className="text-customs-status-confirmed-text text-[20px]" aria-hidden="true" />
+                  <Icon as={CheckCheck} size={20} className="text-customs-status-confirmed-text" aria-hidden="true" />
                   <span className="font-headline text-headline-sm text-customs-ink-primary">
                     Verified Approved Consignments
                   </span>
@@ -545,7 +525,7 @@ export default function ExportPage() {
                 </div>
                 <div className="flex items-center gap-space-sm">
                   <span className="font-caption text-caption text-customs-ink-secondary">
-                    Single-click row execution applies digital signature &amp; logs audit trail
+                    Single-click row execution runs the export.
                   </span>
                 </div>
               </div>
@@ -594,17 +574,14 @@ export default function ExportPage() {
                                 href="/dashboard"
                                 className="inline-flex items-center justify-center gap-2 px-space-lg py-2.5 bg-customs-primary text-customs-on-primary font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary-container transition-colors shadow-sm"
                               >
-                                <CheckCheck className="text-[18px]" aria-hidden="true" />
+                                <Icon as={CheckCheck} size={16} aria-hidden="true" />
                                 <span>View Pending Approvals</span>
                               </Link>
                               <Link
                                 href="/dashboard"
                                 className="inline-flex items-center justify-center gap-2 px-space-lg py-2.5 bg-customs-surface-base text-customs-ink-primary font-headline-sm text-headline-sm rounded-lg hover:bg-customs-surface-container transition-colors"
                               >
-                                <LayoutDashboard
-                                  className="text-[18px] text-customs-ink-secondary"
-                                  aria-hidden="true"
-                                />
+                                <Icon as={LayoutDashboard} size={16} className="text-customs-ink-secondary" aria-hidden="true" />
                                 <span>Go to Shipments Dashboard</span>
                               </Link>
                             </div>
@@ -641,7 +618,7 @@ export default function ExportPage() {
                                 {supplierName(shipment.suppliers) ?? "—"}
                               </span>
                               <span className="font-body text-body-sm text-customs-ink-secondary flex items-center gap-1">
-                                <MapPin className="text-[13px]" aria-hidden="true" />
+                                <Icon as={MapPin} size={16} aria-hidden="true" />
                                 Consignment {shipment.shipment_number}
                               </span>
                             </div>
@@ -678,12 +655,12 @@ export default function ExportPage() {
                           <td className="py-space-md px-space-lg align-middle text-right">
                             {isGenerating ? (
                               <Button variant="primary" size="sm" className="flex items-center gap-2 px-space-md py-1.5 text-body-sm text-body-md font-semibold" disabled type="button">
-                                <RefreshCw className="animate-spin text-[18px] text-customs-primary" aria-hidden="true" />
+                                <Icon as={RefreshCw} size={16} className="animate-spin text-customs-primary" aria-hidden="true" />
                                 <span>Generating CSV&hellip;</span>
                               </Button>
                             ) : isDone ? (
                               <Button variant="primary" size="sm" className="flex items-center gap-1 px-space-md py-1.5 text-body-sm text-body-md font-semibold shadow-sm bg-customs-status-confirmed-bg text-customs-status-confirmed-text hover:bg-customs-status-confirmed-bg transition-colors" type="button">
-                                <CheckCheck className="text-[18px]" aria-hidden="true" />
+                                <Icon as={CheckCheck} size={16} aria-hidden="true" />
                                 <span>
                                   Downloaded {((downloadBytes[shipment.id] ?? 0) / 1024).toFixed(0)} KB
                                 </span>
@@ -691,19 +668,19 @@ export default function ExportPage() {
                             ) : isFailed ? (
                               <div className="inline-flex items-center justify-end gap-2">
                                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-customs-status-error-bg text-customs-status-error-text font-caption text-caption max-w-[240px] text-left">
-                                  <X className="text-[15px] flex-shrink-0" aria-hidden="true" />
+                                  <Icon as={X} size={16} className="flex-shrink-0" aria-hidden="true" />
                                   <span className="truncate" title="Export failed">
                                     Export failed
                                   </span>
                                 </div>
                                 <Button variant="outline" size="sm" className="px-3 py-1.5 text-body-sm text-body-md font-semibold shadow-sm" onClick={() => void exportShipment(shipment.id)} type="button">
-                                  <RefreshCw className="text-[16px] text-customs-ink-secondary" aria-hidden="true" />
+                                  <Icon as={RefreshCw} size={16} className="text-customs-ink-secondary" aria-hidden="true" />
                                   <span>Retry</span>
                                 </Button>
                               </div>
                             ) : (
                               <Button variant="primary" size="sm" className="flex items-center gap-1.5 px-space-md py-1.5 text-body-sm text-body-md font-semibold shadow-sm" onClick={() => void exportShipment(shipment.id)} type="button">
-                                <Download className="text-[18px] text-customs-primary" aria-hidden="true" />
+                                <Icon as={Download} size={16} className="text-customs-primary" aria-hidden="true" />
                                 <span>Export CSV</span>
                               </Button>
                             )}
@@ -716,35 +693,21 @@ export default function ExportPage() {
               </div>
 
               {/* Pagination / Record summary footer */}
-              <div className="px-space-lg py-space-sm bg-customs-surface-base flex flex-col sm:flex-row items-center justify-between gap-space-sm">
-                <div className="flex items-center gap-space-sm font-body text-body-sm text-customs-ink-secondary">
-                  Showing <strong className="text-customs-ink-primary font-semibold">{clearedCount}</strong> of <strong className="text-customs-ink-primary font-semibold">{clearedCount}</strong> approved shipments ready for export
-                </div>
-                <div className="flex items-center gap-space-xs font-label-code text-label-code-sm">
-                  <span className="px-2.5 py-1 rounded bg-customs-surface-raised shadow-sm text-customs-ink-primary font-medium">
-                    Page 1 of 1
-                  </span>
-                  <button className="p-1 rounded bg-customs-surface-raised opacity-40 text-customs-ink-muted cursor-not-allowed" disabled type="button">
-                    <ChevronLeft className="text-[18px]" aria-hidden="true" />
-                  </button>
-                  <button className="p-1 rounded bg-customs-surface-raised opacity-40 text-customs-ink-muted cursor-not-allowed" disabled type="button">
-                    <ChevronRight className="text-[18px]" aria-hidden="true" />
-                  </button>
-                </div>
+              <div className="flex items-center gap-space-sm font-body text-body-sm text-customs-ink-secondary">
+                Showing <strong className="text-customs-ink-primary font-semibold">{clearedCount}</strong> of <strong className="text-customs-ink-primary font-semibold">{clearedCount}</strong> approved shipments ready for export
               </div>
             </div>
 
             {/* Export schema specification panel */}
             <div className="bg-customs-surface-container-low p-space-md rounded-xl flex items-start gap-space-sm">
-              <Database className="text-customs-primary text-[20px] mt-0.5" aria-hidden="true" />
+              <Icon as={Database} size={20} className="text-customs-primary mt-0.5" aria-hidden="true" />
               <div className="flex flex-col gap-0.5">
                 <span className="font-headline text-headline-sm text-customs-ink-primary">
-                  Export Schema Specification (EDI-ERP-832)
+                  Export Schema Specification
                 </span>
                 <p className="font-body text-body-sm text-customs-ink-secondary">
-                  Generated CSV files adhere strictly to single-record row indexing with mandatory 8-digit HSN codes,
-                  verified net/gross mass, and digital signature tokens. Mismatched quantities automatically trigger
-                  pipeline hold exceptions prior to schema file synthesis.
+                  Generated CSV files follow the filing software import layout,
+                  one row per line item.
                 </p>
               </div>
             </div>
