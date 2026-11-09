@@ -2,12 +2,15 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { Icon } from "@/components/ui/icon";
 import {
   Anchor,
   ArrowRight,
   Badge,
   Barcode,
+  BarChart3,
   Building,
+  Edit,
   FileText,
   Info,
   Package,
@@ -121,43 +124,28 @@ export function AccuracyReport({
               aria-selected="true"
               className="flex items-center gap-space-xs px-space-md py-space-sm rounded-md bg-customs-surface-raised text-customs-primary font-headline-sm text-headline-sm shadow-sm transition-colors" role="tab" type="button"
             >
-              <Table className="text-[18px]" aria-hidden="true" />
+              <Icon as={Table} size={16} aria-hidden="true" />
               <span>By field</span>
             </button>
             <button
               aria-selected="false"
               className="flex items-center gap-space-xs px-space-md py-space-sm rounded-md text-customs-on-surface-variant hover:text-customs-on-surface font-headline-sm text-headline-sm transition-colors" role="tab" type="button"
             >
-              <Building className="text-[18px]" aria-hidden="true" />
+              <Icon as={Building} size={16} aria-hidden="true" />
               <span>By supplier</span>
             </button>
           </div>
           <div className="hidden sm:flex items-center gap-space-xs text-customs-ink-muted font-label-code text-label-code-sm">
-            <Info className="text-[16px]" aria-hidden="true" />
-            <span>Confidence threshold: 99.4% standard</span>
+            <Icon as={Info} size={16} aria-hidden="true" />
           </div>
         </div>
 
         {/* Empty state */}
         <div className="w-full bg-customs-surface-raised rounded-xl shadow-sm p-space-xl flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[460px]">
-          <div className="absolute w-96 h-96 rounded-full bg-customs-primary/5 blur-3xl pointer-events-none -top-20" />
           <div className="relative z-10 flex flex-col items-center max-w-lg mx-auto">
             <div className="w-20 h-20 rounded-2xl bg-customs-surface-container flex items-center justify-center text-customs-primary shadow-sm mb-space-lg relative">
-              <svg className="w-10 h-10 text-customs-primary" fill="none" viewBox="0 0 40 40" aria-hidden="true">
-                <rect className="fill-customs-surface-base" height="24" rx="4" width="28" x="6" y="8" />
-                <path d="M12 15H22" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                <path d="M12 21H18" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                <path d="M12 27H24" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                <circle className="stroke-customs-primary" cx="27" cy="22" r="5" stroke-dasharray="2 2" stroke-width="2" />
-                <circle className="fill-customs-primary" cx="27" cy="22" r="2" />
-              </svg>
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-customs-surface-raised shadow-sm flex items-center justify-center text-customs-ink-muted">
-                <Info className="text-[14px]" aria-hidden="true" />
-              </div>
+              <Icon as={Table} size={20} aria-hidden="true" />
             </div>
-            <span className="font-label-code text-label-code-sm uppercase tracking-wider text-customs-ink-muted mb-space-xs">
-              Evaluation Queue Standby
-            </span>
             <h2 className="font-headline text-headline-lg text-customs-ink-primary tracking-tight mb-space-sm">
               No reviews yet
             </h2>
@@ -169,63 +157,24 @@ export function AccuracyReport({
               href="/dashboard"
               className="inline-flex items-center gap-space-sm px-space-lg py-space-sm bg-customs-primary-container text-customs-on-primary-container font-headline-sm text-headline-sm rounded-lg hover:bg-customs-primary transition-colors shadow-sm"
             >
-              <Truck className="text-[20px] transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
+              <Icon as={Truck} size={16} className="transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
               <span>Go to Shipments</span>
-              <ArrowRight className="text-[18px] transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              <Icon as={ArrowRight} size={16} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
             </Link>
             <div className="mt-space-xl flex items-center gap-space-md text-customs-ink-muted font-caption text-caption">
               <div className="flex items-center gap-1">
-                <FileText className="text-[14px] text-customs-ink-muted" aria-hidden="true" />
+                <Icon as={FileText} size={16} className="text-customs-ink-muted" aria-hidden="true" />
                 <span>Commercial Invoices</span>
               </div>
               <span className="text-customs-border-hairline">•</span>
               <div className="flex items-center gap-1">
-                <Package className="text-[14px] text-customs-ink-muted" aria-hidden="true" />
+                <Icon as={Package} size={16} className="text-customs-ink-muted" aria-hidden="true" />
                 <span>Packing Lists</span>
               </div>
               <span className="text-customs-border-hairline">•</span>
               <div className="flex items-center gap-1">
-                <Truck className="text-[14px] text-customs-ink-muted" aria-hidden="true" />
+                <Icon as={Truck} size={16} className="text-customs-ink-muted" aria-hidden="true" />
                 <span>Bills of Lading</span>
-              </div>
-            </div>
-          </div>
-          {/* Supplementary guidance cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md w-full mt-space-xl">
-            <div className="bg-customs-surface-raised p-space-md rounded-lg shadow-sm flex items-start gap-space-md">
-              <div className="w-8 h-8 rounded bg-customs-surface-container flex items-center justify-center text-customs-ink-secondary flex-shrink-0">
-                <FileText className="text-[18px]" aria-hidden="true" />
-              </div>
-              <div>
-                <span className="font-label-code text-label-code-sm uppercase tracking-wider text-customs-ink-muted block">Step 01</span>
-                <h3 className="font-headline text-headline-sm text-customs-ink-primary mt-0.5">Inspect Discrepancies</h3>
-                <p className="font-body text-body-sm text-customs-ink-secondary mt-1">
-                  Compare original bill scans with extracted table items in split-screen.
-                </p>
-              </div>
-            </div>
-            <div className="bg-customs-surface-raised p-space-md rounded-lg shadow-sm flex items-start gap-space-md">
-              <div className="w-8 h-8 rounded bg-customs-surface-container flex items-center justify-center text-customs-ink-secondary flex-shrink-0">
-                <EditIcon className="text-[18px]" aria-hidden="true" />
-              </div>
-              <div>
-                <span className="font-label-code text-label-code-sm uppercase tracking-wider text-customs-ink-muted block">Step 02</span>
-                <h3 className="font-headline text-headline-sm text-customs-ink-primary mt-0.5">Confirm or Correct</h3>
-                <p className="font-body text-body-sm text-customs-ink-secondary mt-1">
-                  Manual overrides update HSN codes, declared values, and net weights.
-                </p>
-              </div>
-            </div>
-            <div className="bg-customs-surface-raised p-space-md rounded-lg shadow-sm flex items-start gap-space-md">
-              <div className="w-8 h-8 rounded bg-customs-surface-container flex items-center justify-center text-customs-ink-secondary flex-shrink-0">
-                <BarChart3 className="text-[18px]" aria-hidden="true" />
-              </div>
-              <div>
-                <span className="font-label-code text-label-code-sm uppercase tracking-wider text-customs-ink-muted block">Step 03</span>
-                <h3 className="font-headline text-headline-sm text-customs-ink-primary mt-0.5">Generate Benchmarks</h3>
-                <p className="font-body text-body-sm text-customs-ink-secondary mt-1">
-                  Accuracy scores populate per entity to spotlight automation quality.
-                </p>
               </div>
             </div>
           </div>
@@ -268,7 +217,7 @@ export function AccuracyReport({
             role="tab"
             type="button"
           >
-            <Table className="text-[18px]" aria-hidden="true" />
+            <Icon as={Table} size={16} aria-hidden="true" />
             <span>By field</span>
             <span className="ml-1 px-1.5 py-0.5 rounded-full bg-customs-surface-container-high text-customs-ink-secondary font-label-code text-label-code-sm">
               {byField.length}
@@ -287,7 +236,7 @@ export function AccuracyReport({
             role="tab"
             type="button"
           >
-            <Building className="text-[18px]" aria-hidden="true" />
+            <Icon as={Building} size={16} aria-hidden="true" />
             <span>By supplier</span>
             <span className="ml-1 px-1.5 py-0.5 rounded-full bg-customs-surface-container-high text-customs-ink-secondary font-label-code text-label-code-sm">
               {bySupplier.length}
@@ -324,14 +273,14 @@ export function AccuracyReport({
             <tbody className="divide-y divide-transparent font-body text-body-md text-customs-ink-primary">
               {activeTab === "fields" ? (
                 byField.map((stat) => {
-                  const Icon = FIELD_ICONS[stat.key] ?? Scale;
+                  const fieldIcon = FIELD_ICONS[stat.key] ?? Scale;
                   const tone = accuracyTone(stat.accuracy);
                   return (
                     <tr key={stat.key} className="h-14 transition-colors hover:bg-customs-surface-container-low group">
                       <td className="py-3 px-space-lg">
                         <div className="flex items-center gap-space-sm">
                           <div className="w-7 h-7 rounded-lg bg-customs-surface-container flex items-center justify-center text-customs-secondary">
-                            <Icon className="text-[16px]" aria-hidden="true" />
+                            <Icon as={fieldIcon} size={16} aria-hidden="true" />
                           </div>
                           <div>
                             <span className="font-headline-sm text-headline-sm text-customs-ink-primary block leading-snug">
@@ -372,7 +321,7 @@ export function AccuracyReport({
                       <td className="py-3 px-space-lg">
                         <div className="flex items-center gap-space-sm">
                           <div className="w-7 h-7 rounded-lg bg-customs-surface-container flex items-center justify-center text-customs-secondary">
-                            <Building className="text-[16px]" aria-hidden="true" />
+                            <Icon as={Building} size={16} aria-hidden="true" />
                           </div>
                           <div>
                             <span className="font-headline-sm text-headline-sm text-customs-ink-primary block leading-snug">
@@ -422,24 +371,5 @@ export function AccuracyReport({
         </div>
       </div>
     </div>
-  );
-}
-
-function EditIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-    </svg>
-  );
-}
-
-function BarChart3(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="18" y1="20" x2="18" y2="10" />
-      <line x1="12" y1="20" x2="12" y2="4" />
-      <line x1="6" y1="20" x2="6" y2="14" />
-    </svg>
   );
 }
